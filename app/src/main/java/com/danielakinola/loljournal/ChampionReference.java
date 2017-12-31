@@ -1,0 +1,158 @@
+package com.danielakinola.loljournal;
+
+import java.util.HashMap;
+
+/**
+ * Created by Guest on 28/12/2017.
+ */
+
+public class ChampionReference {
+    private static HashMap<String, Integer> champions = new HashMap<>();
+
+    public ChampionReference() {
+        champions.put("aatrox", R.drawable.annie_loading);
+        champions.put("ahri", R.drawable.annie_loading);
+        champions.put("akali", R.drawable.annie_loading);
+        champions.put("alistar", R.drawable.annie_loading);
+        champions.put("amumu", R.drawable.annie_loading);
+        champions.put("anivia", R.drawable.annie_loading);
+        champions.put("annie", R.drawable.annie_loading);
+        champions.put("ashe", R.drawable.annie_loading);
+        champions.put("aurelionsol", R.drawable.annie_loading);
+        champions.put("azir", R.drawable.annie_loading);
+        champions.put("bard", R.drawable.annie_loading);
+        champions.put("blitzcrank", R.drawable.annie_loading);
+        champions.put("brand", R.drawable.annie_loading);
+        champions.put("braum", R.drawable.annie_loading);
+        champions.put("caitlyn", R.drawable.annie_loading);
+        champions.put("camille", R.drawable.annie_loading);
+        champions.put("cassiopeia", R.drawable.annie_loading);
+        champions.put("cho'gath", R.drawable.annie_loading);
+        champions.put("corki", R.drawable.annie_loading);
+        champions.put("darius", R.drawable.annie_loading);
+        champions.put("diana", R.drawable.annie_loading);
+        champions.put("drmundo", R.drawable.annie_loading);
+        champions.put("draven", R.drawable.annie_loading);
+        champions.put("ekko", R.drawable.annie_loading);
+        champions.put("elise", R.drawable.annie_loading);
+        champions.put("evelynn", R.drawable.annie_loading);
+        champions.put("ezreal", R.drawable.annie_loading);
+        champions.put("fiddlesticks", R.drawable.annie_loading);
+        champions.put("fiora", R.drawable.annie_loading);
+        champions.put("fizz", R.drawable.annie_loading);
+        champions.put("galio", R.drawable.annie_loading);
+        champions.put("gangplank", R.drawable.annie_loading);
+        champions.put("garen", R.drawable.annie_loading);
+        champions.put("gnar", R.drawable.annie_loading);
+        champions.put("gragas", R.drawable.annie_loading);
+        champions.put("graves", R.drawable.annie_loading);
+        champions.put("hecarim", R.drawable.annie_loading);
+        champions.put("heimerdinger", R.drawable.annie_loading);
+        champions.put("illaoi", R.drawable.annie_loading);
+        champions.put("irelia", R.drawable.annie_loading);
+        champions.put("ivern", R.drawable.annie_loading);
+        champions.put("janna", R.drawable.annie_loading);
+        champions.put("jarvaniv", R.drawable.annie_loading);
+        champions.put("jax", R.drawable.annie_loading);
+        champions.put("jayce", R.drawable.annie_loading);
+        champions.put("jhin", R.drawable.annie_loading);
+        champions.put("jinx", R.drawable.annie_loading);
+        champions.put("kalista", R.drawable.annie_loading);
+        champions.put("karma", R.drawable.annie_loading);
+        champions.put("karthus", R.drawable.annie_loading);
+        champions.put("kassadin", R.drawable.annie_loading);
+        champions.put("katarina", R.drawable.annie_loading);
+        champions.put("kayn", R.drawable.annie_loading);
+        champions.put("kayle", R.drawable.annie_loading);
+        champions.put("kennen", R.drawable.annie_loading);
+        champions.put("kled", R.drawable.annie_loading);
+        champions.put("kindred", R.drawable.annie_loading);
+        champions.put("khazix", R.drawable.annie_loading);
+        champions.put("kogmaw", R.drawable.annie_loading);
+        champions.put("leblanc", R.drawable.annie_loading);
+        champions.put("lee sin", R.drawable.annie_loading);
+        champions.put("leona", R.drawable.annie_loading);
+        champions.put("lissandra", R.drawable.annie_loading);
+        champions.put("lucian", R.drawable.annie_loading);
+        champions.put("lulu", R.drawable.annie_loading);
+        champions.put("lux", R.drawable.annie_loading);
+        champions.put("malphite", R.drawable.annie_loading);
+        champions.put("malzahar", R.drawable.annie_loading);
+        champions.put("maokai", R.drawable.annie_loading);
+        champions.put("masteryi", R.drawable.annie_loading);
+        champions.put("missfortune", R.drawable.annie_loading);
+        champions.put("mordekaiser", R.drawable.annie_loading);
+        champions.put("morgana", R.drawable.annie_loading);
+        champions.put("nami", R.drawable.annie_loading);
+        champions.put("nasus", R.drawable.annie_loading);
+        champions.put("nautilus", R.drawable.annie_loading);
+        champions.put("nidalee", R.drawable.annie_loading);
+        champions.put("nocturne", R.drawable.annie_loading);
+        champions.put("nunu", R.drawable.annie_loading);
+        champions.put("olaf", R.drawable.annie_loading);
+        champions.put("orianna", R.drawable.annie_loading);
+        champions.put("ornn", R.drawable.annie_loading);
+        champions.put("pantheon", R.drawable.annie_loading);
+        champions.put("poppy", R.drawable.annie_loading);
+        champions.put("quinn", R.drawable.annie_loading);
+        champions.put("rakan", R.drawable.annie_loading);
+        champions.put("rammus", R.drawable.annie_loading);
+        champions.put("reksai", R.drawable.annie_loading);
+        champions.put("renekton", R.drawable.annie_loading);
+        champions.put("rengar", R.drawable.annie_loading);
+        champions.put("riven", R.drawable.annie_loading);
+        champions.put("rumble", R.drawable.annie_loading);
+        champions.put("ryze", R.drawable.annie_loading);
+        champions.put("sejuani", R.drawable.annie_loading);
+        champions.put("shaco", R.drawable.annie_loading);
+        champions.put("shen", R.drawable.annie_loading);
+        champions.put("shyvana", R.drawable.annie_loading);
+        champions.put("singed", R.drawable.annie_loading);
+        champions.put("sion", R.drawable.annie_loading);
+        champions.put("sivir", R.drawable.annie_loading);
+        champions.put("skarner", R.drawable.annie_loading);
+        champions.put("sona", R.drawable.annie_loading);
+        champions.put("soraka", R.drawable.annie_loading);
+        champions.put("swain", R.drawable.annie_loading);
+        champions.put("syndra", R.drawable.annie_loading);
+        champions.put("tahmkench", R.drawable.annie_loading);
+        champions.put("taliyah", R.drawable.annie_loading);
+        champions.put("talon", R.drawable.annie_loading);
+        champions.put("taric", R.drawable.annie_loading);
+        champions.put("teemo", R.drawable.annie_loading);
+        champions.put("thresh", R.drawable.annie_loading);
+        champions.put("tristana", R.drawable.annie_loading);
+        champions.put("trundle", R.drawable.annie_loading);
+        champions.put("tryndamere", R.drawable.annie_loading);
+        champions.put("twistedfate", R.drawable.annie_loading);
+        champions.put("twitch", R.drawable.annie_loading);
+        champions.put("udyr", R.drawable.annie_loading);
+        champions.put("urgot", R.drawable.annie_loading);
+        champions.put("varus", R.drawable.annie_loading);
+        champions.put("vayne", R.drawable.annie_loading);
+        champions.put("veigar", R.drawable.annie_loading);
+        champions.put("velkoz", R.drawable.annie_loading);
+        champions.put("vi", R.drawable.annie_loading);
+        champions.put("viktor", R.drawable.annie_loading);
+        champions.put("vladimir", R.drawable.annie_loading);
+        champions.put("volibear", R.drawable.annie_loading);
+        champions.put("warwick", R.drawable.annie_loading);
+        champions.put("wukong", R.drawable.annie_loading);
+        champions.put("xayah", R.drawable.annie_loading);
+        champions.put("xerath", R.drawable.annie_loading);
+        champions.put("xin zhao", R.drawable.annie_loading);
+        champions.put("yasuo", R.drawable.annie_loading);
+        champions.put("yorick", R.drawable.annie_loading);
+        champions.put("zac", R.drawable.annie_loading);
+        champions.put("zed", R.drawable.annie_loading);
+        champions.put("ziggs", R.drawable.annie_loading);
+        champions.put("zoe", R.drawable.annie_loading);
+        champions.put("zilean", R.drawable.annie_loading);
+        champions.put("zyra", R.drawable.annie_loading);
+    }
+
+    public static int getChampionImage(String champName) {
+        champName = champName.toLowerCase();
+        return champions.get(champName);
+    }
+}

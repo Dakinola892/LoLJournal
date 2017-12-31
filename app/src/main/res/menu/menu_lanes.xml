@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_item_top"
+        android:icon="@mipmap/lol_icon"
+        android:title="@string/top" />
+    <item
+        android:id="@+id/menu_item_jungle"
+        android:icon="@mipmap/lol_icon"
+        android:title="@string/jungle" />
+    <item
+        android:id="@+id/menu_item_mid"
+        android:icon="@mipmap/lol_icon"
+        android:title="@string/mid" />
+    <item
+        android:id="@+id/menu_item_bottom"
+        android:icon="@mipmap/lol_icon"
+        android:title="@string/bottom" />
+    <item
+        android:id="@+id/menu_item_support"
+        android:icon="@mipmap/lol_icon"
+        android:title="@string/support" />
+</menu>
