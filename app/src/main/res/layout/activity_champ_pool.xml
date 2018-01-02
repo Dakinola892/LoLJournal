@@ -14,7 +14,9 @@
             android:id="@+id/tabs_lanes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabMode="fixed">
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/colorAppBackground"
+            app:tabTextAppearance="@style/TabText">
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
@@ -54,7 +56,7 @@
         android:id="@+id/lane_fragments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"></android.support.v4.view.ViewPager>
+        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -63,6 +65,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:clickable="true"
+        android:focusable="true"
         android:src="@android:drawable/ic_input_add" />
 </android.support.design.widget.CoordinatorLayout>
 

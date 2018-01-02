@@ -26,4 +26,12 @@
         <item name="android:colorBackground">@color/colorAppBackground</item>
     </style>
 
+    <style name="ExpandedToolbar" parent="@android:style/TextAppearance.Material.Display1">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">13sp</item>
+    </style>
+
 </resources>
