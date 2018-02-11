@@ -1,75 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <data>
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs_lanes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/colorAppBackground"
-            app:tabTextAppearance="@style/TabText">
+        <variable
+            name="viewmodel"
+            type="com.danielakinola.loljournal.champpool.ChampPoolViewModel" />
+    </data>
 
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/ic_top_lane"
-                android:text="@string/top" />
-
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/ic_jungle"
-                android:text="@string/jungle" />
-
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/ic_mid_lane"
-                android:text="@string/mid" />
-
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/ic_bot_lane"
-                android:text="@string/bottom" />
-
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/ic_support"
-                android:text="@string/support" />
-
-        </android.support.design.widget.TabLayout>
-
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/lane_fragments"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior" />
+        android:background="@{safeUnbox(viewmodel.getEmpty(viewmodel.currentLane)) ? @color/colorEmptyStateBackground : @color/colorAppBackground}">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@android:drawable/ic_input_add" />
-</android.support.design.widget.CoordinatorLayout>
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_bar_height">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:contentScrim="?android:attr/colorPrimary"
+                app:expandedTitleTextAppearance="@style/ExpandedToolbar"
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+                app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
+                app:titleEnabled="false"
+                app:toolbarId="@+id/toolbar">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/img_lane_icon"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="44dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:adjustViewBounds="true"
+                        android:backgroundTint="@android:color/background_dark"
+                        android:backgroundTintMode="src_over"
+                        android:cropToPadding="true"
+                        android:src="@{viewmodel.laneIcon}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.926"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.125"
+                        tools:ignore="ContentDescription"
+                        tools:src="@drawable/ic_top_lane" />
+
+                    <!--TODO: see if scrim helps visibility?-->
+
+                    <TextView
+                        android:id="@+id/text_lane_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginTop="28dp"
+                        android:gravity="center_vertical"
+                        android:text="@{viewmodel.laneTitle}"
+                        app:layout_constraintEnd_toStartOf="@+id/img_lane_icon"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/text_champ_pool_subtitle"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Mid Lane"
+                        tools:textAppearance="@style/TextAppearance.Design.CollapsingToolbar.Expanded" />
+
+                    <!--TODO: make text style for 'Champ Pool Subtitle-->
+                    <TextView
+                        android:id="@+id/text_champ_pool_subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/text_champion_name_title"
+                        android:layout_marginBottom="40dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/title_champ_pool_activity"
+                        android:textAllCaps="false"
+                        android:textStyle="italic"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/img_lane_icon"
+                        app:layout_constraintHorizontal_bias="0.8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/text_lane_title"
+                        app:layout_constraintVertical_bias="0.0"
+                        tools:text="Champ Pool"
+                        tools:textColor="@android:color/white"
+                        tools:textSize="24sp" />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/shape_scrim" />
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?android:attr/actionBarSize"
+                    app:title="@{viewmodel.laneTitle}"
+                    app:titleTextColor="@color/colorAppBackground" />
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:behavior_overlapTop="60dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <android.support.v4.view.PagerTabStrip
+                android:id="@+id/pager_title_strip"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/colorPrimary"
+                app:tabIndicatorColor="@{@color/colorAccent}" />
 
 
+        </android.support.v4.view.ViewPager>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_change_champ_pool"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> viewmodel.editChampPool()}"
+            app:fabSize="normal"
+            app:layout_anchor="@+id/view_pager"
+            app:layout_anchorGravity="bottom|end"
+            app:layout_dodgeInsetEdges="bottom"
+            app:srcCompat="@drawable/ic_add_black_24dp" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>
 
 
 

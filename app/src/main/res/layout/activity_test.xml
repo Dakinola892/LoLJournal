@@ -13,7 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
-            app:contentScrim="?attr/colorPrimary"
             app:expandedTitleTextAppearance="@style/ExpandedToolbar"
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed|exitUntilCollapsed"
             app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
@@ -23,7 +22,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="56dp"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:titleTextColor="@android:color/white" />
@@ -38,6 +37,9 @@
                     android:layout_width="0dp"
                     android:layout_height="180dp"
                     android:layout_weight="1"
+                    android:scaleX="2.0"
+                    android:scaleY="2.0"
+                    android:translationY="90dp"
                     tools:ignore="ContentDescription"
                     tools:src="@drawable/ezreal_loading" />
 
@@ -52,7 +54,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="?android:attr/actionBarSize"
                 android:layout_gravity="bottom"
                 android:background="@drawable/shape_scrim" />
 
@@ -61,9 +63,9 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
             android:layout_gravity="bottom"
-            android:background="?attr/colorPrimary"
+            android:background="@color/colorPrimary"
             app:tabMode="fixed">
 
             <android.support.design.widget.TabItem

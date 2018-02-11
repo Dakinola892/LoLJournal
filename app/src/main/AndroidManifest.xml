@@ -3,12 +3,13 @@
     package="com.danielakinola.loljournal">
 
     <application
+        android:name=".LolJournalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/LolJournalTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,20 +18,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChampPoolActivity"
-            android:label="@string/title_activity_champ_pool"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ChampionSelectActivity" />
-        <activity android:name=".TestActivity" />
+            android:name=".champpool.ChampPoolActivity"
+            android:label="@string/title_activity_champ_pool" />
         <activity
-            android:name=".MatchupsActivity"
+            android:name=".championselect.ChampionSelectActivity"
+            android:label="Edit Heimdinger Top Lane Matchups" />
+        <activity android:name=".old.TestActivity" />
+        <activity
+            android:name=".matchups.MatchupsActivity"
             android:label="@string/title_activity_matchups"
-            android:parentActivityName=".ChampPoolActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName=".champpool.ChampPoolActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.danielakinola.loljournal.ChampPoolActivity" />
+                android:value="com.danielakinola.loljournal.champpool.ChampPoolActivity" />
         </activity>
+        <activity android:name=".matchupdetail.MatchupDetailActivity"></activity>
     </application>
 
 </manifest>

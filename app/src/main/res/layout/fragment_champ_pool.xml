@@ -1,6 +1,51 @@
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" /><!--android:layout_marginBottom="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"-->
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="lane"
+            type="Integer" />
+
+        <variable
+            name="viewmodel"
+            type="com.danielakinola.loljournal.champpool.ChampPoolViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? @color/colorEmptyStateBackground : @color/colorAppBackground}">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/champ_pool_recyler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:visibility="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? View.GONE : View.VISIBLE}"
+            app:champs="@{viewmodel.getChampions(lane)}"
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:spanCount="2"
+            tools:listitem="@layout/item_champion" />
+
+        <include
+            layout="@layout/empty_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? View.VISIBLE : View.GONE}" />
+
+    </FrameLayout>
+
+</layout>
+
+
+
+

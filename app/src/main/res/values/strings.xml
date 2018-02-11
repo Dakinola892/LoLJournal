@@ -96,6 +96,15 @@
     <string name="drawer_close">Drawer Closed</string>
     <string name="no_champs">You have no champs in your %s Champ Pool!</string>
 
+    <string name="champ_pool_edited">%s Champ Pool successfully updated</string>
+    <string name="champion_deleted">Champion successfuly deleted from %s Champ Pool</string>
+    <string name="matchup_updated">%s matchups successfully updated</string>
+    <string name="matchup_deleted">%s successfully deleted from %s Matchups</string>
+    <string name="comment_added">Comment successfully added</string>
+    <string name="comment_deleted">Comment successfully deleted</string>
+    <string name="upvote">You believe you improved in this area!</string>
+    <string name="downvote">You believe you need to improve in this area</string>
+
     <string name="top">Top</string>
     <string name="jungle">Jungle</string>
     <string name="mid">Mid</string>
@@ -103,11 +112,16 @@
     <string name="support">Support</string>
 
     <string-array name="lanes_array">
-        <item>@string/top</item>
+        <item>Top Lane</item>
         <item>@string/jungle</item>
-        <item>@string/mid</item>
-        <item>@string/bottom</item>
+        <item>Mid Lane</item>
+        <item>Bot Lane</item>
         <item>@string/support</item>
     </string-array>
     <string name="title_activity_matchups">MatchupsActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_champ_pool_activity">Champ Pool</string>
+    <string name="champion_favourited">%s favourited!</string>
 </resources>

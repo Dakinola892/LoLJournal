@@ -35,28 +35,41 @@
         app:layout_constraintTop_toBottomOf="@+id/activitytitle">
 
         <Button
-            android:id="@+id/button_jungle"
+            android:id="@+id/btn_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Jungle" />
+            android:text="@string/top" />
 
         <Button
-            android:id="@+id/buttonChampList"
+            android:id="@+id/btn_jungle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ChampList" />
+            android:text="@string/jungle" />
 
         <Button
-            android:id="@+id/button_top"
+            android:id="@+id/btn_mid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Top" />
+            android:text="@string/mid" />
 
         <Button
-            android:id="@+id/button_mid"
+            android:id="@+id/btn_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mid" />
+            android:text="@string/bottom" />
+
+        <Button
+            android:id="@+id/btn_support"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/support" />
+
+        <Button
+            android:id="@+id/btn_champ_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ChampListActivity" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

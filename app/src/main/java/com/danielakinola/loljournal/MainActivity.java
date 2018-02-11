@@ -1,7 +1,14 @@
 package com.danielakinola.loljournal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
+import com.danielakinola.loljournal.championselect.ChampionSelectActivity;
+import com.danielakinola.loljournal.champpool.ChampPoolActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -10,21 +17,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*final SharedPreferences laneSelector = getSharedPreferences("lane_selector", MODE_PRIVATE);
-        String lane = laneSelector.getString("lane", null);
-        checkFilesPresent();
-        if (lane != null) {
-            Intent i = new Intent(MainActivity.this, ChampPoolActivity.class);
-            i.putExtra("lane", lane);
-            startActivity(i);
-        }*/
 
         setContentView(R.layout.activity_test);
 
-        /*Button buttonJungle = findViewById(R.id.button_jungle);
-        Button buttonTop = findViewById(R.id.button_top);
-        Button buttonMid = findViewById(R.id.button_mid);
-        Button buttonChampList = findViewById(R.id.buttonChampList);
+        Button buttonJungle = findViewById(R.id.btn_jungle);
+        Button buttonTop = findViewById(R.id.btn_top);
+        Button buttonMid = findViewById(R.id.btn_mid);
+        Button buttonChampList = findViewById(R.id.btn_champ_list);
 
         View.OnClickListener laneSelectListener = new View.OnClickListener() {
             @Override
@@ -34,10 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent i = new Intent(MainActivity.this, ChampPoolActivity.class);
                 i.putExtra("lane", lane);
-
-                SharedPreferences.Editor editor = laneSelector.edit();
-                editor.putString("lane", lane);
-                editor.apply();
 
                 Log.d("lane", lane);
                 startActivity(i);
@@ -50,35 +45,12 @@ public class MainActivity extends AppCompatActivity {
         buttonChampList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, ChampionListActivity.class));
+                startActivity(new Intent(MainActivity.this, ChampionSelectActivity.class));
             }
         });
 
     }
 
-    public void checkFilesPresent() {
-        String path = getFilesDir() + "/lane_data.json";
-        try {
-            boolean fileCreated = new File(path).createNewFile();
-            if (fileCreated) {
-                FileOutputStream fileOutputStream = openFileOutput("lane_data.json", MODE_PRIVATE);
-                fileOutputStream.write(("" +
-                        "{" +
-                        "top:{}," +
-                        "jungle:{}," +
-                        "mid:{}," +
-                        "bot:{}," +
-                        "support:{}" +
-                        "}").getBytes());
-                fileOutputStream.close();
-            }
-            Log.d("file_created", String.valueOf(fileCreated));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-
-    }
 
 
 }

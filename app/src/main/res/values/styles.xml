@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="@android:style/Theme.Material.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -13,11 +13,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="@android:style/ThemeOverlay.Material.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="@android:style/ThemeOverlay.Material.Light" />
 
-    <style name="LolJournalTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="LolJournalTheme" parent="AppTheme.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:textColorPrimary">@color/text_color_primary</item>
         <item name="android:textColorSecondary">@color/text_color_secondary</item>
@@ -26,11 +26,12 @@
         <item name="android:colorBackground">@color/colorAppBackground</item>
     </style>
 
+
     <style name="ExpandedToolbar" parent="@android:style/TextAppearance.Material.Display1">
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="TabText" parent="TextAppearance.Design.Tab">
+    <style name="TabText" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:textSize">13sp</item>
     </style>
 
