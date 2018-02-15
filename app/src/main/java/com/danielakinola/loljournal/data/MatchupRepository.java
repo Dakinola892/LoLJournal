@@ -59,6 +59,16 @@ public class MatchupRepository implements MatchupDataSource {
         return commentDao.getMatchupCommentsbyCategory(matchupId, WEAKNESSES);
     }
 
+    @Override
+    public List<String> getChampNames(int lane) {
+        return championDao.getChampionNames(lane);
+    }
+
+    @Override
+    public List<String> getMatchupNames(int lane, String playerChampion) {
+        return matchupDao.getMatchupNames(lane, playerChampion);
+    }
+
     public void addChampion(Champion champion) {
         championDao.addChampion(champion);
     }

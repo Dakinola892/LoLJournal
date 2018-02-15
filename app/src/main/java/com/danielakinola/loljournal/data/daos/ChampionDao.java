@@ -21,6 +21,9 @@ public interface ChampionDao {
     @Query("SELECT * FROM ChampPool where lane = :lane AND starred = 1")
     LiveData<List<Champion>> getStarredChampPool(int lane);
 
+    @Query("SELECT name FROM ChampPool WHERE lane = :lane")
+    List<String> getChampionNames(int lane);
+
     @Insert
     void addChampion(Champion... champions);
 

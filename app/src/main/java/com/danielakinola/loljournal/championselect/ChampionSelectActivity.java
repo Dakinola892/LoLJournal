@@ -16,10 +16,11 @@ public class ChampionSelectActivity extends AppCompatActivity {
     public static final int RESULT_EDIT_OK = RESULT_FIRST_USER + 1;
 
     private final int LANE = getIntent().getIntExtra(ChampPoolActivity.LANE, 0);
-    private final ChampionListAdapter championListAdapter = new ChampionListAdapter();
+    private ChampionSelectViewModel championSelectViewModel = ViewModelProviders.of(this).get(ChampionSelectViewModel.class);
+    private final ChampionListAdapter championListAdapter = new ChampionListAdapter(championSelectViewModel);
     private final String PLAYER_CHAMPION_ID = getIntent().getStringExtra(ChampPoolActivity.PLAYER_CHAMPION_ID);
 
-    private ChampionSelectViewModel championSelectViewModel = ViewModelProviders.of(this).get(ChampionSelectViewModel.class);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,8 @@ public class ChampionSelectActivity extends AppCompatActivity {
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new GridLayoutManager(ChampionSelectActivity.this, 3));
         recyclerView.setAdapter(championListAdapter);
+
+        championSelectViewModel.getCurrentlySelectedChampions().observe(this, championListAdapter::setCurrentlySelectedChampions);
 
     }
 

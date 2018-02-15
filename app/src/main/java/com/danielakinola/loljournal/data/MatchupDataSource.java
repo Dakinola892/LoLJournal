@@ -25,6 +25,10 @@ public interface MatchupDataSource {
 
     LiveData<List<Comment>> getWeaknesses(int matchupId);
 
+    List<String> getChampNames(int lane);
+
+    List<String> getMatchupNames(int lane, String playerChampion);
+
     void addChampion(Champion champion);
 
     void addMatchup(Matchup... matchup);
