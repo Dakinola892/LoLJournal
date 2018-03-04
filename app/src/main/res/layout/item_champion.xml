@@ -25,6 +25,7 @@
         android:onClick="@{() -> listener.onChampionClicked(champion)}"
         app:cardCornerRadius="4dp"
         app:cardElevation="4dp"
+        android:layout_margin="8dp"
         app:cardMaxElevation="6dp">
 
         <RelativeLayout

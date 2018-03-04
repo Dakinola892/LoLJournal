@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.danielakinola.loljournal.editcomment.EditCommentViewModel" />
+    </data>
+
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".editcomment.EditCommentActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <EditText
+                android:id="@+id/edit_text_comment_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_comment_title"
+                android:inputType="text"
+                android:text="@={viewmodel.getComment().title}" />
+
+            <EditText
+                android:id="@+id/edit_text_comment_detail"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fadeScrollbars="true"
+                android:gravity="top"
+                android:hint="@string/hint_comment_detail"
+                android:inputType="textMultiLine"
+                android:scrollIndicators="end"
+                android:text="@={viewmodel.getComment().description}" />
+
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_confirm_comment_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:layout_gravity="bottom|end"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_done_white_24dp"
+            app:fabSize="normal" />
+
+    </FrameLayout>
+
+</layout>

@@ -74,7 +74,7 @@ public class MatchupsViewModel extends AndroidViewModel {
     }
 
     public void updateFavourited(Matchup matchup) {
-        matchupRepository.changeMatchupStarred(matchup.getId(), !matchup.isStarred());
+        matchupRepository.changeMatchupStarred(matchup.getId());
     }
 
     public void deleteMatchup(Matchup matchup) {

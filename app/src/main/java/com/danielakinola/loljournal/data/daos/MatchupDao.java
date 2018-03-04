@@ -25,8 +25,8 @@ public interface MatchupDao {
     @Query("SELECT enemy_champion FROM Matchups WHERE lane = :lane AND player_champion = :playerChampion")
     List<String> getMatchupNames(int lane, String playerChampion);
 
-    @Query("UPDATE Matchups SET starred = :starred WHERE matchup_id = :matchupId")
-    void updateMatchupStarred(String matchupId, boolean starred);
+    @Query("UPDATE Matchups SET starred = (NOT starred) WHERE matchup_id = :matchupId")
+    void updateMatchupStarred(String matchupId);
 
     @Query("DELETE FROM Matchups WHERE player_champion = :playerChampion")
     void deleteChampionMatchups(String playerChampion);

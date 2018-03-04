@@ -9,38 +9,38 @@
         <import type="android.view.View" />
 
         <variable
-            name="lane"
+            name="category"
             type="Integer" />
 
         <variable
             name="viewmodel"
-            type="com.danielakinola.loljournal.champpool.ChampPoolViewModel" />
+            type="com.danielakinola.loljournal.matchupdetail.MatchupDetailViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? @color/colorEmptyStateBackground : @color/colorAppBackground}">
-
+        android:layout_height="match_parent">
+        <!--android:background="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? @color/colorEmptyStateBackground : @color/colorAppBackground}">
+-->
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/champ_pool_recyler_view"
+            android:id="@+id/comment_recyler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingEnd="16dp"
             android:paddingStart="16dp"
-            android:visibility="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? View.GONE : View.VISIBLE}"
-            app:champs="@{viewmodel.getChampions(safeUnbox(lane))}"
-            app:layoutManager="android.support.v7.widget.GridLayoutManager"
+            app:comments="@{viewmodel.getComments(safeUnbox(category))}"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:spanCount="2"
-            tools:listitem="@layout/item_champion" />
+            tools:listitem="@layout/item_comment" />
+        <!--android:visibility="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? View.GONE : View.VISIBLE}" />-->
 
         <include
             layout="@layout/empty_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? View.VISIBLE : View.GONE}" />
+            android:visibility="gone" />
+        <!--android:visibility="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? View.VISIBLE : View.GONE}" />-->
 
     </FrameLayout>
 

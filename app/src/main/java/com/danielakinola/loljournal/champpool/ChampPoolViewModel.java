@@ -163,8 +163,9 @@ public class ChampPoolViewModel extends AndroidViewModel {
     }
 
     //TODO: RxJava-ify for thread safety
+    //TODO: CHANGE SO ONLY NEED ID
     private void update(Champion champion) {
-        Completable.fromAction(() -> matchupRepository.setChampionStarred(champion.getId(), !champion.isStarred()))
+        Completable.fromAction(() -> matchupRepository.setChampionStarred(champion.getId()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> {

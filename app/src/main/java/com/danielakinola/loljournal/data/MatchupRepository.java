@@ -69,7 +69,7 @@ public class MatchupRepository implements MatchupDataSource {
         return matchupDao.getMatchupNames(lane, playerChampion);
     }
 
-    public void addChampion(Champion champion) {
+    public void addChampion(Champion... champion) {
         championDao.addChampion(champion);
     }
 
@@ -77,7 +77,7 @@ public class MatchupRepository implements MatchupDataSource {
         matchupDao.addMatchup(matchup);
     }
 
-    public void addComment(Comment comment) {
+    public void addComment(Comment... comment) {
         commentDao.addComment(comment);
     }
 
@@ -85,16 +85,16 @@ public class MatchupRepository implements MatchupDataSource {
         commentDao.updateComment(comment);
     }
 
-    public void setChampionStarred(String id, boolean starred) {
-        championDao.updateChampion(id, starred);
+    public void setChampionStarred(String id) {
+        championDao.updateChampionStarred(id);
     }
 
-    public void changeMatchupStarred(String matchupId, boolean starred) {
-        matchupDao.updateMatchupStarred(matchupId, starred);
+    public void changeMatchupStarred(String matchupId) {
+        matchupDao.updateMatchupStarred(matchupId);
     }
 
-    public void setCommentStarred(int commentId, boolean starred) {
-        commentDao.updateStarred(commentId, starred);
+    public void setCommentStarred(int commentId) {
+        commentDao.updateStarred(commentId);
     }
 
     public void deleteChampion(Champion champion) {

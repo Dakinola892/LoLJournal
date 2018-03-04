@@ -32,7 +32,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.danielakinola.loljournal.champpool.ChampPoolActivity" />
         </activity>
-        <activity android:name=".matchupdetail.MatchupDetailActivity"></activity>
+        <activity android:name=".matchupdetail.MatchupDetailActivity" />
+        <activity android:name=".editcomment.EditCommentActivity" />
+        <activity android:name=".commentdetail.CommentDetailActivity"></activity>
     </application>
 
 </manifest>

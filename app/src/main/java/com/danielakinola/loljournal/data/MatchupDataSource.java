@@ -29,19 +29,19 @@ public interface MatchupDataSource {
 
     List<String> getMatchupNames(int lane, String playerChampion);
 
-    void addChampion(Champion champion);
+    void addChampion(Champion... champion);
 
     void addMatchup(Matchup... matchup);
 
-    void addComment(Comment comment);
+    void addComment(Comment... comment);
 
     void saveComment(Comment comment);
 
-    void setChampionStarred(String id, boolean starred);
+    void setChampionStarred(String id);
 
-    void changeMatchupStarred(String matchupId, boolean starred);
+    void changeMatchupStarred(String matchupId);
 
-    void setCommentStarred(int commentId, boolean starred);
+    void setCommentStarred(int commentId);
 
     void deleteChampion(Champion champion);
 

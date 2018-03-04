@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.databinding.FragmentChampPoolBinding;
 
+import java.util.Objects;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -50,12 +52,16 @@ public class ChampPoolFragment extends Fragment {
         fragmentChampPoolBinding.setViewmodel(champPoolViewModel);
         fragmentChampPoolBinding.setLane(lane);
 
-        RecyclerView recyclerView = getActivity().findViewById(R.id.champ_pool_recyler_view);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2); //TODO: Dagger this
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setAdapter(championAdapter);
+        setupRecyclerView();
 
         return rootView;
+    }
+
+    private void setupRecyclerView() {
+        RecyclerView recyclerView = Objects.requireNonNull(getActivity()).findViewById(R.id.champ_pool_recyler_view);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2); //TODO: Dagger this or XML this?
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(championAdapter);
     }
 
 }

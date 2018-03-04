@@ -18,10 +18,15 @@ import java.util.List;
  * Created by dakin on 27/12/2017.
  */
 
-public class ChampionListAdapter extends RecyclerView.Adapter<ChampionListAdapter.ChampionViewHolder> {
+public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final int INACTIVE = 0;
+    private static final int ACTIVE = 1;
 
     private final ChampionSelectViewModel championSelectViewModel;
     private final ArrayList<String> initallySelectedChampions;
+    private ArrayList<String> currentlySelectedChampions = new ArrayList<>();
+
     private final String[] champNames = {"Aatrox", "Ahri", "Akali", "Alistar", "Amumu", "Anivia", "Annie", "Ashe",
             "AurelionSol", "Azir", "Bard", "Blitzcrank", "Brand", "Braum", "Caitlyn", "Camille",
             "Cassiopeia", "Cho'Gath", "Corki", "Darius", "Diana", "DrMundo", "Draven", "Ekko", "Elise",
@@ -38,6 +43,7 @@ public class ChampionListAdapter extends RecyclerView.Adapter<ChampionListAdapte
             "Tryndamere", "TwistedFate", "Twitch", "Udyr", "Urgot", "Varus", "Vayne", "Veigar",
             "Vel'Koz", "Vi", "Viktor", "Vladimir", "Volibear", "Warwick", "Wukong", "Xayah", "Xerath",
             "Xin Zhao", "Yasuo", "Yorick", "Zac", "Zed", "Ziggs", "Zoe", "Zilean", "Zyra"};
+
     final private int[] championSquares = {
             R.drawable.aatrox_square_0, R.drawable.ahri_square_0, R.drawable.akali_square_0,
             R.drawable.alistar_square_0, R.drawable.amumu_square_0, R.drawable.anivia_square_0,
@@ -86,7 +92,7 @@ public class ChampionListAdapter extends RecyclerView.Adapter<ChampionListAdapte
             R.drawable.xinzhao_square_0, R.drawable.yasuo_square_0, R.drawable.yorick_square_0,
             R.drawable.zac_square_0, R.drawable.zed_square_0, R.drawable.ziggs_square_0,
             R.drawable.zoe_square_0, R.drawable.zilean_square_0, R.drawable.zyra_square_0};
-    private ArrayList<String> currentlySelectedChampions = new ArrayList<>();
+
 
 
     ChampionListAdapter(ChampionSelectViewModel championSelectViewModel) {
@@ -95,29 +101,50 @@ public class ChampionListAdapter extends RecyclerView.Adapter<ChampionListAdapte
     }
 
     @Override
-    public ChampionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_champion_list, parent, false);
-        ChampionViewHolder holder = new ChampionViewHolder(rootView);
-
-        if (initallySelectedChampions.contains(champNames[holder.getAdapterPosition()])) {
-            holder.itemView.setOnClickListener(v ->
-                    championSelectViewModel.onViewHolderClick(champNames[holder.getAdapterPosition()]));
+    public int getItemViewType(int position) {
+        if (initallySelectedChampions.contains(champNames[position])) {
+            return INACTIVE;
         } else {
-            holder.active = false;
+            return ACTIVE;
         }
-
-        return holder;
     }
 
     @Override
-    public void onBindViewHolder(ChampionViewHolder holder, int position) {
-        holder.textView.setText(champNames[position]);
-        holder.imageView.setImageResource(championSquares[position]);
-        if (!holder.active) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_champion_list, parent, false);
+        if (viewType == ACTIVE) {
+            ActiveChampionViewHolder holder = new ActiveChampionViewHolder(rootView);
+            holder.itemView.setOnClickListener(v ->
+                    championSelectViewModel.onViewHolderClick(champNames[holder.getAdapterPosition()]));
+            return holder;
+        } else {
+            InactiveChampionViewHolder holder = new InactiveChampionViewHolder(rootView);
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);  //set to grayscale
             holder.imageView.setColorFilter(new ColorMatrixColorFilter(matrix));
+            //holder.imageView.setImageAlpha(128);
+            return holder;
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        final String champName = champNames[position];
+        final int championSquare = championSquares[position];
+        if (viewHolder.getItemViewType() == INACTIVE) {
+            InactiveChampionViewHolder holder = (InactiveChampionViewHolder) viewHolder;
+            holder.textView.setText(champName);
+            holder.imageView.setImageResource(championSquare);
             holder.imageView.setImageAlpha(128);
+        } else {
+            ActiveChampionViewHolder holder = (ActiveChampionViewHolder) viewHolder;
+            holder.textView.setText(champName);
+            holder.imageView.setImageResource(championSquare);
+            if (currentlySelectedChampions.contains(champName)) {
+                holder.selectorImageView.setVisibility(View.VISIBLE);
+            } else {
+                holder.selectorImageView.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -130,15 +157,13 @@ public class ChampionListAdapter extends RecyclerView.Adapter<ChampionListAdapte
         this.currentlySelectedChampions = (ArrayList<String>) currentlySelectedChampions;
     }
 
-    class ChampionViewHolder extends RecyclerView.ViewHolder {
+    class ActiveChampionViewHolder extends RecyclerView.ViewHolder {
 
         final ImageView imageView;
         final TextView textView;
         final ImageView selectorImageView;
-        boolean active = true;
-        boolean selected = false;
 
-        ChampionViewHolder(View itemView) {
+        ActiveChampionViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.img_champion_portrait);
             textView = itemView.findViewById(R.id.text_champion_name);
@@ -146,5 +171,20 @@ public class ChampionListAdapter extends RecyclerView.Adapter<ChampionListAdapte
         }
 
     }
+
+    class InactiveChampionViewHolder extends RecyclerView.ViewHolder {
+
+        final ImageView imageView;
+        final TextView textView;
+
+        InactiveChampionViewHolder(View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.img_champion_portrait);
+            textView = itemView.findViewById(R.id.text_champion_name);
+        }
+
+    }
+
+
 }
 

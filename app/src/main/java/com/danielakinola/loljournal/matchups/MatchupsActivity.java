@@ -1,5 +1,6 @@
 package com.danielakinola.loljournal.matchups;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,7 +15,7 @@ public class MatchupsActivity extends AppCompatActivity {
 
     public static final int REQUEST_EDIT_MATCHUPS = RESULT_OK + 2;
     public static final String MATCHUP_ID = "MATCHUP_ID";
-    private MatchupsViewModel matchupsViewModel;
+    private MatchupsViewModel matchupsViewModel = ViewModelProviders.of(this).get(MatchupsViewModel.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class MatchupsActivity extends AppCompatActivity {
     private void openMatchupSelect(String championId) {
         Intent intent = new Intent(this, ChampionSelectActivity.class);
         intent.putExtra(ChampPoolActivity.PLAYER_CHAMPION_ID, championId);
+        intent.putExtra("REQUEST", REQUEST_EDIT_MATCHUPS);
         startActivityForResult(intent, REQUEST_EDIT_MATCHUPS);
     }
 

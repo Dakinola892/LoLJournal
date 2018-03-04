@@ -30,6 +30,6 @@ public interface ChampionDao {
     @Delete
     void deleteChampion(Champion champion);
 
-    @Query("UPDATE ChampPool SET starred = :starred WHERE id = :id")
-    void updateChampion(String id, boolean starred);
+    @Query("UPDATE ChampPool SET starred = (NOT starred) WHERE id = :id")
+    void updateChampionStarred(String id);
 }

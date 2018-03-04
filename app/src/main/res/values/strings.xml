@@ -102,6 +102,7 @@
     <string name="matchup_deleted">%s successfully deleted from %s Matchups</string>
     <string name="comment_added">Comment successfully added</string>
     <string name="comment_deleted">Comment successfully deleted</string>
+    <string name="comment_plus_1">Comment successfully +1'ed</string>
     <string name="upvote">You believe you improved in this area!</string>
     <string name="downvote">You believe you need to improve in this area</string>
 
@@ -124,4 +125,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_champ_pool_activity">Champ Pool</string>
     <string name="champion_favourited">%s favourited!</string>
+    <string name="strengths">Strengths</string>
+    <string name="general">General</string>
+    <string name="weaknesses">Weaknesses</string>
+    <string name="hint_comment_title">Add a quick summary of your comment here!</string>
+    <string name="hint_comment_detail">(Optional) Add a longer more detailed description of your comment here.</string>
 </resources>

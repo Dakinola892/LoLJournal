@@ -109,6 +109,7 @@ public class ChampPoolActivity extends AppCompatActivity implements HasFragmentI
     public void openChampionSelect() {
         Intent intent = new Intent(this, ChampionSelectActivity.class);
         intent.putExtra(LANE, lane);
+        intent.putExtra("REQUEST", REQUEST_EDIT_CHAMP_POOL);
         startActivityForResult(intent, REQUEST_EDIT_CHAMP_POOL);
     }
 
