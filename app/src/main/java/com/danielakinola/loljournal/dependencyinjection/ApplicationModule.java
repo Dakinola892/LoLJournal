@@ -58,4 +58,6 @@ public class ApplicationModule {
     ChampionReference providesChampionReference() {
         return new ChampionReference();
     }
+
+
 }

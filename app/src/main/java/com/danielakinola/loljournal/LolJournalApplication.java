@@ -11,7 +11,6 @@ import dagger.android.DaggerApplication;
 
 public class LolJournalApplication extends DaggerApplication {
 
-
     //Android Injector that injects Application with ApplicationComponent to get Application-level dependencies
     @Override
     protected AndroidInjector<? extends DaggerApplication> applicationInjector() {

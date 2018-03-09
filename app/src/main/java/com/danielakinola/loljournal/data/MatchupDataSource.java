@@ -49,4 +49,5 @@ public interface MatchupDataSource {
 
     void deleteComment(Comment comment);
 
+    void updateComment(Comment comment);
 }

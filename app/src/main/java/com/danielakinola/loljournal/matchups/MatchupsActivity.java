@@ -37,7 +37,7 @@ public class MatchupsActivity extends AppCompatActivity {
     private void openMatchupSelect(String championId) {
         Intent intent = new Intent(this, ChampionSelectActivity.class);
         intent.putExtra(ChampPoolActivity.PLAYER_CHAMPION_ID, championId);
-        intent.putExtra("REQUEST", REQUEST_EDIT_MATCHUPS);
+        intent.putExtra(getString(R.string.request_code), REQUEST_EDIT_MATCHUPS);
         startActivityForResult(intent, REQUEST_EDIT_MATCHUPS);
     }
 

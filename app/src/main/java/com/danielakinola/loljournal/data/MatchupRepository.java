@@ -109,4 +109,9 @@ public class MatchupRepository implements MatchupDataSource {
         commentDao.deleteComment(comment);
     }
 
+    @Override
+    public void updateComment(Comment comment) {
+        commentDao.updateComment(comment);
+    }
+
 }

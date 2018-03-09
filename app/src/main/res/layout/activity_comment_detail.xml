@@ -1,8 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".commentdetail.CommentDetailActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-</android.support.constraint.ConstraintLayout>
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.danielakinola.loljournal.commentdetail.CommentDetailViewModel" />
+
+    </data>
+
+
+    <FrameLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/frame_comment_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:theme="@style/LolJournalTheme"
+            tools:context=".commentdetail.CommentDetailActivity">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_comment_detail"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:background="?android:attr/colorPrimary"
+                android:minHeight="?android:attr/actionBarSize"
+                android:theme="@style/LolJournalTheme" />
+
+            <TextView
+                android:id="@+id/text_comment_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@{viewmodel.comment.title}"
+                tools:text="Watch for Taliyah Roams"
+                tools:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/text_comment_detail"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:scrollbars="vertical"
+                android:text="@{viewmodel.comment.description}"
+                tools:text="@string/large_text" />
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_edit_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="bottom|end"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@android:drawable/ic_menu_edit"
+            app:fabSize="normal" />
+
+    </FrameLayout>
+</layout>

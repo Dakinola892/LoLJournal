@@ -19,7 +19,7 @@ public class MatchupDetailActivity extends AppCompatActivity {
 
     public static final String CATEGORY = "CATEGORY";
     public static final String COMMENT_ID = "COMMENT_ID";
-    public static final int REQUEST_ADD_COMMENT = RESULT_FIRST_USER + 4;
+    public static final int REQUEST_ADD_COMMENT = RESULT_FIRST_USER + 3;
     private MatchupDetailViewModel matchupDetailViewModel;
 
     @Override
@@ -42,7 +42,8 @@ public class MatchupDetailActivity extends AppCompatActivity {
 
     private void addNewComment(int category) {
         Intent intent = new Intent(this, EditCommentActivity.class);
-        intent.putExtra("CATEGORY", category);
+        intent.putExtra(CATEGORY, category);
+        intent.putExtra(getString(R.string.request_code), REQUEST_ADD_COMMENT);
         startActivityForResult(intent, REQUEST_ADD_COMMENT);
     }
 

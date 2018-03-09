@@ -95,6 +95,7 @@
     <string name="drawer_open">Drawer Open</string>
     <string name="drawer_close">Drawer Closed</string>
     <string name="no_champs">You have no champs in your %s Champ Pool!</string>
+    <string name="request_code">REQUEST_CODE</string>
 
     <string name="champ_pool_edited">%s Champ Pool successfully updated</string>
     <string name="champion_deleted">Champion successfuly deleted from %s Champ Pool</string>
@@ -102,7 +103,7 @@
     <string name="matchup_deleted">%s successfully deleted from %s Matchups</string>
     <string name="comment_added">Comment successfully added</string>
     <string name="comment_deleted">Comment successfully deleted</string>
-    <string name="comment_plus_1">Comment successfully +1'ed</string>
+    <string name="comment_plus_1">Comment successfully +1\'ed</string>
     <string name="upvote">You believe you improved in this area!</string>
     <string name="downvote">You believe you need to improve in this area</string>
 
@@ -130,4 +131,5 @@
     <string name="weaknesses">Weaknesses</string>
     <string name="hint_comment_title">Add a quick summary of your comment here!</string>
     <string name="hint_comment_detail">(Optional) Add a longer more detailed description of your comment here.</string>
+    <string name="comment_edited">Comment successfully edited</string>
 </resources>

@@ -61,8 +61,8 @@ public class ChampPoolActivity extends AppCompatActivity implements HasFragmentI
         champPoolViewModel.getCurrentLane().observe(this, integer -> integer = lane);
         champPoolViewModel.getEditChampPoolEvent().observe(this, aVoid -> openChampionSelect());
         champPoolViewModel.getChampionDetailEvent().observe(this, this::openChosenChampion);
-        champPoolViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId -> {
-            SnackbarUtils.showSnackbar(findViewById(R.id.coordinator_layout), getString(snackbarMessageResourceId, lane));
+        champPoolViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) laneString -> {
+            SnackbarUtils.showSnackbar(findViewById(R.id.coordinator_layout), getString(R.string.champ_pool_edited, getString(laneString)));
         });
 
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -109,14 +109,14 @@ public class ChampPoolActivity extends AppCompatActivity implements HasFragmentI
     public void openChampionSelect() {
         Intent intent = new Intent(this, ChampionSelectActivity.class);
         intent.putExtra(LANE, lane);
-        intent.putExtra("REQUEST", REQUEST_EDIT_CHAMP_POOL);
+        intent.putExtra(getString(R.string.request_code), REQUEST_EDIT_CHAMP_POOL);
         startActivityForResult(intent, REQUEST_EDIT_CHAMP_POOL);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_EDIT_CHAMP_POOL && resultCode == ChampionSelectActivity.RESULT_EDIT_OK) {
-            champPoolViewModel.handleActivityResult(requestCode, resultCode);
+        if (requestCode == REQUEST_EDIT_CHAMP_POOL && resultCode == RESULT_OK) {
+            champPoolViewModel.onChampPoolEdit();
         }
     }
 

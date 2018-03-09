@@ -11,10 +11,8 @@ import android.support.annotation.NonNull;
 import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.SingleLiveEvent;
 import com.danielakinola.loljournal.SnackbarMessage;
-import com.danielakinola.loljournal.championselect.ChampionSelectActivity;
 import com.danielakinola.loljournal.data.MatchupRepository;
 import com.danielakinola.loljournal.data.models.Champion;
-import com.danielakinola.loljournal.matchups.MatchupsActivity;
 
 import java.util.List;
 
@@ -45,7 +43,6 @@ public class ChampPoolViewModel extends AndroidViewModel {
 
     private LiveData<List<Champion>>[] champions = new LiveData[5];
     private LiveData<Boolean>[] empty = new LiveData[5];
-
 
     private SnackbarMessage snackbarMessage = new SnackbarMessage();
     private SingleLiveEvent<Void> editChampPoolEvent = new SingleLiveEvent<>();
@@ -78,20 +75,7 @@ public class ChampPoolViewModel extends AndroidViewModel {
         });
 
         this.laneIcon = Transformations.map(this.currentLane, newLane -> {
-            switch (newLane) {
-                case TOP_LANE:
-                    return R.drawable.ic_top_lane;
-                case JUNGLE:
-                    return R.drawable.ic_jungle;
-                case MID_LANE:
-                    return R.drawable.ic_mid_lane;
-                case BOT_LANE:
-                    return R.drawable.ic_bot_lane;
-                case SUPPORT:
-                    return R.drawable.ic_support;
-                default:
-                    return R.drawable.ic_top_lane;
-            }
+            return context.getResources().getIntArray(R.array.lane_icons)[newLane];
         });
 
         for (int i = 0; i < empty.length; i++) {
@@ -152,14 +136,9 @@ public class ChampPoolViewModel extends AndroidViewModel {
         update(champion);
     }
 
-    public void handleActivityResult(int requestCode, int resultCode) {
-        if (requestCode == ChampPoolActivity.REQUEST_EDIT_CHAMP_POOL && resultCode == ChampionSelectActivity.RESULT_EDIT_OK) {
-            showSnackbarMessage(R.string.champ_pool_edited);
-        }
-
-        if (requestCode == MatchupsActivity.REQUEST_EDIT_MATCHUPS && resultCode == ChampionSelectActivity.RESULT_EDIT_OK) {
-            showSnackbarMessage(R.string.matchup_updated);
-        }
+    //TODO: fix because it isn't an int array its a string array
+    public void onChampPoolEdit() {
+        showSnackbarMessage(getApplication().getResources().getIntArray(R.array.lanes_array)[currentLane.getValue()]);
     }
 
     //TODO: RxJava-ify for thread safety

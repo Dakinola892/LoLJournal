@@ -14,15 +14,11 @@ import com.danielakinola.loljournal.champpool.ChampPoolActivity;
 //TODO: FINALIZE VIEWMODELS if possible
 
 public class ChampionSelectActivity extends AppCompatActivity {
-    public static final String REQUEST_CODE = "REQUEST_CODE";
-    public static final int RESULT_EDIT_OK = RESULT_FIRST_USER + 1;
 
     private final int LANE = getIntent().getIntExtra(ChampPoolActivity.LANE, 0);
     private ChampionSelectViewModel championSelectViewModel = ViewModelProviders.of(this).get(ChampionSelectViewModel.class);
     private final ChampionListAdapter championListAdapter = new ChampionListAdapter(championSelectViewModel);
     private final String PLAYER_CHAMPION_ID = getIntent().getStringExtra(ChampPoolActivity.PLAYER_CHAMPION_ID);
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +38,8 @@ public class ChampionSelectActivity extends AppCompatActivity {
         //TODO: See if referenceing static int in actvity causes leak
 
         championSelectViewModel.getNavigateBackToPreviousActivityEvent()
-                .observe(this, aVoid -> finishActivity(getIntent()
-                        .getIntExtra(REQUEST_CODE, -1)));
+                .observe(this, aVoid -> navigateBack(getIntent()
+                        .getIntExtra(getString(R.string.request_code), -1)));
 
         FloatingActionButton fab = findViewById(R.id.fab_confirm_selection);
         fab.setOnClickListener(v -> championSelectViewModel.applyChampionSelection());
@@ -59,8 +55,8 @@ public class ChampionSelectActivity extends AppCompatActivity {
         toolbar.setLogo(championSelectViewModel.getLANE_ICON());
     }
 
-    @Override
-    public void finishActivity(int requestCode) {
-        super.finishActivity(requestCode);
+    public void navigateBack(int requestCode) {
+        setResult(RESULT_OK);
+        finish();
     }
 }

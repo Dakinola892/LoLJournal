@@ -19,6 +19,7 @@ public interface ApplicationComponent extends AndroidInjector<DaggerApplication>
 
     @Component.Builder
     interface Builder {
+
         @BindsInstance
         Builder application(Application application); //adds instance of application to ApplicationComponent and Children
 
