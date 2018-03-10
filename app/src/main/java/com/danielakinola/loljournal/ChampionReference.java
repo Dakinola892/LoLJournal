@@ -6,7 +6,7 @@ import java.util.HashMap;
  * Created by Guest on 28/12/2017.
  */
 
-//TODO: change to Bill Pugh Singleton
+//TODO: change to do add Kaisa
 public class ChampionReference {
     public final static HashMap<String, Integer> champions = new HashMap<>();
 

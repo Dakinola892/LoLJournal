@@ -1,26 +1,34 @@
 package com.danielakinola.loljournal.editcomment;
 
-import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.support.annotation.NonNull;
+import android.arch.lifecycle.ViewModel;
 
 import com.danielakinola.loljournal.SingleLiveEvent;
 import com.danielakinola.loljournal.data.MatchupRepository;
 import com.danielakinola.loljournal.data.models.Comment;
-import com.danielakinola.loljournal.matchupdetail.MatchupDetailActivity;
 
-public class EditCommentViewModel extends AndroidViewModel {
+import javax.inject.Inject;
+import javax.inject.Named;
+
+public class EditCommentViewModel extends ViewModel {
+
     private final MatchupRepository matchupRepository;
-    private final int REQUEST_CODE;
-    //private String CommentId;
     private SingleLiveEvent<Void> confirmationEvent = new SingleLiveEvent<>();
-    private Comment editableComment;
+    private final Comment editableComment;
+    private final boolean NEW_COMMENT;
 
 
-    public EditCommentViewModel(@NonNull Application application, MatchupRepository matchupRepository, int commentId, int requestCode) {
-        super(application);
+    @Inject
+    public EditCommentViewModel(MatchupRepository matchupRepository, @Named("editCommentId") int commentId) {
         this.matchupRepository = matchupRepository;
-        this.REQUEST_CODE = requestCode;
+        this.editableComment = matchupRepository.getComment(commentId).getValue();
+        this.NEW_COMMENT = false;
+    }
+
+    @Inject
+    public EditCommentViewModel(MatchupRepository matchupRepository, @Named("newCommentMatchupId") String matchupId, @Named("category") int category) {
+        this.matchupRepository = matchupRepository;
+        this.editableComment = new Comment(matchupId, category);
+        this.NEW_COMMENT = true;
     }
 
     public Comment getComment() {
@@ -37,7 +45,7 @@ public class EditCommentViewModel extends AndroidViewModel {
     }
 
     private void saveComment() {
-        if (REQUEST_CODE == MatchupDetailActivity.REQUEST_ADD_COMMENT) {
+        if (NEW_COMMENT) {
             matchupRepository.saveComment(editableComment);
         } else {
             matchupRepository.updateComment(editableComment);

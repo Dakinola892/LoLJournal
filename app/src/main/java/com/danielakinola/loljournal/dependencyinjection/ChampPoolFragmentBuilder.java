@@ -6,7 +6,7 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
 @Module
-public abstract class FragmentBuilder {
+public abstract class ChampPoolFragmentBuilder {
     @ContributesAndroidInjector
-    abstract ChampPoolFragment champPoolFragment();
+    abstract ChampPoolFragment contributeChampPoolFragment();
 }

@@ -82,7 +82,7 @@
                         android:id="@+id/text_champ_pool_subtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/text_champion_name_title"
+                        android:layout_below="@id/text_lane_title"
                         android:layout_marginBottom="40dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
@@ -123,6 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            app:currentItem="@={viewmodel.currentLane}"
             app:behavior_overlapTop="60dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 

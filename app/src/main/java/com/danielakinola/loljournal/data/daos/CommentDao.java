@@ -21,7 +21,7 @@ public interface CommentDao {
     LiveData<List<Comment>> getMatchupComments(int matchupId);
 
     @Query("SELECT * FROM Comments WHERE matchup_id = :matchupId AND category = :category")
-    LiveData<List<Comment>> getMatchupCommentsbyCategory(int matchupId, int category);
+    LiveData<List<Comment>> getMatchupCommentsByCategory(String matchupId, int category);
 
     @Query("UPDATE Comments SET starred = (NOT starred) WHERE  comment_id = :commentId")
     void updateStarred(int commentId);

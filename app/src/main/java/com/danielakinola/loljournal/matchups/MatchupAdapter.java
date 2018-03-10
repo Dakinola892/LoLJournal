@@ -26,7 +26,7 @@ public class MatchupAdapter extends RecyclerView.Adapter<MatchupAdapter.MatchupV
         itemMatchupChampionBinding.setListener(new MatchupItemActionListener() {
             @Override
             public void onMatchupClicked(Matchup matchup) {
-                matchupsViewModel.getOpenMatchupDetailEvent().setValue(matchup.getId());
+                matchupsViewModel.navigateToMatchupDetail(matchup.getId());
             }
 
             @Override

@@ -1,6 +1,5 @@
 package com.danielakinola.loljournal.champpool;
 
-import android.app.Fragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -21,60 +19,63 @@ import com.danielakinola.loljournal.databinding.ActivityChampPoolBinding;
 import com.danielakinola.loljournal.matchups.MatchupsActivity;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import dagger.android.AndroidInjection;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasFragmentInjector;
+import dagger.android.support.DaggerAppCompatActivity;
 
 //TODO: Support fragments for Dagger
-public class ChampPoolActivity extends AppCompatActivity implements HasFragmentInjector {
+public class ChampPoolActivity extends DaggerAppCompatActivity {
 
     public static final int REQUEST_EDIT_CHAMP_POOL = RESULT_FIRST_USER + 1;
-    public static final String LANE = "LANE";
     public static final String PLAYER_CHAMPION_ID = "PLAYER_CHAMPION_ID";
-    public final String[] lanes = getResources().getStringArray(R.array.lanes_array);
-
     @Inject
-    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
+    @Named("laneTitles")
+    public String[] lanes;
 
     @Inject
     ViewModelFactory viewModelFactory;
 
-    private LanePagerAdapter lanePagerAdapter = new LanePagerAdapter(getSupportFragmentManager(), lanes);
-    private ChampPoolViewModel champPoolViewModel = ViewModelProviders.of(this).get(ChampPoolViewModel.class); //TODO: factory
+    private final LanePagerAdapter lanePagerAdapter = new LanePagerAdapter(getSupportFragmentManager(), lanes);
+    private ChampPoolViewModel champPoolViewModel;
     private int lane;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         AndroidInjection.inject(this);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_champ_pool);
+
+        champPoolViewModel = ViewModelProviders.of(this, viewModelFactory).get(ChampPoolViewModel.class);
 
         ActivityChampPoolBinding activityChampPoolBinding = ActivityChampPoolBinding.inflate(getLayoutInflater());
         activityChampPoolBinding.setViewmodel(champPoolViewModel);
 
-        if (savedInstanceState != null) {
-            lane = savedInstanceState.getInt(LANE, 0);
-        }
+        lane = savedInstanceState.getInt(ChampionSelectActivity.LANE, 0);
 
+        subscribeToViewModel();
+        setupViewPager();
+
+    }
+
+    private void subscribeToViewModel() {
         champPoolViewModel.getCurrentLane().observe(this, integer -> integer = lane);
         champPoolViewModel.getEditChampPoolEvent().observe(this, aVoid -> openChampionSelect());
         champPoolViewModel.getChampionDetailEvent().observe(this, this::openChosenChampion);
-        champPoolViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) laneString -> {
-            SnackbarUtils.showSnackbar(findViewById(R.id.coordinator_layout), getString(R.string.champ_pool_edited, getString(laneString)));
-        });
+        champPoolViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) laneString ->
+                SnackbarUtils.showSnackbar(findViewById(R.id.coordinator_layout), getString(R.string.champ_pool_edited, getString(laneString))));
+    }
 
+    private void setupViewPager() {
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(lanePagerAdapter);
-        viewPager.setCurrentItem(lane, true);
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 champPoolViewModel.setCurrentLane(position);
             }
         });
-
+        viewPager.setCurrentItem(lane, true);
     }
 
     @Override
@@ -108,7 +109,7 @@ public class ChampPoolActivity extends AppCompatActivity implements HasFragmentI
 
     public void openChampionSelect() {
         Intent intent = new Intent(this, ChampionSelectActivity.class);
-        intent.putExtra(LANE, lane);
+        intent.putExtra(ChampionSelectActivity.LANE, lane);
         intent.putExtra(getString(R.string.request_code), REQUEST_EDIT_CHAMP_POOL);
         startActivityForResult(intent, REQUEST_EDIT_CHAMP_POOL);
     }
@@ -120,10 +121,6 @@ public class ChampPoolActivity extends AppCompatActivity implements HasFragmentI
         }
     }
 
-    @Override
-    public DispatchingAndroidInjector<Fragment> fragmentInjector() {
-        return dispatchingAndroidInjector;
-    }
 
     public static class LanePagerAdapter extends FragmentPagerAdapter {
 

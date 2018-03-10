@@ -13,7 +13,7 @@ import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
 
 @Singleton
-@Component(modules = {ApplicationModule.class, AndroidInjectionModule.class, ActivityBuilder.class})
+@Component(modules = {ApplicationModule.class, AndroidInjectionModule.class, ActivityBuilder.class, ViewModelModule.class, ResourcesModule.class})
 public interface ApplicationComponent extends AndroidInjector<DaggerApplication> {
     void inject(ChampPoolActivity activity);
 
@@ -22,7 +22,6 @@ public interface ApplicationComponent extends AndroidInjector<DaggerApplication>
 
         @BindsInstance
         Builder application(Application application); //adds instance of application to ApplicationComponent and Children
-
         ApplicationComponent build();
     }
 

@@ -1,5 +1,6 @@
 package com.danielakinola.loljournal.matchupdetail;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,17 +10,25 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 
 import com.danielakinola.loljournal.R;
+import com.danielakinola.loljournal.SnackbarMessage;
+import com.danielakinola.loljournal.SnackbarUtils;
+import com.danielakinola.loljournal.ViewModelFactory;
 import com.danielakinola.loljournal.commentdetail.CommentDetailActivity;
 import com.danielakinola.loljournal.editcomment.EditCommentActivity;
 
-public class MatchupDetailActivity extends AppCompatActivity {
+import javax.inject.Inject;
 
-    public static final String CATEGORY = "CATEGORY";
-    public static final String COMMENT_ID = "COMMENT_ID";
+import dagger.android.support.DaggerAppCompatActivity;
+
+public class MatchupDetailActivity extends DaggerAppCompatActivity {
+
+
     public static final int REQUEST_ADD_COMMENT = RESULT_FIRST_USER + 3;
+    @Inject
+    private ViewModelFactory viewModelFactory;
     private MatchupDetailViewModel matchupDetailViewModel;
 
     @Override
@@ -29,20 +38,28 @@ public class MatchupDetailActivity extends AppCompatActivity {
         setupViewPager();
         setupFAB();
 
+        //TODO: RENAME FROM PLAYERCHAMPION TO USERCHAMPION
+        ImageView playerChampionPortrait = findViewById(R.id.img_player_champion);
+        ImageView enemyChampionPortrait = findViewById(R.id.img_enemy_champion);
+
+
+        matchupDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(MatchupDetailViewModel.class);
         matchupDetailViewModel.getAddCommentEvent().observe(this, this::addNewComment);
         matchupDetailViewModel.getCommentDetailEvent().observe(this, this::navigateToCommentDetail);
+        matchupDetailViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId ->
+                SnackbarUtils.showSnackbar(findViewById(R.id.matchup_detail_coordinator_layout), getString(snackbarMessageResourceId)));
 
     }
 
     private void navigateToCommentDetail(int commentId) {
         Intent intent = new Intent(this, CommentDetailActivity.class);
-        intent.putExtra(COMMENT_ID, commentId);
+        intent.putExtra(EditCommentActivity.COMMENT_ID, commentId);
         startActivity(intent);
     }
 
     private void addNewComment(int category) {
         Intent intent = new Intent(this, EditCommentActivity.class);
-        intent.putExtra(CATEGORY, category);
+        intent.putExtra(EditCommentActivity.CATEGORY, category);
         intent.putExtra(getString(R.string.request_code), REQUEST_ADD_COMMENT);
         startActivityForResult(intent, REQUEST_ADD_COMMENT);
     }

@@ -2,6 +2,7 @@ package com.danielakinola.loljournal.champpool;
 
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,9 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.danielakinola.loljournal.R;
+import com.danielakinola.loljournal.ViewModelFactory;
 import com.danielakinola.loljournal.databinding.FragmentChampPoolBinding;
 
 import java.util.Objects;
+
+import javax.inject.Inject;
+
+import dagger.android.support.AndroidSupportInjection;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +29,9 @@ import java.util.Objects;
 public class ChampPoolFragment extends Fragment {
     private static final String LANE = "LANE";
     private int lane;
-    private ChampPoolViewModel champPoolViewModel = ViewModelProviders.of(this).get(ChampPoolViewModel.class); //TODO: factory
+    @Inject
+    private ViewModelFactory viewModelFactory;
+    private ChampPoolViewModel champPoolViewModel;
     private ChampionAdapter championAdapter = new ChampionAdapter(champPoolViewModel.getChampions(lane).getValue(), champPoolViewModel);
 
     public ChampPoolFragment() {
@@ -41,6 +49,8 @@ public class ChampPoolFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         lane = getArguments().getInt(LANE, 0);
+        champPoolViewModel = ViewModelProviders.of(this, viewModelFactory).get(ChampPoolViewModel.class);
+
     }
 
     @Override
@@ -64,4 +74,9 @@ public class ChampPoolFragment extends Fragment {
         recyclerView.setAdapter(championAdapter);
     }
 
+    @Override
+    public void onAttach(Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
+    }
 }

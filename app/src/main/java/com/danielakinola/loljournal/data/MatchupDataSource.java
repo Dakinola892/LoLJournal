@@ -19,11 +19,11 @@ public interface MatchupDataSource {
 
     LiveData<List<Matchup>> getMatchups(int lane, String champion);
 
-    LiveData<List<Comment>> getStrengths(int matchupId);
+    LiveData<List<Comment>> getStrengths(String matchupId);
 
-    LiveData<List<Comment>> getGeneralComments(int matchupId);
+    LiveData<List<Comment>> getGeneralComments(String matchupId);
 
-    LiveData<List<Comment>> getWeaknesses(int matchupId);
+    LiveData<List<Comment>> getWeaknesses(String matchupId);
 
     List<String> getChampNames(int lane);
 

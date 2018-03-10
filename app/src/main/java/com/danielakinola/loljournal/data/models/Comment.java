@@ -3,6 +3,7 @@ package com.danielakinola.loljournal.data.models;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
@@ -16,8 +17,8 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         onDelete = CASCADE))
 public class Comment {
     @ColumnInfo(name = "matchup_id")
-    private final int matchupId;
-    @PrimaryKey
+    private final String matchupId;
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "comment_id")
     private int id;
     private String title;
@@ -25,13 +26,19 @@ public class Comment {
     private int category;
     private boolean starred;
 
-    public Comment(int id, int matchupId, String title, String description, int category, boolean starred) {
+    public Comment(int id, String matchupId, String title, String description, int category, boolean starred) {
         this.id = id;
         this.matchupId = matchupId;
         this.title = title;
         this.description = description;
         this.category = category;
         this.starred = starred;
+    }
+
+    @Ignore
+    public Comment(String matchupId, int category) {
+        this.matchupId = matchupId;
+        this.category = category;
     }
 
     public int getId() {
@@ -42,7 +49,7 @@ public class Comment {
         this.id = id;
     }
 
-    public int getMatchupId() {
+    public String getMatchupId() {
         return matchupId;
     }
 

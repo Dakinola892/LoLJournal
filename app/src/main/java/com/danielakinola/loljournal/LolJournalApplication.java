@@ -9,6 +9,7 @@ import dagger.android.DaggerApplication;
  * Created by dakin on 13/01/2018.
  */
 
+//TODO: ADD TO MANIFEST
 public class LolJournalApplication extends DaggerApplication {
 
     //Android Injector that injects Application with ApplicationComponent to get Application-level dependencies

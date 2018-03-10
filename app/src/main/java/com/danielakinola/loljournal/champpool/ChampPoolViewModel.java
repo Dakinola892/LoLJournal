@@ -1,12 +1,9 @@
 package com.danielakinola.loljournal.champpool;
 
-import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
-import android.content.Context;
-import android.support.annotation.NonNull;
+import android.arch.lifecycle.ViewModel;
 
 import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.SingleLiveEvent;
@@ -27,17 +24,18 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 @SuppressWarnings("ALL")
-public class ChampPoolViewModel extends AndroidViewModel {
+public class ChampPoolViewModel extends ViewModel {
     private static final int TOP_LANE = 0;
     private static final int JUNGLE = 1;
     private static final int MID_LANE = 2;
     private static final int BOT_LANE = 3;
     private static final int SUPPORT = 4;
 
-    private Context context;
-    private MatchupRepository matchupRepository;
+    private final String[] laneTitles;
+    private final int[] laneIcons;
+    private final MatchupRepository matchupRepository;
 
-    private MutableLiveData<Integer> currentLane;
+    private final MutableLiveData<Integer> currentLane = new MutableLiveData<>();
     private LiveData<String> laneTitle;
     private LiveData<Integer> laneIcon;
 
@@ -50,14 +48,11 @@ public class ChampPoolViewModel extends AndroidViewModel {
 
 
     @Inject
-    public ChampPoolViewModel(@NonNull Application application,
-                              MatchupRepository matchupRepository) {
-        super(application);
-        if (currentLane == null) {
-            this.currentLane.setValue(TOP_LANE);
-        }
-        this.context = application;
+    public ChampPoolViewModel(MatchupRepository matchupRepository, String[] laneTitles, int[] laneIcons) {
+        //this.currentLane.setValue(0);
         this.matchupRepository = matchupRepository;
+        this.laneTitles = laneTitles;
+        this.laneIcons = laneIcons;
         getChampPoolData();
         subscribeToLaneChanges();
     }
@@ -71,11 +66,11 @@ public class ChampPoolViewModel extends AndroidViewModel {
     private void subscribeToLaneChanges() {
 
         this.laneTitle = Transformations.map(this.currentLane, newLane -> {
-            return context.getResources().getStringArray(R.array.lanes_array)[newLane];
+            return laneTitles[newLane];
         });
 
         this.laneIcon = Transformations.map(this.currentLane, newLane -> {
-            return context.getResources().getIntArray(R.array.lane_icons)[newLane];
+            return laneIcons[newLane];
         });
 
         for (int i = 0; i < empty.length; i++) {
@@ -138,7 +133,7 @@ public class ChampPoolViewModel extends AndroidViewModel {
 
     //TODO: fix because it isn't an int array its a string array
     public void onChampPoolEdit() {
-        showSnackbarMessage(getApplication().getResources().getIntArray(R.array.lanes_array)[currentLane.getValue()]);
+        //showSnackbarMessage();
     }
 
     //TODO: RxJava-ify for thread safety

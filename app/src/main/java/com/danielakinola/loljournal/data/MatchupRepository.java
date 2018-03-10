@@ -44,19 +44,19 @@ public class MatchupRepository implements MatchupDataSource {
         return matchupDao.getMatchups(lane, champion);
     }
 
-    public LiveData<List<Comment>> getStrengths(int matchupId) {
+    public LiveData<List<Comment>> getStrengths(String matchupId) {
         int STRENGTHS = 0;
-        return commentDao.getMatchupCommentsbyCategory(matchupId, STRENGTHS);
+        return commentDao.getMatchupCommentsByCategory(matchupId, STRENGTHS);
     }
 
-    public LiveData<List<Comment>> getGeneralComments(int matchupId) {
+    public LiveData<List<Comment>> getGeneralComments(String matchupId) {
         int GENERAL = 1;
-        return commentDao.getMatchupCommentsbyCategory(matchupId, GENERAL);
+        return commentDao.getMatchupCommentsByCategory(matchupId, GENERAL);
     }
 
-    public LiveData<List<Comment>> getWeaknesses(int matchupId) {
+    public LiveData<List<Comment>> getWeaknesses(String matchupId) {
         int WEAKNESSES = 2;
-        return commentDao.getMatchupCommentsbyCategory(matchupId, WEAKNESSES);
+        return commentDao.getMatchupCommentsByCategory(matchupId, WEAKNESSES);
     }
 
     @Override

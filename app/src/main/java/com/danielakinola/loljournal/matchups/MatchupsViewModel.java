@@ -1,9 +1,7 @@
 package com.danielakinola.loljournal.matchups;
 
-import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.support.annotation.NonNull;
+import android.arch.lifecycle.ViewModel;
 
 import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.SingleLiveEvent;
@@ -13,13 +11,17 @@ import com.danielakinola.loljournal.data.models.Champion;
 import com.danielakinola.loljournal.data.models.Matchup;
 
 import java.util.List;
+import java.util.Objects;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 //TODO: FINALIZE, check Dagger2 solution to constructor variables for factory
 
-public class MatchupsViewModel extends AndroidViewModel {
+public class MatchupsViewModel extends ViewModel {
 
     private final MatchupRepository matchupRepository;
-    private final Integer lane;
+    private final int lane;
     private final LiveData<Champion> champion;
     private final String laneSubtitle;
 
@@ -28,16 +30,16 @@ public class MatchupsViewModel extends AndroidViewModel {
     private SingleLiveEvent<String> editMatchupsEvent = new SingleLiveEvent<>();
     private SnackbarMessage snackbarMessage = new SnackbarMessage();
 
-    public MatchupsViewModel(@NonNull Application application, MatchupRepository matchupRepository, String championId) {
-        super(application);
+    @Inject
+    public MatchupsViewModel(@Named("laneTitles") String[] laneTitles, MatchupRepository matchupRepository, @Named("championId") String championId) {
         this.matchupRepository = matchupRepository;
         champion = matchupRepository.getChampion(championId);
-        lane = champion.getValue().getLane();
-        laneSubtitle = application.getResources().getStringArray(R.array.lanes_array)[lane];
+        lane = Objects.requireNonNull(champion.getValue()).getLane();
         matchups = matchupRepository.getMatchups(lane, champion.getValue().getName());
+        laneSubtitle = laneTitles[lane];
     }
 
-    public Integer getLane() {
+    public int getLane() {
         return lane;
     }
 
@@ -70,7 +72,7 @@ public class MatchupsViewModel extends AndroidViewModel {
     }
 
     private void editMatchups() {
-        editMatchupsEvent.setValue(champion.getValue().getId());
+        editMatchupsEvent.setValue(champion.getValue().getName());
     }
 
     public void updateFavourited(Matchup matchup) {
@@ -79,6 +81,10 @@ public class MatchupsViewModel extends AndroidViewModel {
 
     public void deleteMatchup(Matchup matchup) {
         matchupRepository.deleteMatchup(matchup);
+    }
+
+    public void showSnackbar() {
+        snackbarMessage.setValue(R.string.matchup_updated);
     }
 
     public void navigateToMatchupSelect() {

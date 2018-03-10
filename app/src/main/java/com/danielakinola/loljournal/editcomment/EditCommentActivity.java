@@ -1,22 +1,32 @@
 package com.danielakinola.loljournal.editcomment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 
 import com.danielakinola.loljournal.R;
+import com.danielakinola.loljournal.ViewModelFactory;
+
+import javax.inject.Inject;
 
 public class EditCommentActivity extends AppCompatActivity {
+    public static final String CATEGORY = "CATEGORY";
+    public static final String COMMENT_ID = "COMMENT_ID";
+    public static final String MATCHUP_ID = "MATCHUP_ID";
+
+    @Inject
+    private ViewModelFactory viewModelFactory;
     private EditCommentViewModel editCommentViewModel;
-    private int requestCode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_comment);
-        requestCode = getIntent().getIntExtra(getString(R.string.request_code), -1);
         setupFAB();
 
+        editCommentViewModel = ViewModelProviders.of(this, viewModelFactory).get(EditCommentViewModel.class);
         editCommentViewModel.getConfirmationEvent().observe(this, aVoid -> onConfirm());
     }
 
