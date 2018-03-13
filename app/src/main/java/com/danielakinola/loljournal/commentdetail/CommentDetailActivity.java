@@ -12,34 +12,43 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.danielakinola.loljournal.R;
-import com.danielakinola.loljournal.SnackbarMessage;
-import com.danielakinola.loljournal.SnackbarUtils;
 import com.danielakinola.loljournal.ViewModelFactory;
+import com.danielakinola.loljournal.data.models.Comment;
 import com.danielakinola.loljournal.editcomment.EditCommentActivity;
+import com.danielakinola.loljournal.utils.SnackbarMessage;
+import com.danielakinola.loljournal.utils.SnackbarUtils;
 
 import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 
 public class CommentDetailActivity extends AppCompatActivity {
 
     public static final int REQUEST_EDIT_COMMENT = RESULT_FIRST_USER + 4;
     @Inject
-    private ViewModelFactory viewModelFactory;
+    ViewModelFactory viewModelFactory;
     private CommentDetailViewModel commentDetailViewModel;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-
-        commentDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(CommentDetailViewModel.class);
-        commentDetailViewModel.getEditCommentEvent().observe(this, this::navigateToEditComment);
-        commentDetailViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId -> {
-            SnackbarUtils.showSnackbar(findViewById(R.id.frame_comment_detail), getString(snackbarMessageResourceId));
-        });
-
+        setupViewModel();
         setupToolbar();
         setupFAB();
+    }
 
+    private void setupViewModel() {
+        int commentId = getIntent().getIntExtra(EditCommentActivity.COMMENT_ID, -1);
+        commentDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(CommentDetailViewModel.class);
+
+        commentDetailViewModel.initialize(commentId);
+        commentDetailViewModel.getEditCommentEvent().observe(this, this::navigateToEditComment);
+        commentDetailViewModel.getSnackbarMessage().observe(this,
+                (SnackbarMessage.SnackbarObserver) message -> {
+                    SnackbarUtils.showSnackbar(findViewById(R.id.frame_comment_detail), getString(message));
+                });
     }
 
     private void setupToolbar() {
@@ -49,9 +58,11 @@ public class CommentDetailActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    private void navigateToEditComment(int commentId) {
+    private void navigateToEditComment(Comment comment) {
         Intent intent = new Intent(this, EditCommentActivity.class);
-        intent.putExtra(EditCommentActivity.COMMENT_ID, commentId);
+        intent.putExtra(EditCommentActivity.COMMENT_ID, comment.getId());
+        intent.putExtra(EditCommentActivity.MATCHUP_ID, comment.getMatchupId());
+        intent.putExtra(EditCommentActivity.CATEGORY, comment.getCategory());
         intent.putExtra(getString(R.string.request_code), REQUEST_EDIT_COMMENT);
         startActivityForResult(intent, REQUEST_EDIT_COMMENT);
     }

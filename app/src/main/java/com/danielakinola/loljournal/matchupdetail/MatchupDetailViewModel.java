@@ -1,40 +1,41 @@
 package com.danielakinola.loljournal.matchupdetail;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.danielakinola.loljournal.ChampionReference;
 import com.danielakinola.loljournal.R;
-import com.danielakinola.loljournal.SingleLiveEvent;
-import com.danielakinola.loljournal.SnackbarMessage;
 import com.danielakinola.loljournal.data.MatchupRepository;
 import com.danielakinola.loljournal.data.models.Comment;
 import com.danielakinola.loljournal.data.models.Matchup;
+import com.danielakinola.loljournal.utils.ChampionGallery;
+import com.danielakinola.loljournal.utils.SingleLiveEvent;
+import com.danielakinola.loljournal.utils.SnackbarMessage;
 
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 public class MatchupDetailViewModel extends ViewModel {
     private final MatchupRepository matchupRepository;
-    private final String MATCHUP_ID;
+    private final ChampionGallery championGallery;
+    private String MATCHUP_ID;
     private SingleLiveEvent<Integer> addCommentEvent = new SingleLiveEvent<>();
     private SingleLiveEvent<Integer> commentDetailEvent = new SingleLiveEvent<>();
-    private final MutableLiveData<Matchup> matchup;
+    private LiveData<Matchup> matchup;
     private SnackbarMessage snackbarMessage = new SnackbarMessage();
     private int currentPage;
-    //TODO: rename to ChampionGallery
     //TODO: finalize all possible variables with correct uppercase
-    private final ChampionReference championReference;
+    //TODO: rename to ChampionGallery
 
     @Inject
-    public MatchupDetailViewModel(MatchupRepository matchupRepository, @Named("matchupId") String matchupId, ChampionReference championReference) {
+    public MatchupDetailViewModel(MatchupRepository matchupRepository, ChampionGallery championGallery) {
         this.matchupRepository = matchupRepository;
+        this.championGallery = championGallery;
+    }
+
+    public void initialize(String matchupId) {
         this.MATCHUP_ID = matchupId;
-        this.championReference = championReference;
-        this.matchup = (MutableLiveData<Matchup>) matchupRepository.getMatchup(matchupId);
+        this.matchup = matchupRepository.getMatchup(matchupId);
     }
 
     public void setCurrentPage(int currentPage) {

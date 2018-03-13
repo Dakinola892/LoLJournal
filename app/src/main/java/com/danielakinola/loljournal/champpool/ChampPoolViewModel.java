@@ -6,14 +6,15 @@ import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
 import com.danielakinola.loljournal.R;
-import com.danielakinola.loljournal.SingleLiveEvent;
-import com.danielakinola.loljournal.SnackbarMessage;
 import com.danielakinola.loljournal.data.MatchupRepository;
 import com.danielakinola.loljournal.data.models.Champion;
+import com.danielakinola.loljournal.utils.SingleLiveEvent;
+import com.danielakinola.loljournal.utils.SnackbarMessage;
 
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -48,8 +49,7 @@ public class ChampPoolViewModel extends ViewModel {
 
 
     @Inject
-    public ChampPoolViewModel(MatchupRepository matchupRepository, String[] laneTitles, int[] laneIcons) {
-        //this.currentLane.setValue(0);
+    public ChampPoolViewModel(MatchupRepository matchupRepository, @Named("laneTitles") String[] laneTitles, @Named("laneIcons") int[] laneIcons) {
         this.matchupRepository = matchupRepository;
         this.laneTitles = laneTitles;
         this.laneIcons = laneIcons;
@@ -65,11 +65,11 @@ public class ChampPoolViewModel extends ViewModel {
 
     private void subscribeToLaneChanges() {
 
-        this.laneTitle = Transformations.map(this.currentLane, newLane -> {
+        this.laneTitle = Transformations.map(currentLane, newLane -> {
             return laneTitles[newLane];
         });
 
-        this.laneIcon = Transformations.map(this.currentLane, newLane -> {
+        this.laneIcon = Transformations.map(currentLane, newLane -> {
             return laneIcons[newLane];
         });
 
@@ -95,11 +95,11 @@ public class ChampPoolViewModel extends ViewModel {
         return empty[lane];
     }
 
-    public LiveData<String> getLaneTitle() {
+    public LiveData<String> getLaneTitle(int lane) {
         return laneTitle;
     }
 
-    public LiveData<Integer> getLaneIcon() {
+    public LiveData<Integer> getLaneIcon(int lane) {
         return laneIcon;
     }
 
@@ -123,8 +123,8 @@ public class ChampPoolViewModel extends ViewModel {
         championDetailEvent.call();
     }
 
-    private void showSnackbarMessage(Integer message) {
-        snackbarMessage.setValue(message);
+    public void showSnackbarMessage() {
+        snackbarMessage.setValue(R.string.champ_pool_edited);
     }
 
     public void updateFavourited(Champion champion) {
@@ -132,9 +132,6 @@ public class ChampPoolViewModel extends ViewModel {
     }
 
     //TODO: fix because it isn't an int array its a string array
-    public void onChampPoolEdit() {
-        //showSnackbarMessage();
-    }
 
     //TODO: RxJava-ify for thread safety
     //TODO: CHANGE SO ONLY NEED ID
@@ -143,7 +140,7 @@ public class ChampPoolViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> {
-                    if (!champion.isStarred()) showSnackbarMessage(R.string.champion_favourited);
+                    if (!champion.isStarred()) showSnackbarMessage();
                 });
     }
 }

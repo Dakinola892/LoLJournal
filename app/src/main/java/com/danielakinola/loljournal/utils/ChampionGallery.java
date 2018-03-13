@@ -1,4 +1,6 @@
-package com.danielakinola.loljournal;
+package com.danielakinola.loljournal.utils;
+
+import com.danielakinola.loljournal.R;
 
 import java.util.HashMap;
 
@@ -7,10 +9,10 @@ import java.util.HashMap;
  */
 
 //TODO: change to do add Kaisa
-public class ChampionReference {
+public class ChampionGallery {
     public final static HashMap<String, Integer> champions = new HashMap<>();
 
-    public ChampionReference() {
+    public ChampionGallery() {
         champions.put("Aatrox", R.drawable.aatrox_loading);
         champions.put("Ahri", R.drawable.ahri_loading);
         champions.put("Akali", R.drawable.akali_loading);
@@ -19,7 +21,7 @@ public class ChampionReference {
         champions.put("Anivia", R.drawable.anivia_loading);
         champions.put("Annie", R.drawable.annie_loading);
         champions.put("Ashe", R.drawable.ashe_loading);
-        champions.put("Aurelionsol", R.drawable.aureliansol_loading);
+        champions.put("Aurelion Sol", R.drawable.aureliansol_loading);
         champions.put("Azir", R.drawable.azir_loading);
         champions.put("Bard", R.drawable.bard_loading);
         champions.put("Blitzcrank", R.drawable.blitzcrank_loading);
@@ -32,7 +34,7 @@ public class ChampionReference {
         champions.put("Corki", R.drawable.corki_loading);
         champions.put("Darius", R.drawable.darius_loading);
         champions.put("Diana", R.drawable.diana_loading);
-        champions.put("Drmundo", R.drawable.drmundo_loading);
+        champions.put("Dr. Mundo", R.drawable.drmundo_loading);
         champions.put("Draven", R.drawable.draven_loading);
         champions.put("Ekko", R.drawable.ekko_loading);
         champions.put("Elise", R.drawable.elise_loading);
@@ -53,11 +55,12 @@ public class ChampionReference {
         champions.put("Irelia", R.drawable.irelia_loading);
         champions.put("Ivern", R.drawable.ivern_loading);
         champions.put("Janna", R.drawable.janna_loading);
-        champions.put("Jarvaniv", R.drawable.jarvaniv_loading);
+        champions.put("Jarvan IV", R.drawable.jarvaniv_loading);
         champions.put("Jax", R.drawable.jax_loading);
         champions.put("Jayce", R.drawable.jayce_loading);
         champions.put("Jhin", R.drawable.jhin_loading);
         champions.put("Jinx", R.drawable.jinx_loading);
+        champions.put("Kai'Sa", R.drawable.annie_loading);
         champions.put("Kalista", R.drawable.kalista_loading);
         champions.put("Karma", R.drawable.karma_loading);
         champions.put("Karthus", R.drawable.karthus_loading);

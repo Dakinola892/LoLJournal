@@ -2,33 +2,42 @@ package com.danielakinola.loljournal.editcomment;
 
 import android.arch.lifecycle.ViewModel;
 
-import com.danielakinola.loljournal.SingleLiveEvent;
 import com.danielakinola.loljournal.data.MatchupRepository;
 import com.danielakinola.loljournal.data.models.Comment;
+import com.danielakinola.loljournal.utils.SingleLiveEvent;
 
 import javax.inject.Inject;
-import javax.inject.Named;
+
+import io.reactivex.annotations.Nullable;
 
 public class EditCommentViewModel extends ViewModel {
 
     private final MatchupRepository matchupRepository;
     private SingleLiveEvent<Void> confirmationEvent = new SingleLiveEvent<>();
-    private final Comment editableComment;
-    private final boolean NEW_COMMENT;
+    private Comment editableComment;
+    private boolean NEW_COMMENT;
 
 
-    @Inject
+    /*@Inject
     public EditCommentViewModel(MatchupRepository matchupRepository, @Named("editCommentId") int commentId) {
         this.matchupRepository = matchupRepository;
         this.editableComment = matchupRepository.getComment(commentId).getValue();
         this.NEW_COMMENT = false;
-    }
+    }*/
 
     @Inject
-    public EditCommentViewModel(MatchupRepository matchupRepository, @Named("newCommentMatchupId") String matchupId, @Named("category") int category) {
+    public EditCommentViewModel(MatchupRepository matchupRepository) {
         this.matchupRepository = matchupRepository;
-        this.editableComment = new Comment(matchupId, category);
-        this.NEW_COMMENT = true;
+    }
+
+    public void initialize(int commentId, @Nullable String matchupId, int category) {
+        if (commentId == -1) {
+            this.editableComment = new Comment(matchupId, category);
+            this.NEW_COMMENT = true;
+        } else {
+            this.editableComment = matchupRepository.getComment(commentId).getValue();
+            this.NEW_COMMENT = false;
+        }
     }
 
     public Comment getComment() {

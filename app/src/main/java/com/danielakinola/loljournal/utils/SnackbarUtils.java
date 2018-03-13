@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.danielakinola.loljournal;
+package com.danielakinola.loljournal.utils;
 
 import android.support.design.widget.Snackbar;
 import android.view.View;

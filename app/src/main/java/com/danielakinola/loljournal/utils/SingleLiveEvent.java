@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.danielakinola.loljournal;
+package com.danielakinola.loljournal.utils;
 
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.MutableLiveData;

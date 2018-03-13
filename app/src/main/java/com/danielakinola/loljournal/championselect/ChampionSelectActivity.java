@@ -13,7 +13,9 @@ import com.danielakinola.loljournal.ViewModelFactory;
 
 import javax.inject.Inject;
 
-//TODO: FINALIZE VIEWMODELS if possible
+import dagger.android.AndroidInjection;
+
+//TODO: rename all viewmodels to 'viewmodel'
 
 public class ChampionSelectActivity extends AppCompatActivity {
 
@@ -22,33 +24,47 @@ public class ChampionSelectActivity extends AppCompatActivity {
     @Inject
     ViewModelFactory viewModelFactory;
     private ChampionSelectViewModel championSelectViewModel;
+    ChampionListAdapter championListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_champion_select);
-
-        championSelectViewModel = ViewModelProviders.of(this, viewModelFactory).get(ChampionSelectViewModel.class);
-
+        setupViewModel();
         setupToolbar();
+        setupRecylerView();
+        setupFAB();
+    }
 
-        ChampionListAdapter championListAdapter = new ChampionListAdapter(championSelectViewModel);
+    private void setupFAB() {
+        FloatingActionButton fab = findViewById(R.id.fab_confirm_selection);
+        fab.setOnClickListener(v -> championSelectViewModel.applyChampionSelection());
+    }
+
+    private void setupRecylerView() {
+        championListAdapter = new ChampionListAdapter(championSelectViewModel);
         RecyclerView recyclerView = findViewById(R.id.champion_select_recycler_view);
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new GridLayoutManager(ChampionSelectActivity.this, 3));
         recyclerView.setAdapter(championListAdapter);
+    }
+
+    private void setupViewModel() {
+        int lane = getIntent().getIntExtra(LANE, -1);
+        String champName = getIntent().getStringExtra(CHAMP_NAME);
+
+        championSelectViewModel = ViewModelProviders.of(this, viewModelFactory).get(ChampionSelectViewModel.class);
+
+        championSelectViewModel.initialize(lane, champName,
+                getResources().getStringArray(R.array.lanes_array)[lane],
+                getResources().getIntArray(R.array.lane_icons)[lane]);
 
         championSelectViewModel.getCurrentlySelectedChampions()
                 .observe(this, championListAdapter::setCurrentlySelectedChampions);
 
-
         championSelectViewModel.getNavigateBackToPreviousActivityEvent()
-                .observe(this, aVoid -> navigateBack(getIntent()
-                        .getIntExtra(getString(R.string.request_code), -1)));
-
-        FloatingActionButton fab = findViewById(R.id.fab_confirm_selection);
-        fab.setOnClickListener(v -> championSelectViewModel.applyChampionSelection());
-
+                .observe(this, aVoid -> navigateBack());
     }
 
     private void setupToolbar() {
@@ -60,7 +76,7 @@ public class ChampionSelectActivity extends AppCompatActivity {
         toolbar.setLogo(championSelectViewModel.getLaneIcon());
     }
 
-    public void navigateBack(int requestCode) {
+    public void navigateBack() {
         setResult(RESULT_OK);
         finish();
     }

@@ -15,7 +15,7 @@
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@{safeUnbox(viewmodel.getEmpty(viewmodel.currentLane)) ? @color/colorEmptyStateBackground : @color/colorAppBackground}">
+        android:background="@{safeUnbox(viewmodel.getEmpty(safeUnbox(viewmodel.currentLane))) ? @color/colorEmptyStateBackground : @color/colorAppBackground}">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
@@ -123,7 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            app:currentItem="@={viewmodel.currentLane}"
+            app:currentItem="@{safeUnbox(viewmodel.currentLane)}"
             app:behavior_overlapTop="60dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 

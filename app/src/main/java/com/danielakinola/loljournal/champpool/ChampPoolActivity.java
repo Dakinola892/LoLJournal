@@ -11,12 +11,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.danielakinola.loljournal.R;
-import com.danielakinola.loljournal.SnackbarMessage;
-import com.danielakinola.loljournal.SnackbarUtils;
 import com.danielakinola.loljournal.ViewModelFactory;
 import com.danielakinola.loljournal.championselect.ChampionSelectActivity;
 import com.danielakinola.loljournal.databinding.ActivityChampPoolBinding;
 import com.danielakinola.loljournal.matchups.MatchupsActivity;
+import com.danielakinola.loljournal.utils.SnackbarMessage;
+import com.danielakinola.loljournal.utils.SnackbarUtils;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -24,42 +24,40 @@ import javax.inject.Named;
 import dagger.android.AndroidInjection;
 import dagger.android.support.DaggerAppCompatActivity;
 
-//TODO: Support fragments for Dagger
 public class ChampPoolActivity extends DaggerAppCompatActivity {
 
     public static final int REQUEST_EDIT_CHAMP_POOL = RESULT_FIRST_USER + 1;
     public static final String PLAYER_CHAMPION_ID = "PLAYER_CHAMPION_ID";
+    private ChampPoolViewModel champPoolViewModel;
     @Inject
-    @Named("laneTitles")
-    public String[] lanes;
-
+    LanePagerAdapter lanePagerAdapter;
     @Inject
     ViewModelFactory viewModelFactory;
-
-    private final LanePagerAdapter lanePagerAdapter = new LanePagerAdapter(getSupportFragmentManager(), lanes);
-    private ChampPoolViewModel champPoolViewModel;
-    private int lane;
+    private int lane = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
+        if (savedInstanceState != null) {
+            lane = savedInstanceState.getInt(ChampionSelectActivity.LANE, 0);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_champ_pool);
-
-        champPoolViewModel = ViewModelProviders.of(this, viewModelFactory).get(ChampPoolViewModel.class);
-
-        ActivityChampPoolBinding activityChampPoolBinding = ActivityChampPoolBinding.inflate(getLayoutInflater());
-        activityChampPoolBinding.setViewmodel(champPoolViewModel);
-
-        lane = savedInstanceState.getInt(ChampionSelectActivity.LANE, 0);
-
-        subscribeToViewModel();
+        setupViewModel();
+        setupDataBinding();
         setupViewPager();
-
     }
 
-    private void subscribeToViewModel() {
-        champPoolViewModel.getCurrentLane().observe(this, integer -> integer = lane);
+
+    private void setupDataBinding() {
+        ActivityChampPoolBinding activityChampPoolBinding = ActivityChampPoolBinding.inflate(getLayoutInflater());
+        activityChampPoolBinding.setViewmodel(champPoolViewModel);
+    }
+
+    private void setupViewModel() {
+        champPoolViewModel = ViewModelProviders.of(this, viewModelFactory).get(ChampPoolViewModel.class);
+        champPoolViewModel.setCurrentLane(lane);
+        champPoolViewModel.getCurrentLane().observe(this, newLane -> lane = newLane);
         champPoolViewModel.getEditChampPoolEvent().observe(this, aVoid -> openChampionSelect());
         champPoolViewModel.getChampionDetailEvent().observe(this, this::openChosenChampion);
         champPoolViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) laneString ->
@@ -117,7 +115,7 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_EDIT_CHAMP_POOL && resultCode == RESULT_OK) {
-            champPoolViewModel.onChampPoolEdit();
+            champPoolViewModel.showSnackbarMessage();
         }
     }
 
@@ -126,7 +124,8 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
 
         private String[] names;
 
-        LanePagerAdapter(FragmentManager fm, String[] names) {
+        @Inject
+        public LanePagerAdapter(FragmentManager fm, @Named("laneTitles") String[] names) {
             super(fm);
             this.names = names;
         }

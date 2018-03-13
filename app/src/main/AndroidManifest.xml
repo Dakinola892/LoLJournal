@@ -20,10 +20,7 @@
         <activity
             android:name=".champpool.ChampPoolActivity"
             android:label="@string/title_activity_champ_pool" />
-        <activity
-            android:name=".championselect.ChampionSelectActivity"
-            android:label="Edit Heimdinger Top Lane Matchups" />
-        <activity android:name=".old.TestActivity" />
+        <activity android:name=".championselect.ChampionSelectActivity" />
         <activity
             android:name=".matchups.MatchupsActivity"
             android:label="@string/title_activity_matchups"
@@ -34,7 +31,9 @@
         </activity>
         <activity android:name=".matchupdetail.MatchupDetailActivity" />
         <activity android:name=".editcomment.EditCommentActivity" />
-        <activity android:name=".commentdetail.CommentDetailActivity"></activity>
+        <activity android:name=".commentdetail.CommentDetailActivity" />
     </application>
 
 </manifest>
+
+    <!--TODO: setup parent activities-->

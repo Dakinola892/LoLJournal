@@ -4,26 +4,26 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.danielakinola.loljournal.R;
-import com.danielakinola.loljournal.SingleLiveEvent;
-import com.danielakinola.loljournal.SnackbarMessage;
 import com.danielakinola.loljournal.data.MatchupRepository;
 import com.danielakinola.loljournal.data.models.Champion;
 import com.danielakinola.loljournal.data.models.Matchup;
+import com.danielakinola.loljournal.utils.SingleLiveEvent;
+import com.danielakinola.loljournal.utils.SnackbarMessage;
 
 import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 //TODO: FINALIZE, check Dagger2 solution to constructor variables for factory
 
 public class MatchupsViewModel extends ViewModel {
 
     private final MatchupRepository matchupRepository;
-    private final int lane;
-    private final LiveData<Champion> champion;
-    private final String laneSubtitle;
+    private int lane;
+    private String championId;
+    private LiveData<Champion> champion;
+    private String laneSubtitle;
 
     private LiveData<List<Matchup>> matchups;
     private SingleLiveEvent<String> openMatchupDetailEvent = new SingleLiveEvent<>();
@@ -31,12 +31,17 @@ public class MatchupsViewModel extends ViewModel {
     private SnackbarMessage snackbarMessage = new SnackbarMessage();
 
     @Inject
-    public MatchupsViewModel(@Named("laneTitles") String[] laneTitles, MatchupRepository matchupRepository, @Named("championId") String championId) {
+    public MatchupsViewModel(MatchupRepository matchupRepository) {
         this.matchupRepository = matchupRepository;
+
+    }
+
+    public void initialize(String championId, String laneSubtitle) {
+        this.championId = championId;
+        this.laneSubtitle = laneSubtitle;
         champion = matchupRepository.getChampion(championId);
         lane = Objects.requireNonNull(champion.getValue()).getLane();
         matchups = matchupRepository.getMatchups(lane, champion.getValue().getName());
-        laneSubtitle = laneTitles[lane];
     }
 
     public int getLane() {
@@ -53,6 +58,10 @@ public class MatchupsViewModel extends ViewModel {
 
     public String getLaneSubtitle() {
         return laneSubtitle;
+    }
+
+    public String getChampionId() {
+        return championId;
     }
 
     public SingleLiveEvent<String> getOpenMatchupDetailEvent() {

@@ -7,12 +7,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 
 import com.danielakinola.loljournal.R;
-import com.danielakinola.loljournal.SnackbarMessage;
-import com.danielakinola.loljournal.SnackbarUtils;
 import com.danielakinola.loljournal.ViewModelFactory;
 import com.danielakinola.loljournal.championselect.ChampionSelectActivity;
+import com.danielakinola.loljournal.champpool.ChampPoolActivity;
 import com.danielakinola.loljournal.editcomment.EditCommentActivity;
 import com.danielakinola.loljournal.matchupdetail.MatchupDetailActivity;
+import com.danielakinola.loljournal.utils.SnackbarMessage;
+import com.danielakinola.loljournal.utils.SnackbarUtils;
 
 import javax.inject.Inject;
 
@@ -22,7 +23,7 @@ public class MatchupsActivity extends AppCompatActivity {
 
     public static final int REQUEST_EDIT_MATCHUPS = RESULT_OK + 2;
     @Inject
-    private ViewModelFactory viewModelFactory;
+    ViewModelFactory viewModelFactory;
     private MatchupsViewModel matchupsViewModel;
 
     @Override
@@ -30,7 +31,7 @@ public class MatchupsActivity extends AppCompatActivity {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matchups);
-        matchupsViewModel = ViewModelProviders.of(this, viewModelFactory).get(MatchupsViewModel.class);
+
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -38,14 +39,25 @@ public class MatchupsActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab_add_matchups);
         fab.setOnClickListener(v -> matchupsViewModel.navigateToMatchupSelect());
 
-        matchupsViewModel.getEditMatchupsEvent().observe(this, this::openMatchupSelect);
-
-        matchupsViewModel.getOpenMatchupDetailEvent().observe(this, this::openMatchupDetail);
-        matchupsViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId -> {
-            SnackbarUtils.showSnackbar(findViewById(R.id.matchups_coordinator_layout), getString(snackbarMessageResourceId));
-        });
+        setupViewModel();
     }
 
+    private void setupViewModel() {
+        int lane = getIntent().getIntExtra(ChampionSelectActivity.LANE, -1);
+        String championId = getIntent().getStringExtra(ChampPoolActivity.PLAYER_CHAMPION_ID);
+        String laneSubtitle = getResources().getStringArray(R.array.lanes_array)[lane];
+        matchupsViewModel = ViewModelProviders.of(this, viewModelFactory).get(MatchupsViewModel.class);
+        matchupsViewModel.initialize(championId, laneSubtitle);
+        matchupsViewModel.getEditMatchupsEvent().observe(this, this::openMatchupSelect);
+        matchupsViewModel.getOpenMatchupDetailEvent().observe(this, this::openMatchupDetail);
+        matchupsViewModel.getSnackbarMessage().observe(this,
+                (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId ->
+                        SnackbarUtils.showSnackbar(findViewById(R.id.matchups_coordinator_layout),
+                                getString(snackbarMessageResourceId)));
+    }
+
+
+    //TODO: CHECK IF REQUEST_CODE PARAMETER IS NECESSARY
     private void openMatchupSelect(String champName) {
         Intent intent = new Intent(this, ChampionSelectActivity.class);
         intent.putExtra(ChampionSelectActivity.LANE, matchupsViewModel.getLane());
@@ -64,6 +76,14 @@ public class MatchupsActivity extends AppCompatActivity {
     //TODO: setup with correct Snackbar showing
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_EDIT_MATCHUPS && resultCode == RESULT_OK) {
+            matchupsViewModel.showSnackbar();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(ChampPoolActivity.PLAYER_CHAMPION_ID, matchupsViewModel.getChampionId());
+        super.onSaveInstanceState(outState);
     }
 }

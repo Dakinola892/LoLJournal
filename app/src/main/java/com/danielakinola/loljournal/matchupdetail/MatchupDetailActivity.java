@@ -10,14 +10,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.widget.ImageView;
 
 import com.danielakinola.loljournal.R;
-import com.danielakinola.loljournal.SnackbarMessage;
-import com.danielakinola.loljournal.SnackbarUtils;
 import com.danielakinola.loljournal.ViewModelFactory;
 import com.danielakinola.loljournal.commentdetail.CommentDetailActivity;
 import com.danielakinola.loljournal.editcomment.EditCommentActivity;
+import com.danielakinola.loljournal.utils.SnackbarMessage;
+import com.danielakinola.loljournal.utils.SnackbarUtils;
 
 import javax.inject.Inject;
 
@@ -25,30 +24,36 @@ import dagger.android.support.DaggerAppCompatActivity;
 
 public class MatchupDetailActivity extends DaggerAppCompatActivity {
 
-
     public static final int REQUEST_ADD_COMMENT = RESULT_FIRST_USER + 3;
     @Inject
-    private ViewModelFactory viewModelFactory;
+    ViewModelFactory viewModelFactory;
     private MatchupDetailViewModel matchupDetailViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matchup_detail);
         setupViewPager();
         setupFAB();
+        setupViewModel();
 
         //TODO: RENAME FROM PLAYERCHAMPION TO USERCHAMPION
-        ImageView playerChampionPortrait = findViewById(R.id.img_player_champion);
-        ImageView enemyChampionPortrait = findViewById(R.id.img_enemy_champion);
+        //TODO: databind these?
+        /*ImageView playerChampionPortrait = findViewById(R.id.img_player_champion);
+        ImageView enemyChampionPortrait = findViewById(R.id.img_enemy_champion);*/
 
+    }
+
+    private void setupViewModel() {
+        String matchupId = getIntent().getStringExtra(EditCommentActivity.MATCHUP_ID);
 
         matchupDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(MatchupDetailViewModel.class);
+        matchupDetailViewModel.initialize(matchupId);
         matchupDetailViewModel.getAddCommentEvent().observe(this, this::addNewComment);
         matchupDetailViewModel.getCommentDetailEvent().observe(this, this::navigateToCommentDetail);
         matchupDetailViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId ->
                 SnackbarUtils.showSnackbar(findViewById(R.id.matchup_detail_coordinator_layout), getString(snackbarMessageResourceId)));
-
     }
 
     private void navigateToCommentDetail(int commentId) {
@@ -63,7 +68,6 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
         intent.putExtra(getString(R.string.request_code), REQUEST_ADD_COMMENT);
         startActivityForResult(intent, REQUEST_ADD_COMMENT);
     }
-
 
     private void setupFAB() {
         FloatingActionButton fab = findViewById(R.id.fab_add_comment);

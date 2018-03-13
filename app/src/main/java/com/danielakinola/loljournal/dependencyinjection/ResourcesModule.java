@@ -11,10 +11,9 @@ import dagger.Provides;
 
 @Module
 public class ResourcesModule {
-    //Application application;
 
     @Provides
-    @Named("lanesTitles")
+    @Named("laneTitles")
     String[] provideLanesTitles(Application application) {
         return application.getResources().getStringArray(R.array.lanes_array);
     }

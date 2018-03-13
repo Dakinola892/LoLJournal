@@ -4,48 +4,49 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.danielakinola.loljournal.SingleLiveEvent;
 import com.danielakinola.loljournal.data.MatchupRepository;
 import com.danielakinola.loljournal.data.models.Champion;
 import com.danielakinola.loljournal.data.models.Matchup;
+import com.danielakinola.loljournal.utils.SingleLiveEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
+
+import io.reactivex.annotations.Nullable;
 
 public class ChampionSelectViewModel extends ViewModel {
-    private final int LANE;
-    private final String TITLE;
-    private final String SUBTITLE;
-    private final int LANE_ICON;
-    private final String CHAMP_NAME;
+    private final List<String> INTIALLY_SELECTED_CHAMPIONS = new ArrayList<>();
+    private int LANE;
+    private String TITLE;
+    private String SUBTITLE;
+    private int LANE_ICON;
     private final MatchupRepository MATCHUP_REPOSITORY;
-    private final List<String> INTIALLY_SELECTED_CHAMPIONS;
+    private String CHAMP_NAME;
     private final MutableLiveData<List<String>> CURRENTLY_SELECTED_CHAMPIONS = new MutableLiveData<>();
     private final SingleLiveEvent<Void> NAVIGATE_BACK_TO_PREVIOUS_ACTIVITY_EVENT = new SingleLiveEvent<>();
 
 
     @Inject
-    public ChampionSelectViewModel(@Named("lane") int lane, MatchupRepository matchupRepository, @Named("champName") String champName, String[] laneTitles, int[] laneIcons) {
-        this.LANE = lane;
-        this.CHAMP_NAME = champName;
+    public ChampionSelectViewModel(MatchupRepository matchupRepository) {
         this.MATCHUP_REPOSITORY = matchupRepository;
-        this.INTIALLY_SELECTED_CHAMPIONS = matchupRepository.getMatchupNames(lane, champName);
-        this.TITLE = "Matchup Select";
-        this.SUBTITLE = laneTitles[lane] + champName;
-        this.LANE_ICON = laneIcons[lane];
     }
 
-    @Inject
-    public ChampionSelectViewModel(@Named("lane") int lane, MatchupRepository matchupRepository, String[] laneTitles, int[] laneIcons) {
+    public void initialize(int lane, @Nullable String champName, String laneTitle, int laneIcon) {
         this.LANE = lane;
-        this.CHAMP_NAME = null;
-        this.MATCHUP_REPOSITORY = matchupRepository;
-        this.INTIALLY_SELECTED_CHAMPIONS = matchupRepository.getChampNames(lane);
-        this.TITLE = "Champion Select";
-        this.SUBTITLE = laneTitles[lane];
-        this.LANE_ICON = laneIcons[lane];
+        this.LANE_ICON = laneIcon;
+        this.CHAMP_NAME = champName;
+
+        if (champName == null) {
+            this.INTIALLY_SELECTED_CHAMPIONS.addAll(MATCHUP_REPOSITORY.getChampNames(lane));
+            this.TITLE = "Champion Select";
+            this.SUBTITLE = laneTitle;
+        } else {
+            this.INTIALLY_SELECTED_CHAMPIONS.addAll(MATCHUP_REPOSITORY.getMatchupNames(lane, champName));
+            this.TITLE = "Matchup Select";
+            this.SUBTITLE = laneTitle + champName;
+        }
     }
 
 

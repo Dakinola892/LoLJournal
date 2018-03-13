@@ -2,7 +2,7 @@ package com.danielakinola.loljournal.dependencyinjection;
 
 import android.app.Application;
 
-import com.danielakinola.loljournal.champpool.ChampPoolActivity;
+import com.danielakinola.loljournal.LolJournalApplication;
 
 import javax.inject.Singleton;
 
@@ -15,7 +15,7 @@ import dagger.android.DaggerApplication;
 @Singleton
 @Component(modules = {ApplicationModule.class, AndroidInjectionModule.class, ActivityBuilder.class, ViewModelModule.class, ResourcesModule.class})
 public interface ApplicationComponent extends AndroidInjector<DaggerApplication> {
-    void inject(ChampPoolActivity activity);
+    void inject(LolJournalApplication lolJournalApplication);
 
     @Component.Builder
     interface Builder {

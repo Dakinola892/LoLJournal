@@ -3,12 +3,12 @@ package com.danielakinola.loljournal.dependencyinjection;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 
-import com.danielakinola.loljournal.ChampionReference;
 import com.danielakinola.loljournal.data.MatchupDatabase;
 import com.danielakinola.loljournal.data.MatchupRepository;
 import com.danielakinola.loljournal.data.daos.ChampionDao;
 import com.danielakinola.loljournal.data.daos.CommentDao;
 import com.danielakinola.loljournal.data.daos.MatchupDao;
+import com.danielakinola.loljournal.utils.ChampionGallery;
 
 import javax.inject.Singleton;
 
@@ -55,8 +55,8 @@ public class ApplicationModule {
 
     @Reusable
     @Provides
-    ChampionReference providesChampionReference() {
-        return new ChampionReference();
+    ChampionGallery providesChampionReference() {
+        return new ChampionGallery();
     }
 
 

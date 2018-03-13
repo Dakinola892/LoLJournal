@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.StarredChampionViewHolder> {
     private final ChampPoolViewModel champPoolViewModel;
-    private ArrayList<Champion> champions;
+    private ArrayList<Champion> champions = new ArrayList<>();
 
     public ChampionAdapter(List<Champion> champions, ChampPoolViewModel champPoolViewModel) {
         this.champions = (ArrayList<Champion>) champions;
@@ -54,7 +54,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.Starre
 
     @Override
     public int getItemCount() {
-        return champions.size();
+        return champions == null ? 0 : champions.size();
     }
 
 

@@ -8,7 +8,7 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import com.danielakinola.loljournal.ChampionReference;
+import com.danielakinola.loljournal.utils.ChampionGallery;
 
 import java.util.Locale;
 
@@ -46,8 +46,8 @@ public final class Matchup {
         this.enemyChampion = enemyChampion;
         this.lane = lane;
         this.starred = starred;
-        this.playerChampionImageResource = ChampionReference.champions.get(playerChampion);
-        this.enemyChampionImageResource = ChampionReference.champions.get(enemyChampion);
+        this.playerChampionImageResource = ChampionGallery.champions.get(playerChampion);
+        this.enemyChampionImageResource = ChampionGallery.champions.get(enemyChampion);
     }
 
     @Ignore
@@ -57,8 +57,8 @@ public final class Matchup {
         this.enemyChampion = enemyChampion;
         this.lane = lane;
         this.starred = starred;
-        this.playerChampionImageResource = ChampionReference.champions.get(playerChampion);
-        this.enemyChampionImageResource = ChampionReference.champions.get(enemyChampion);
+        this.playerChampionImageResource = ChampionGallery.champions.get(playerChampion);
+        this.enemyChampionImageResource = ChampionGallery.champions.get(enemyChampion);
     }
 
     @Ignore
@@ -68,8 +68,8 @@ public final class Matchup {
         this.enemyChampion = enemyChampion;
         this.lane = lane;
         this.starred = false;
-        this.playerChampionImageResource = ChampionReference.champions.get(playerChampion);
-        this.enemyChampionImageResource = ChampionReference.champions.get(enemyChampion);
+        this.playerChampionImageResource = ChampionGallery.champions.get(playerChampion);
+        this.enemyChampionImageResource = ChampionGallery.champions.get(enemyChampion);
     }
 
     @NonNull

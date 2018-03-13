@@ -10,23 +10,34 @@ import com.danielakinola.loljournal.ViewModelFactory;
 
 import javax.inject.Inject;
 
+import dagger.android.AndroidInjection;
+
 public class EditCommentActivity extends AppCompatActivity {
     public static final String CATEGORY = "CATEGORY";
     public static final String COMMENT_ID = "COMMENT_ID";
     public static final String MATCHUP_ID = "MATCHUP_ID";
 
     @Inject
-    private ViewModelFactory viewModelFactory;
+    ViewModelFactory viewModelFactory;
     private EditCommentViewModel editCommentViewModel;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_comment);
         setupFAB();
+        setupViewModel();
+    }
+
+    private void setupViewModel() {
+        int commentId = getIntent().getIntExtra(COMMENT_ID, -1);
+        String matchupId = getIntent().getStringExtra(MATCHUP_ID);
+        int category = getIntent().getIntExtra(CATEGORY, -1);
 
         editCommentViewModel = ViewModelProviders.of(this, viewModelFactory).get(EditCommentViewModel.class);
+        editCommentViewModel.initialize(commentId, matchupId, category);
         editCommentViewModel.getConfirmationEvent().observe(this, aVoid -> onConfirm());
     }
 

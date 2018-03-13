@@ -6,7 +6,7 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import com.danielakinola.loljournal.ChampionReference;
+import com.danielakinola.loljournal.utils.ChampionGallery;
 
 import java.util.Locale;
 
@@ -27,7 +27,7 @@ public class Champion {
     public Champion(@NonNull String id, @NonNull String name, int lane, boolean starred) {
         this.id = String.format(Locale.ENGLISH, "%s_%d", name, lane);
         this.name = name;
-        this.imageResource = ChampionReference.champions.get(name);
+        this.imageResource = ChampionGallery.champions.get(name);
         this.lane = lane;
         this.starred = starred;
     }
@@ -36,7 +36,7 @@ public class Champion {
     public Champion(@NonNull String name, int lane, boolean starred) {
         this.id = String.format(Locale.ENGLISH, "%s_%d", name, lane);
         this.name = name;
-        this.imageResource = ChampionReference.champions.get(name);
+        this.imageResource = ChampionGallery.champions.get(name);
         this.lane = lane;
         this.starred = starred;
     }
@@ -45,7 +45,7 @@ public class Champion {
     public Champion(@NonNull String name, int lane) {
         this.id = String.format(Locale.ENGLISH, "%s_%d", name, lane);
         this.name = name;
-        this.imageResource = ChampionReference.champions.get(name);
+        this.imageResource = ChampionGallery.champions.get(name);
         this.lane = lane;
         this.starred = false;
     }
@@ -54,7 +54,7 @@ public class Champion {
     public Champion(String id, @NonNull String name, int lane) {
         this.id = id;
         this.name = name;
-        this.imageResource = ChampionReference.champions.get(name);
+        this.imageResource = ChampionGallery.champions.get(name);
         this.lane = lane;
         this.starred = false;
     }

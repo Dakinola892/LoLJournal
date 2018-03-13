@@ -18,12 +18,13 @@
     </data>
 
     <FrameLayout
+        android:tag="fragment_champ_pool_0"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? @color/colorEmptyStateBackground : @color/colorAppBackground}">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/champ_pool_recyler_view"
+            android:id="@+id/champ_pool_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingEnd="16dp"
@@ -40,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? @color/colorEmptyStateBackground : @color/colorAppBackground}"
             android:visibility="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? View.VISIBLE : View.GONE}" />
 
     </FrameLayout>
