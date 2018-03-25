@@ -1,6 +1,7 @@
 package com.danielakinola.loljournal.dependencyinjection;
 
 import android.app.Application;
+import android.content.res.TypedArray;
 
 import com.danielakinola.loljournal.R;
 
@@ -20,7 +21,7 @@ public class ResourcesModule {
 
     @Provides
     @Named("laneIcons")
-    int[] provideLaneIcons(Application application) {
-        return application.getResources().getIntArray(R.array.lane_icons);
+    TypedArray provideLaneIcons(Application application) {
+        return application.getResources().obtainTypedArray(R.array.lane_icons);
     }
 }

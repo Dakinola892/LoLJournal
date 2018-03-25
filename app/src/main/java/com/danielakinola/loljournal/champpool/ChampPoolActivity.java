@@ -4,11 +4,14 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.ViewModelFactory;
@@ -40,12 +43,21 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
         AndroidInjection.inject(this);
         if (savedInstanceState != null) {
             lane = savedInstanceState.getInt(ChampionSelectActivity.LANE, 0);
+        } else {
+            lane = getIntent().getIntExtra(ChampionSelectActivity.LANE, 0);
         }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_champ_pool);
         setupViewModel();
         setupDataBinding();
         setupViewPager();
+        setupFAB();
+    }
+
+    private void setupFAB() {
+        FloatingActionButton fab = findViewById(R.id.fab_change_champ_pool);
+        fab.setOnClickListener(v -> champPoolViewModel.editChampPool());
     }
 
 
@@ -54,10 +66,17 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
         activityChampPoolBinding.setViewmodel(champPoolViewModel);
     }
 
+
+    //tODO: remove this change int arrays to typed arrays
     private void setupViewModel() {
+        ImageView icon = findViewById(R.id.img_lane_icon);
+        TextView title = findViewById(R.id.text_lane_title);
+
         champPoolViewModel = ViewModelProviders.of(this, viewModelFactory).get(ChampPoolViewModel.class);
         champPoolViewModel.setCurrentLane(lane);
         champPoolViewModel.getCurrentLane().observe(this, newLane -> lane = newLane);
+        champPoolViewModel.getLaneTitle().observe(this, title::setText);
+        champPoolViewModel.getLaneIcon().observe(this, icon::setImageResource);
         champPoolViewModel.getEditChampPoolEvent().observe(this, aVoid -> openChampionSelect());
         champPoolViewModel.getChampionDetailEvent().observe(this, this::openChosenChampion);
         champPoolViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) laneString ->

@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
+import android.content.res.TypedArray;
 
 import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.data.MatchupRepository;
@@ -33,7 +34,7 @@ public class ChampPoolViewModel extends ViewModel {
     private static final int SUPPORT = 4;
 
     private final String[] laneTitles;
-    private final int[] laneIcons;
+    private final TypedArray laneIcons;
     private final MatchupRepository matchupRepository;
 
     private final MutableLiveData<Integer> currentLane = new MutableLiveData<>();
@@ -49,7 +50,7 @@ public class ChampPoolViewModel extends ViewModel {
 
 
     @Inject
-    public ChampPoolViewModel(MatchupRepository matchupRepository, @Named("laneTitles") String[] laneTitles, @Named("laneIcons") int[] laneIcons) {
+    public ChampPoolViewModel(MatchupRepository matchupRepository, @Named("laneTitles") String[] laneTitles, @Named("laneIcons") TypedArray laneIcons) {
         this.matchupRepository = matchupRepository;
         this.laneTitles = laneTitles;
         this.laneIcons = laneIcons;
@@ -70,7 +71,7 @@ public class ChampPoolViewModel extends ViewModel {
         });
 
         this.laneIcon = Transformations.map(currentLane, newLane -> {
-            return laneIcons[newLane];
+            return laneIcons.getResourceId(newLane, 0);
         });
 
         for (int i = 0; i < empty.length; i++) {
@@ -95,11 +96,11 @@ public class ChampPoolViewModel extends ViewModel {
         return empty[lane];
     }
 
-    public LiveData<String> getLaneTitle(int lane) {
+    public LiveData<String> getLaneTitle() {
         return laneTitle;
     }
 
-    public LiveData<Integer> getLaneIcon(int lane) {
+    public LiveData<Integer> getLaneIcon() {
         return laneIcon;
     }
 

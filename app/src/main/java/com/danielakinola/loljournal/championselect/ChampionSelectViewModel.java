@@ -39,32 +39,44 @@ public class ChampionSelectViewModel extends ViewModel {
         this.CHAMP_NAME = champName;
 
         if (champName == null) {
-            this.INTIALLY_SELECTED_CHAMPIONS.addAll(MATCHUP_REPOSITORY.getChampNames(lane));
             this.TITLE = "Champion Select";
             this.SUBTITLE = laneTitle;
+            List<String> result = MATCHUP_REPOSITORY.getChampNames(lane).getValue();
+            if (result != null) {
+                this.INTIALLY_SELECTED_CHAMPIONS.addAll(result);
+            }
         } else {
-            this.INTIALLY_SELECTED_CHAMPIONS.addAll(MATCHUP_REPOSITORY.getMatchupNames(lane, champName));
             this.TITLE = "Matchup Select";
             this.SUBTITLE = laneTitle + champName;
+            List<String> result = MATCHUP_REPOSITORY.getMatchupNames(lane, champName).getValue();
+            if (result != null) {
+                this.INTIALLY_SELECTED_CHAMPIONS.addAll(result);
+            }
         }
     }
 
 
+    //TODO: properly learn RxJava2
+
     public void applyChampionSelection() {
         List<String> championsOrMatchups = CURRENTLY_SELECTED_CHAMPIONS.getValue();
-        if (CHAMP_NAME == null) {
-            Champion[] champions = new Champion[championsOrMatchups.size()];
-            for (int i = 0; i < championsOrMatchups.size(); i++) {
-                champions[i] = new Champion(championsOrMatchups.get(i), LANE);
+
+        if (championsOrMatchups != null) {
+            if (CHAMP_NAME == null) {
+                Champion[] champions = new Champion[championsOrMatchups.size()];
+                for (int i = 0; i < championsOrMatchups.size(); i++) {
+                    champions[i] = new Champion(championsOrMatchups.get(i), LANE);
+                }
+                MATCHUP_REPOSITORY.addChampion(champions);
+            } else {
+                Matchup[] matchups = new Matchup[championsOrMatchups.size()];
+                for (int i = 0; i < championsOrMatchups.size(); i++) {
+                    matchups[i] = new Matchup(CHAMP_NAME, championsOrMatchups.get(i), LANE);
+                }
+                MATCHUP_REPOSITORY.addMatchup(matchups);
             }
-            MATCHUP_REPOSITORY.addChampion(champions);
-        } else {
-            Matchup[] matchups = new Matchup[championsOrMatchups.size()];
-            for (int i = 0; i < championsOrMatchups.size(); i++) {
-                matchups[i] = new Matchup(CHAMP_NAME, championsOrMatchups.get(i), LANE);
-            }
-            MATCHUP_REPOSITORY.addMatchup(matchups);
         }
+
         NAVIGATE_BACK_TO_PREVIOUS_ACTIVITY_EVENT.setValue(null);
     }
 
@@ -98,6 +110,11 @@ public class ChampionSelectViewModel extends ViewModel {
 
     public void onViewHolderClick(String name) {
         List<String> champions = CURRENTLY_SELECTED_CHAMPIONS.getValue();
+
+        if (champions == null) {
+            champions = new ArrayList<>();
+        }
+
         if (champions.contains(name)) {
             champions.remove(name);
         } else {

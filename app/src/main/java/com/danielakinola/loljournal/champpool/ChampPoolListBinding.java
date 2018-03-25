@@ -14,4 +14,9 @@ public class ChampPoolListBinding {
         ChampionAdapter adapter = (ChampionAdapter) recyclerView.getAdapter();
         adapter.setChampions((ArrayList<Champion>) champions);
     }
+
+    /*@BindingAdapter("android:src")
+    public static void setImageResource(ImageView imageView, int resource){
+        imageView.setImageResource(resource);
+    }*/
 }

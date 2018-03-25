@@ -23,7 +23,7 @@ public interface MatchupDao {
     LiveData<List<Matchup>> getStarredMatchups(int lane, String playerChampion);
 
     @Query("SELECT enemy_champion FROM Matchups WHERE lane = :lane AND player_champion = :playerChampion")
-    List<String> getMatchupNames(int lane, String playerChampion);
+    LiveData<List<String>> getMatchupNames(int lane, String playerChampion);
 
     @Query("UPDATE Matchups SET starred = (NOT starred) WHERE matchup_id = :matchupId")
     void updateMatchupStarred(String matchupId);

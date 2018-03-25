@@ -28,7 +28,7 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private ArrayList<String> currentlySelectedChampions = new ArrayList<>();
 
     private final String[] champNames = {"Aatrox", "Ahri", "Akali", "Alistar", "Amumu", "Anivia", "Annie", "Ashe",
-            "AurelionSol", "Azir", "Bard", "Blitzcrank", "Brand", "Braum", "Caitlyn", "Camille",
+            "Aurelion Sol", "Azir", "Bard", "Blitzcrank", "Brand", "Braum", "Caitlyn", "Camille",
             "Cassiopeia", "Cho'Gath", "Corki", "Darius", "Diana", "DrMundo", "Draven", "Ekko", "Elise",
             "Evelynn", "Ezreal", "Fiddlesticks", "Fiora", "Fizz", "Galio", "Gangplank", "Garen",
             "Gnar", "Gragas", "Graves", "Hecarim", "Heimerdinger", "Illaoi", "Irelia", "Ivern", "Janna",
@@ -40,58 +40,58 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             "Rammus", "Rek'Sai", "Renekton", "Rengar", "Riven", "Rumble", "Ryze", "Sejuani", "Shaco",
             "Shen", "Shyvana", "Singed", "Sion", "Sivir", "Skarner", "Sona", "Soraka", "Swain", "Syndra",
             "Tahm Kench", "Taliyah", "Talon", "Taric", "Teemo", "Thresh", "Tristana", "Trundle",
-            "Tryndamere", "TwistedFate", "Twitch", "Udyr", "Urgot", "Varus", "Vayne", "Veigar",
+            "Tryndamere", "Twisted Fate", "Twitch", "Udyr", "Urgot", "Varus", "Vayne", "Veigar",
             "Vel'Koz", "Vi", "Viktor", "Vladimir", "Volibear", "Warwick", "Wukong", "Xayah", "Xerath",
             "Xin Zhao", "Yasuo", "Yorick", "Zac", "Zed", "Ziggs", "Zoe", "Zilean", "Zyra"};
 
     final private int[] championSquares = {
-            R.drawable.aatrox_square_0, R.drawable.ahri_square_0, R.drawable.akali_square_0,
-            R.drawable.alistar_square_0, R.drawable.amumu_square_0, R.drawable.anivia_square_0,
-            R.drawable.annie_square_0, R.drawable.ashe_square_0, R.drawable.aurelionsol_square_0,
-            R.drawable.azir_square_0, R.drawable.bard_square_0, R.drawable.blitzcrank_square_0,
-            R.drawable.brand_square_0, R.drawable.braum_square_0, R.drawable.caitlyn_square_0,
-            R.drawable.camille_square_0, R.drawable.cassiopeia_square_0, R.drawable.chogath_square_0,
-            R.drawable.corki_square_0, R.drawable.darius_square_0, R.drawable.diana_square_0,
-            R.drawable.drmundo_square_0, R.drawable.draven_square_0, R.drawable.ekko_square_0,
-            R.drawable.elise_square_0, R.drawable.evelynn_square_0, R.drawable.ezreal_square_0,
-            R.drawable.fiddlesticks_square_0, R.drawable.fiora_square_0, R.drawable.fizz_square_0,
-            R.drawable.galio_square_0, R.drawable.gangplank_square_0, R.drawable.garen_square_0,
-            R.drawable.gnar_square_0, R.drawable.gragas_square_0, R.drawable.graves_square_0,
-            R.drawable.hecarim_square_0, R.drawable.heimerdinger_square_0, R.drawable.illaoi_square_0,
-            R.drawable.irelia_square_0, R.drawable.ivern_square_0, R.drawable.janna_square_0,
-            R.drawable.jarvaniv_square_0, R.drawable.jax_square_0, R.drawable.jayce_square_0,
-            R.drawable.jhin_square_0, R.drawable.jinx_square_0, R.drawable.kalista_square_0,
-            R.drawable.karma_square_0, R.drawable.karthus_square_0, R.drawable.kassadin_square_0,
-            R.drawable.katarina_square_0, R.drawable.kayn_square_0, R.drawable.kayle_square_0,
-            R.drawable.kennen_square_0, R.drawable.kled_square_0, R.drawable.kindred_square_0,
-            R.drawable.khazix_square_0, R.drawable.kogmaw_square_0, R.drawable.leblanc_square_0,
-            R.drawable.leesin_square_0, R.drawable.leona_square_0, R.drawable.lissandra_square_0,
-            R.drawable.lucian_square_0, R.drawable.lulu_square_0, R.drawable.lux_square_0,
-            R.drawable.malphite_square_0, R.drawable.malzahar_square_0, R.drawable.maokai_square_0,
-            R.drawable.masteryi_square_0, R.drawable.missfortune_square_0, R.drawable.mordekaiser_square_0,
-            R.drawable.morgana_square_0, R.drawable.nami_square_0, R.drawable.nasus_square_0,
-            R.drawable.nautilus_square_0, R.drawable.nidalee_square_0, R.drawable.nocturne_square_0,
-            R.drawable.nunu_square_0, R.drawable.olaf_square_0, R.drawable.orianna_square_0,
-            R.drawable.ornn_square_0, R.drawable.pantheon_square_0, R.drawable.poppy_square_0,
-            R.drawable.quinn_square_0, R.drawable.rakan_square_0, R.drawable.rammus_square_0,
-            R.drawable.reksai_square_0, R.drawable.renekton_square_0, R.drawable.rengar_square_0,
-            R.drawable.riven_square_0, R.drawable.rumble_square_0, R.drawable.ryze_square_0,
-            R.drawable.sejuani_square_0, R.drawable.shaco_square_0, R.drawable.shen_square_0,
-            R.drawable.shyvana_square_0, R.drawable.singed_square_0, R.drawable.sion_square_0,
-            R.drawable.sivir_square_0, R.drawable.skarner_square_0, R.drawable.sona_square_0,
-            R.drawable.soraka_square_0, R.drawable.swain_square_0, R.drawable.syndra_square_0,
-            R.drawable.tahmkench_square_0, R.drawable.taliyah_square_0, R.drawable.talon_square_0,
-            R.drawable.taric_square_0, R.drawable.teemo_square_0, R.drawable.thresh_square_0,
-            R.drawable.tristana_square_0, R.drawable.trundle_square_0, R.drawable.tryndamere_square_0,
-            R.drawable.twistedfate_square_0, R.drawable.twitch_square_0, R.drawable.udyr_square_0,
-            R.drawable.urgot_square_0, R.drawable.varus_square_0, R.drawable.vayne_square_0,
-            R.drawable.veigar_square_0, R.drawable.velkoz_square_0, R.drawable.vi_square_0,
-            R.drawable.viktor_square_0, R.drawable.vladimir_square_0, R.drawable.volibear_square_0,
-            R.drawable.warwick_square_0, R.drawable.monkeyking_square_0, R.drawable.xerath_square_0,
-            R.drawable.teemo_square_0,
-            R.drawable.xinzhao_square_0, R.drawable.yasuo_square_0, R.drawable.yorick_square_0,
-            R.drawable.zac_square_0, R.drawable.zed_square_0, R.drawable.ziggs_square_0,
-            R.drawable.zoe_square_0, R.drawable.zilean_square_0, R.drawable.zyra_square_0};
+            R.drawable.aatrox_loading, R.drawable.ahri_loading, R.drawable.akali_loading,
+            R.drawable.alistar_loading, R.drawable.amumu_loading, R.drawable.anivia_loading,
+            R.drawable.annie_loading, R.drawable.ashe_loading, R.drawable.aureliansol_loading,
+            R.drawable.azir_loading, R.drawable.bard_loading, R.drawable.blitzcrank_loading,
+            R.drawable.brand_loading, R.drawable.braum_loading, R.drawable.caitlyn_loading,
+            R.drawable.camille_loading, R.drawable.cassiopeia_loading, R.drawable.chogath_loading,
+            R.drawable.corki_loading, R.drawable.darius_loading, R.drawable.diana_loading,
+            R.drawable.drmundo_loading, R.drawable.draven_loading, R.drawable.ekko_loading,
+            R.drawable.elise_loading, R.drawable.evelynn_loading, R.drawable.ezreal_loading,
+            R.drawable.fiddlesticks_loading, R.drawable.fiora_loading, R.drawable.fizz_loading,
+            R.drawable.galio_loading, R.drawable.gangplank_loading, R.drawable.garen_loading,
+            R.drawable.gnar_loading, R.drawable.gragas_loading, R.drawable.graves_loading,
+            R.drawable.hecarim_loading, R.drawable.heimerdinger_loading, R.drawable.illaoi_loading,
+            R.drawable.irelia_loading, R.drawable.ivern_loading, R.drawable.janna_loading,
+            R.drawable.jarvaniv_loading, R.drawable.jax_loading, R.drawable.jayce_loading,
+            R.drawable.jhin_loading, R.drawable.jinx_loading, R.drawable.kalista_loading,
+            R.drawable.karma_loading, R.drawable.karthus_loading, R.drawable.kassadin_loading,
+            R.drawable.katarina_loading, R.drawable.kayn_loading, R.drawable.kayle_loading,
+            R.drawable.kennen_loading, R.drawable.kled_loading, R.drawable.kindred_loading,
+            R.drawable.khazix_loading, R.drawable.kogmaw_loading, R.drawable.leblanc_loading,
+            R.drawable.leesin_loading, R.drawable.leona_loading, R.drawable.lissandra_loading,
+            R.drawable.lucian_loading, R.drawable.lulu_loading, R.drawable.lux_loading,
+            R.drawable.malphite_loading, R.drawable.malzahar_loading, R.drawable.maokai_loading,
+            R.drawable.masteryi_loading, R.drawable.missfortune_loading, R.drawable.mordekaiser_loading,
+            R.drawable.morgana_loading, R.drawable.nami_loading, R.drawable.nasus_loading,
+            R.drawable.nautilus_loading, R.drawable.nidalee_loading, R.drawable.nocturne_loading,
+            R.drawable.nunu_loading, R.drawable.olaf_loading, R.drawable.orianna_loading,
+            R.drawable.ornn_loading, R.drawable.pantheon_loading, R.drawable.poppy_loading,
+            R.drawable.quinn_loading, R.drawable.rakan_loading, R.drawable.rammus_loading,
+            R.drawable.reksai_loading, R.drawable.renekton_loading, R.drawable.rengar_loading,
+            R.drawable.riven_loading, R.drawable.rumble_loading, R.drawable.ryze_loading,
+            R.drawable.sejuani_loading, R.drawable.shaco_loading, R.drawable.shen_loading,
+            R.drawable.shyvana_loading, R.drawable.singed_loading, R.drawable.sion_loading,
+            R.drawable.sivir_loading, R.drawable.skarner_loading, R.drawable.sona_loading,
+            R.drawable.soraka_loading, R.drawable.swain_loading, R.drawable.syndra_loading,
+            R.drawable.tahmkench_loading, R.drawable.taliyah_loading, R.drawable.talon_loading,
+            R.drawable.taric_loading, R.drawable.teemo_loading, R.drawable.thresh_loading,
+            R.drawable.tristana_loading, R.drawable.trundle_loading, R.drawable.tryndamere_loading,
+            R.drawable.twistedfate_loading, R.drawable.twitch_loading, R.drawable.udyr_loading,
+            R.drawable.urgot_loading, R.drawable.varus_loading, R.drawable.vayne_loading,
+            R.drawable.veigar_loading, R.drawable.velkoz_loading, R.drawable.vi_loading,
+            R.drawable.viktor_loading, R.drawable.vladimir_loading, R.drawable.volibear_loading,
+            R.drawable.warwick_loading, R.drawable.wukong_loading, R.drawable.xerath_loading,
+            R.drawable.teemo_loading,
+            R.drawable.xinzhao_loading, R.drawable.yasuo_loading, R.drawable.yorick_loading,
+            R.drawable.zac_loading, R.drawable.zed_loading, R.drawable.ziggs_loading,
+            R.drawable.zoe_loading, R.drawable.zilean_loading, R.drawable.zyra_loading};
 
 
 
@@ -122,7 +122,7 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);  //set to grayscale
             holder.imageView.setColorFilter(new ColorMatrixColorFilter(matrix));
-            //holder.imageView.setImageAlpha(128);
+            holder.imageView.setImageAlpha(128);
             return holder;
         }
     }
@@ -134,17 +134,26 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (viewHolder.getItemViewType() == INACTIVE) {
             InactiveChampionViewHolder holder = (InactiveChampionViewHolder) viewHolder;
             holder.textView.setText(champName);
+            if (champName.length() > 10) {
+                holder.textView.setTextSize(19f);
+            }
             holder.imageView.setImageResource(championSquare);
             holder.imageView.setImageAlpha(128);
+
+
         } else {
             ActiveChampionViewHolder holder = (ActiveChampionViewHolder) viewHolder;
             holder.textView.setText(champName);
+            if (champName.length() > 10) {
+                holder.textView.setTextSize(22f);
+            }
             holder.imageView.setImageResource(championSquare);
             if (currentlySelectedChampions.contains(champName)) {
                 holder.selectorImageView.setVisibility(View.VISIBLE);
             } else {
                 holder.selectorImageView.setVisibility(View.GONE);
             }
+
         }
     }
 

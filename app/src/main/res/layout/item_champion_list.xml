@@ -27,9 +27,9 @@
         android:layout_gravity="bottom"
         android:textAlignment="center"
         android:textSize="24sp"
-        tools:background="@color/colorAccent"
-        tools:text="Luciannn"
-        tools:textColor="@android:color/white" />
+        android:background="@color/colorAccent"
+        android:textColor="@android:color/white"
+        tools:text="Annie" />
 
     <ImageView
         android:id="@+id/img_champion_selected"

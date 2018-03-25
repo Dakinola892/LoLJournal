@@ -128,7 +128,7 @@ public class ChampionGallery {
         champions.put("Tristana", R.drawable.tristana_loading);
         champions.put("Trundle", R.drawable.trundle_loading);
         champions.put("Tryndamere", R.drawable.tryndamere_loading);
-        champions.put("Twistedfate", R.drawable.twistedfate_loading);
+        champions.put("Twisted Fate", R.drawable.twistedfate_loading);
         champions.put("Twitch", R.drawable.twitch_loading);
         champions.put("Udyr", R.drawable.udyr_loading);
         champions.put("Urgot", R.drawable.urgot_loading);
@@ -155,8 +155,8 @@ public class ChampionGallery {
         champions.put("Zyra", R.drawable.zyra_loading);
     }
 
-    public static int getChampionImage(String champName) {
+   /* public static int getChampionImage(String champName) {
         champName = champName.toLowerCase();
         return champions.get(champName);
-    }
+    }*/
 }

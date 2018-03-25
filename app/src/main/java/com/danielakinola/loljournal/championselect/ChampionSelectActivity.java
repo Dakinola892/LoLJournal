@@ -31,9 +31,10 @@ public class ChampionSelectActivity extends AppCompatActivity {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_champion_select);
+        championSelectViewModel = ViewModelProviders.of(this, viewModelFactory).get(ChampionSelectViewModel.class);
+        setupRecylerView();
         setupViewModel();
         setupToolbar();
-        setupRecylerView();
         setupFAB();
     }
 
@@ -54,14 +55,15 @@ public class ChampionSelectActivity extends AppCompatActivity {
         int lane = getIntent().getIntExtra(LANE, -1);
         String champName = getIntent().getStringExtra(CHAMP_NAME);
 
-        championSelectViewModel = ViewModelProviders.of(this, viewModelFactory).get(ChampionSelectViewModel.class);
-
         championSelectViewModel.initialize(lane, champName,
                 getResources().getStringArray(R.array.lanes_array)[lane],
-                getResources().getIntArray(R.array.lane_icons)[lane]);
+                getResources().obtainTypedArray(R.array.lane_icons).getResourceId(lane, -1));
 
         championSelectViewModel.getCurrentlySelectedChampions()
-                .observe(this, championListAdapter::setCurrentlySelectedChampions);
+                .observe(this, currentlySelectedChampions -> {
+                    championListAdapter.setCurrentlySelectedChampions(currentlySelectedChampions);
+                    championListAdapter.notifyDataSetChanged();
+                });
 
         championSelectViewModel.getNavigateBackToPreviousActivityEvent()
                 .observe(this, aVoid -> navigateBack());
@@ -71,9 +73,9 @@ public class ChampionSelectActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_champion_select);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-        toolbar.setTitle(championSelectViewModel.getTitle());
-        toolbar.setSubtitle(championSelectViewModel.getSubtitle());
-        toolbar.setLogo(championSelectViewModel.getLaneIcon());
+        getSupportActionBar().setTitle(championSelectViewModel.getTitle());
+        getSupportActionBar().setSubtitle(championSelectViewModel.getSubtitle());
+        //toolbar.setLogo(championSelectViewModel.getLaneIcon());
     }
 
     public void navigateBack() {

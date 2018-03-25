@@ -49,7 +49,6 @@
                         android:backgroundTint="@android:color/background_dark"
                         android:backgroundTintMode="src_over"
                         android:cropToPadding="true"
-                        android:src="@{viewmodel.laneIcon}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.926"
@@ -60,6 +59,7 @@
                         tools:src="@drawable/ic_top_lane" />
 
                     <!--TODO: see if scrim helps visibility?-->
+                    <!--todo: try data binding again?-->
 
                     <TextView
                         android:id="@+id/text_lane_title"
@@ -69,13 +69,12 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginTop="28dp"
                         android:gravity="center_vertical"
-                        android:text="@{viewmodel.laneTitle}"
                         app:layout_constraintEnd_toStartOf="@+id/img_lane_icon"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/text_champ_pool_subtitle"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="Mid Lane"
-                        tools:textAppearance="@style/TextAppearance.Design.CollapsingToolbar.Expanded" />
+                        android:textAppearance="@style/TextAppearance.Design.CollapsingToolbar.Expanded" />
 
                     <!--TODO: make text style for 'Champ Pool Subtitle-->
                     <TextView
@@ -95,9 +94,8 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/text_lane_title"
                         app:layout_constraintVertical_bias="0.0"
-                        tools:text="Champ Pool"
-                        tools:textColor="@android:color/white"
-                        tools:textSize="24sp" />
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp" />
 
                 </android.support.constraint.ConstraintLayout>
 
@@ -145,7 +143,6 @@
             android:layout_marginEnd="16dp"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="@{() -> viewmodel.editChampPool()}"
             app:fabSize="normal"
             app:layout_anchor="@+id/view_pager"
             app:layout_anchorGravity="bottom|end"

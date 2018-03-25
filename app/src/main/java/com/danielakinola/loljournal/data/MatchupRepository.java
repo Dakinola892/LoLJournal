@@ -60,12 +60,12 @@ public class MatchupRepository implements MatchupDataSource {
     }
 
     @Override
-    public List<String> getChampNames(int lane) {
+    public LiveData<List<String>> getChampNames(int lane) {
         return championDao.getChampionNames(lane);
     }
 
     @Override
-    public List<String> getMatchupNames(int lane, String playerChampion) {
+    public LiveData<List<String>> getMatchupNames(int lane, String playerChampion) {
         return matchupDao.getMatchupNames(lane, playerChampion);
     }
 
