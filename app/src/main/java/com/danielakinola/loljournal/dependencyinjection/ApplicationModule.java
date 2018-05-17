@@ -26,7 +26,9 @@ public class ApplicationModule {
     @Singleton
     @Provides
     MatchupDatabase providesMatchupDatabase(Application application) {
-        return Room.databaseBuilder(application, MatchupDatabase.class, "LoLJournal.db").build();
+        return Room.databaseBuilder(application, MatchupDatabase.class, "LoLJournal.db")
+                .fallbackToDestructiveMigration()
+                .build();
     }
 
     @Singleton

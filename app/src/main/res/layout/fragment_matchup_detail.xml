@@ -35,6 +35,7 @@
         <!--android:visibility="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? View.GONE : View.VISIBLE}" />-->
 
         <include
+            android:id="@+id/empty_state"
             layout="@layout/empty_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

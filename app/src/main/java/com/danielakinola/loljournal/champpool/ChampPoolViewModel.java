@@ -40,9 +40,10 @@ public class ChampPoolViewModel extends ViewModel {
     private final MutableLiveData<Integer> currentLane = new MutableLiveData<>();
     private LiveData<String> laneTitle;
     private LiveData<Integer> laneIcon;
+    private LiveData<Integer> emptyStateVisibility;
 
     private LiveData<List<Champion>>[] champions = new LiveData[5];
-    private LiveData<Boolean>[] empty = new LiveData[5];
+    private LiveData<Boolean>[] noChampions = new LiveData[5];
 
     private SnackbarMessage snackbarMessage = new SnackbarMessage();
     private SingleLiveEvent<Void> editChampPoolEvent = new SingleLiveEvent<>();
@@ -50,10 +51,11 @@ public class ChampPoolViewModel extends ViewModel {
 
 
     @Inject
-    public ChampPoolViewModel(MatchupRepository matchupRepository, @Named("laneTitles") String[] laneTitles, @Named("laneIcons") TypedArray laneIcons) {
+    public ChampPoolViewModel(MatchupRepository matchupRepository, @Named("laneTitles") String[] laneTitles, @Named("laneIcons") TypedArray laneIcons/*, @Named("visibilities") int[] visibilities*/) {
         this.matchupRepository = matchupRepository;
         this.laneTitles = laneTitles;
         this.laneIcons = laneIcons;
+        /*this.visibilityValues = visibilities;*/
         getChampPoolData();
         subscribeToLaneChanges();
     }
@@ -74,9 +76,30 @@ public class ChampPoolViewModel extends ViewModel {
             return laneIcons.getResourceId(newLane, 0);
         });
 
-        for (int i = 0; i < empty.length; i++) {
-            this.empty[i] = Transformations.map(champions[i], newChampions -> newChampions.isEmpty());
+        for (int i = 0; i < noChampions.length; i++) {
+            this.noChampions[i] = Transformations.map(champions[i], newChampions -> {
+                return (newChampions.isEmpty() || newChampions == null) ? true : false;
+            });
         }
+
+        //TODO: GIANT SWITCH STATEMENT?
+        /*for (int i = 0; i < emptyStateVisibilities.length; i++) {
+            this.emptyStateVisibilities[i] = Transformations.map(champions[i], newChampions -> {
+                if(newChampions.isEmpty()) {
+                    return visibilityValues[0];
+                } else{
+                    return visibilityValues[1];
+                }
+            });
+
+            this.recyclerViewVisibilities[i] = Transformations.map(emptyStateVisibilities[i], newValue -> {
+                if(newValue == visibilityValues[0]) {
+                    return visibilityValues[1];
+                } else{
+                    return visibilityValues[0];
+                }
+            });
+        }*/
 
     }
 
@@ -92,8 +115,16 @@ public class ChampPoolViewModel extends ViewModel {
         this.currentLane.setValue(currentLane);
     }
 
-    public LiveData<Boolean> getEmpty(int lane) {
-        return empty[lane];
+    /*public LiveData<Integer> getEmptyStateVisibility(int lane) {
+        return emptyStateVisibilities[lane];
+    }
+
+    public LiveData<Integer> getRecyclerViewVisibility(int lane) {
+        return recyclerViewVisibilities[lane];
+    }*/
+
+    public LiveData<Boolean> getNoChampions(int lane) {
+        return noChampions[lane];
     }
 
     public LiveData<String> getLaneTitle() {

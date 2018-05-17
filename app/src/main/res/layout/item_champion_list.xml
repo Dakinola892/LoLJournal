@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="140dp"
     android:clickable="true"
-    android:focusable="true"
+    android:focusable="false"
     android:layout_margin="4dp"
-    android:focusableInTouchMode="true"
-    android:orientation="vertical">
+    android:focusableInTouchMode="false"
+    android:orientation="vertical"
+    tools:ignore="KeyboardInaccessibleWidget">
 
     <ImageView
         android:id="@+id/img_champion_portrait"

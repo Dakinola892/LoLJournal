@@ -2,6 +2,7 @@ package com.danielakinola.loljournal.dependencyinjection;
 
 import android.app.Application;
 import android.content.res.TypedArray;
+import android.view.View;
 
 import com.danielakinola.loljournal.R;
 
@@ -23,5 +24,11 @@ public class ResourcesModule {
     @Named("laneIcons")
     TypedArray provideLaneIcons(Application application) {
         return application.getResources().obtainTypedArray(R.array.lane_icons);
+    }
+
+    @Provides
+    @Named("visibilities")
+    int[] provideVisibilities() {
+        return new int[]{View.GONE, View.VISIBLE};
     }
 }

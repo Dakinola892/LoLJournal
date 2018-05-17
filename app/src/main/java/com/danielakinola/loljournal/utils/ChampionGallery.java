@@ -8,11 +8,12 @@ import java.util.HashMap;
  * Created by Guest on 28/12/2017.
  */
 
+//TODO: change to immutable map?
 //TODO: change to do add Kaisa
 public class ChampionGallery {
-    public final static HashMap<String, Integer> champions = new HashMap<>();
+    public static final HashMap<String, Integer> champions = new HashMap<>();
 
-    public ChampionGallery() {
+    static {
         champions.put("Aatrox", R.drawable.aatrox_loading);
         champions.put("Ahri", R.drawable.ahri_loading);
         champions.put("Akali", R.drawable.akali_loading);
@@ -155,7 +156,11 @@ public class ChampionGallery {
         champions.put("Zyra", R.drawable.zyra_loading);
     }
 
-   /* public static int getChampionImage(String champName) {
+    public static HashMap<String, Integer> get() {
+        return champions;
+    }
+
+    /* public static int getChampionImage(String champName) {
         champName = champName.toLowerCase();
         return champions.get(champName);
     }*/

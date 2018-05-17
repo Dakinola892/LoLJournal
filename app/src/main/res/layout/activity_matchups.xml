@@ -9,10 +9,6 @@
             name="champion"
             type="com.danielakinola.loljournal.data.models.Champion" />
 
-        <variable
-            name="laneSubtitle"
-            type="String" />
-
     </data>
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -53,28 +49,28 @@
                         android:layout_marginTop="40dp"
                         android:gravity="center_vertical"
                         android:text="@{champion.name}"
+                        android:textAppearance="@style/TextAppearance.Design.CollapsingToolbar.Expanded"
                         app:layout_constraintEnd_toStartOf="@+id/diagonalImageView"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="Heimerdinger"
-                        tools:textAppearance="@style/TextAppearance.Design.CollapsingToolbar.Expanded" />
+                        android:textStyle="bold|normal" />
 
                     <TextView
+                        android:id="@+id/text_lane_subtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/text_champion_name_title"
                         android:layout_centerVertical="true"
                         android:layout_marginBottom="8dp"
-                        android:text="@{laneSubtitle}"
-                        android:textAllCaps="false"
                         android:textStyle="italic"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/text_champion_name_title"
                         app:layout_constraintTop_toBottomOf="@+id/text_champion_name_title"
                         app:layout_constraintVertical_bias="0.0"
                         tools:text="Mid Lane"
-                        tools:textColor="@android:color/white"
-                        tools:textSize="24sp" />
+                        android:textColor="@android:color/white"
+                        android:textSize="28sp" />
 
 
                     <com.santalu.diagonalimageview.DiagonalImageView
@@ -99,11 +95,12 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="ContentDescription"
-                        tools:scaleX="2.7"
-                        tools:scaleY="2.7"
+                        android:scaleX="2.7"
+                        android:scaleY="2.7"
                         tools:src="@drawable/heimerdinger_loading" />
                 </android.support.constraint.ConstraintLayout>
 
+                <!--TODO: SCRIM MAY BE UNNECESSARY-->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="?android:attr/actionBarSize"
@@ -114,7 +111,6 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?android:attr/actionBarSize"
-                    app:subtitle="@{laneSubtitle}"
                     app:title="@{champion.name}"
                     app:titleTextColor="@color/colorAppBackground" />
 
@@ -132,6 +128,10 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:spanCount="2"
             tools:listitem="@layout/item_champion" />
+
+        <include
+            android:id="@+id/empty_state"
+            layout="@layout/empty_state" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_add_matchups"

@@ -27,6 +27,7 @@ import javax.inject.Named;
 import dagger.android.AndroidInjection;
 import dagger.android.support.DaggerAppCompatActivity;
 
+//todo: fix scrolling problem with viewpager
 public class ChampPoolActivity extends DaggerAppCompatActivity {
 
     public static final int REQUEST_EDIT_CHAMP_POOL = RESULT_FIRST_USER + 1;
@@ -119,6 +120,7 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
 
     public void openChosenChampion(String championId) {
         Intent intent = new Intent(this, MatchupsActivity.class);
+        intent.putExtra(ChampionSelectActivity.LANE, lane);
         intent.putExtra(PLAYER_CHAMPION_ID, championId);
         startActivity(intent);
     }

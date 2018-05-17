@@ -39,6 +39,16 @@ public class Comment {
     public Comment(String matchupId, int category) {
         this.matchupId = matchupId;
         this.category = category;
+        this.starred = false;
+    }
+
+    @Ignore
+    public Comment(String matchupId, String title, String description, int category) {
+        this.matchupId = matchupId;
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.starred = false;
     }
 
     public int getId() {

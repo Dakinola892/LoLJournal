@@ -15,6 +15,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class MatchupDetailViewModel extends ViewModel {
     private final MatchupRepository matchupRepository;
     private final ChampionGallery championGallery;
@@ -74,7 +80,26 @@ public class MatchupDetailViewModel extends ViewModel {
     }
 
     public void changeCommentFavourited(Comment comment) {
-        matchupRepository.setCommentStarred(comment.getId());
+        Completable.fromAction(() -> matchupRepository.setCommentStarred(comment.getId()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        snackbarMessage.setValue(R.string.champion_favourited);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+
     }
 
     public void onCommentPlusOned() {

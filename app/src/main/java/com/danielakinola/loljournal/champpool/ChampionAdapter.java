@@ -1,5 +1,6 @@
 package com.danielakinola.loljournal.champpool;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,18 +20,17 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.Starre
     private final ChampPoolViewModel champPoolViewModel;
     private ArrayList<Champion> champions = new ArrayList<>();
 
-    public ChampionAdapter(List<Champion> champions, ChampPoolViewModel champPoolViewModel) {
-        this.champions = (ArrayList<Champion>) champions;
+    public ChampionAdapter(ChampPoolViewModel champPoolViewModel) {
         this.champPoolViewModel = champPoolViewModel;
     }
 
-    public void setChampions(ArrayList<Champion> champions) {
-        this.champions = champions;
-        notifyDataSetChanged();
+    public void setChampions(List<Champion> champions) {
+        this.champions = (ArrayList<Champion>) champions;
     }
 
+    @NonNull
     @Override
-    public StarredChampionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StarredChampionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ItemChampionBinding itemChampionBinding = ItemChampionBinding.inflate(inflater, parent, false);
         itemChampionBinding.setListener(new ChampionItemActionListener() {
@@ -48,7 +48,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.Starre
     }
 
     @Override
-    public void onBindViewHolder(StarredChampionViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StarredChampionViewHolder holder, int position) {
         holder.bind(champions.get(position));
     }
 

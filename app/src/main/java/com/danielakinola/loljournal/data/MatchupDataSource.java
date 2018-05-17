@@ -27,15 +27,13 @@ public interface MatchupDataSource {
 
     LiveData<List<String>> getChampNames(int lane);
 
-    LiveData<List<String>> getMatchupNames(int lane, String playerChampion);
+    LiveData<List<String>> getMatchupNames(String championId);
 
     void addChampion(Champion... champion);
 
     void addMatchup(Matchup... matchup);
 
     void addComment(Comment... comment);
-
-    void saveComment(Comment comment);
 
     void setChampionStarred(String id);
 

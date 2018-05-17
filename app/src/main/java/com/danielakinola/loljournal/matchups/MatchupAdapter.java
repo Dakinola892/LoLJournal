@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 import com.danielakinola.loljournal.data.models.Matchup;
 import com.danielakinola.loljournal.databinding.ItemMatchupChampionBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MatchupAdapter extends RecyclerView.Adapter<MatchupAdapter.MatchupViewHolder> {
-    private List<Matchup> matchups;
+    private List<Matchup> matchups = new ArrayList<>();
     private MatchupsViewModel matchupsViewModel;
 
-    public MatchupAdapter(List<Matchup> matchups, MatchupsViewModel matchupsViewModel) {
-        this.matchups = matchups;
+    public MatchupAdapter(MatchupsViewModel matchupsViewModel) {
         this.matchupsViewModel = matchupsViewModel;
     }
 
@@ -59,5 +59,9 @@ public class MatchupAdapter extends RecyclerView.Adapter<MatchupAdapter.MatchupV
             itemMatchupChampionBinding.setMatchup(matchup);
             itemMatchupChampionBinding.executePendingBindings();
         }
+    }
+
+    public void setMatchups(List<Matchup> matchups) {
+        this.matchups = matchups;
     }
 }

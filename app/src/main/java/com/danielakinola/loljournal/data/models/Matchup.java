@@ -27,6 +27,9 @@ public final class Matchup {
     @ColumnInfo(name = "matchup_id")
     private final String id;
 
+    @ColumnInfo(name = "champion_id")
+    private final String championId;
+
     @ColumnInfo(name = "player_champion")
     private final String playerChampion;
 
@@ -40,7 +43,20 @@ public final class Matchup {
     private boolean starred;
 
 
-    public Matchup(String id, String playerChampion, String enemyChampion, int lane, boolean starred) {
+    public Matchup(String id, String championId, String playerChampion, String enemyChampion, int lane, boolean starred) {
+        this.id = String.format(Locale.ENGLISH, "%s_%s_%d", playerChampion, enemyChampion, lane);
+        this.championId = championId;
+        this.playerChampion = playerChampion;
+        this.enemyChampion = enemyChampion;
+        this.lane = lane;
+        this.starred = starred;
+        this.playerChampionImageResource = ChampionGallery.champions.get(playerChampion);
+        this.enemyChampionImageResource = ChampionGallery.champions.get(enemyChampion);
+    }
+
+    @Ignore
+    public Matchup(String playerChampion, String enemyChampion, int lane, String championId, boolean starred) {
+        this.championId = championId;
         this.id = String.format(Locale.ENGLISH, "%s_%s_%d", playerChampion, enemyChampion, lane);
         this.playerChampion = playerChampion;
         this.enemyChampion = enemyChampion;
@@ -51,18 +67,8 @@ public final class Matchup {
     }
 
     @Ignore
-    public Matchup(String playerChampion, String enemyChampion, int lane, boolean starred) {
-        this.id = String.format(Locale.ENGLISH, "%s_%s_%d", playerChampion, enemyChampion, lane);
-        this.playerChampion = playerChampion;
-        this.enemyChampion = enemyChampion;
-        this.lane = lane;
-        this.starred = starred;
-        this.playerChampionImageResource = ChampionGallery.champions.get(playerChampion);
-        this.enemyChampionImageResource = ChampionGallery.champions.get(enemyChampion);
-    }
-
-    @Ignore
-    public Matchup(String playerChampion, String enemyChampion, int lane) {
+    public Matchup(String playerChampion, String enemyChampion, int lane, String championId) {
+        this.championId = championId;
         this.id = String.format(Locale.ENGLISH, "%s_%s_%d", playerChampion, enemyChampion, lane);
         this.playerChampion = playerChampion;
         this.enemyChampion = enemyChampion;
@@ -75,6 +81,10 @@ public final class Matchup {
     @NonNull
     public String getId() {
         return id;
+    }
+
+    public String getChampionId() {
+        return championId;
     }
 
     public String getPlayerChampion() {

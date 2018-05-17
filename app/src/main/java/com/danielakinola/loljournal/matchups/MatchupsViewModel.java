@@ -1,6 +1,7 @@
 package com.danielakinola.loljournal.matchups;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
 import com.danielakinola.loljournal.R;
@@ -20,10 +21,9 @@ import javax.inject.Inject;
 public class MatchupsViewModel extends ViewModel {
 
     private final MatchupRepository matchupRepository;
-    private int lane;
     private String championId;
     private LiveData<Champion> champion;
-    private String laneSubtitle;
+    //private String laneSubtitle;
 
     private LiveData<List<Matchup>> matchups;
     private SingleLiveEvent<String> openMatchupDetailEvent = new SingleLiveEvent<>();
@@ -33,19 +33,18 @@ public class MatchupsViewModel extends ViewModel {
     @Inject
     public MatchupsViewModel(MatchupRepository matchupRepository) {
         this.matchupRepository = matchupRepository;
-
     }
 
-    public void initialize(String championId, String laneSubtitle) {
+
+    public void initialize(String championId) {
         this.championId = championId;
-        this.laneSubtitle = laneSubtitle;
+        //this.laneSubtitle = laneSubtitle;
         champion = matchupRepository.getChampion(championId);
-        lane = Objects.requireNonNull(champion.getValue()).getLane();
-        matchups = matchupRepository.getMatchups(lane, champion.getValue().getName());
+        matchups = Transformations.switchMap(champion, newChampion -> matchupRepository.getMatchups(newChampion.getLane(), newChampion.getName()));
     }
 
     public int getLane() {
-        return lane;
+        return Objects.requireNonNull(champion.getValue()).getLane();
     }
 
     public LiveData<List<Matchup>> getMatchups() {
@@ -56,9 +55,9 @@ public class MatchupsViewModel extends ViewModel {
         return champion;
     }
 
-    public String getLaneSubtitle() {
+    /*public String getLaneSubtitle() {
         return laneSubtitle;
-    }
+    }*/
 
     public String getChampionId() {
         return championId;
@@ -81,7 +80,7 @@ public class MatchupsViewModel extends ViewModel {
     }
 
     private void editMatchups() {
-        editMatchupsEvent.setValue(champion.getValue().getName());
+        editMatchupsEvent.setValue(Objects.requireNonNull(champion.getValue()).getName());
     }
 
     public void updateFavourited(Matchup matchup) {

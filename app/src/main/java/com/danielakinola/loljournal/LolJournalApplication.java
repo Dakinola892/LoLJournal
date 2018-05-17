@@ -10,6 +10,8 @@ import dagger.android.DaggerApplication;
  */
 
 //TODO: ADD TO MANIFEST
+//todo: addd on destroys & save states
+
 public class LolJournalApplication extends DaggerApplication {
 
     //Android Injector that injects Application with ApplicationComponent to get Application-level dependencies

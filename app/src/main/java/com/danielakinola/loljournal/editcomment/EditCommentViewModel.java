@@ -8,7 +8,11 @@ import com.danielakinola.loljournal.utils.SingleLiveEvent;
 
 import javax.inject.Inject;
 
-import io.reactivex.annotations.Nullable;
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class EditCommentViewModel extends ViewModel {
 
@@ -16,6 +20,8 @@ public class EditCommentViewModel extends ViewModel {
     private SingleLiveEvent<Void> confirmationEvent = new SingleLiveEvent<>();
     private Comment editableComment;
     private boolean NEW_COMMENT;
+    /*private String matchupId;
+    private int category;*/
 
 
     /*@Inject
@@ -30,7 +36,9 @@ public class EditCommentViewModel extends ViewModel {
         this.matchupRepository = matchupRepository;
     }
 
-    public void initialize(int commentId, @Nullable String matchupId, int category) {
+    public void initialize(int commentId, String matchupId, int category) {
+        /*this.matchupId = matchupId;
+        this.category = category;*/
         if (commentId == -1) {
             this.editableComment = new Comment(matchupId, category);
             this.NEW_COMMENT = true;
@@ -44,20 +52,63 @@ public class EditCommentViewModel extends ViewModel {
         return editableComment;
     }
 
+
     public SingleLiveEvent<Void> getConfirmationEvent() {
         return confirmationEvent;
     }
 
-    public void onConfirm() {
-        saveComment();
+    public void onConfirm(String title, String description) {
+        saveComment(title, description);
         confirmationEvent.setValue(null);
+
     }
 
-    private void saveComment() {
+    private void saveComment(String title, String description) {
+
+        editableComment.setTitle(title);
+        editableComment.setDescription(description);
+
         if (NEW_COMMENT) {
-            matchupRepository.saveComment(editableComment);
+            Completable.fromAction(() -> matchupRepository.addComment(editableComment))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new CompletableObserver() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+                    });
+
+
         } else {
-            matchupRepository.updateComment(editableComment);
+            Completable.fromAction(() -> matchupRepository.updateComment(editableComment))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new CompletableObserver() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                        }
+
+                        @Override
+                        public void onComplete() {
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                    });
         }
     }
 }

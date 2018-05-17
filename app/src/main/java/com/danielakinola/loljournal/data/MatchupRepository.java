@@ -17,7 +17,7 @@ public class MatchupRepository implements MatchupDataSource {
     private final MatchupDao matchupDao;
     private final CommentDao commentDao;
 
-    //TODO: Conquer Dagger 2
+
     public MatchupRepository(MatchupDatabase matchupDatabase) {
         this.championDao = matchupDatabase.championDao();
         this.matchupDao = matchupDatabase.matchupDao();
@@ -65,8 +65,8 @@ public class MatchupRepository implements MatchupDataSource {
     }
 
     @Override
-    public LiveData<List<String>> getMatchupNames(int lane, String playerChampion) {
-        return matchupDao.getMatchupNames(lane, playerChampion);
+    public LiveData<List<String>> getMatchupNames(String championId) {
+        return matchupDao.getMatchupNames(championId);
     }
 
     public void addChampion(Champion... champion) {
@@ -79,10 +79,6 @@ public class MatchupRepository implements MatchupDataSource {
 
     public void addComment(Comment... comment) {
         commentDao.addComment(comment);
-    }
-
-    public void saveComment(Comment comment) {
-        commentDao.updateComment(comment);
     }
 
     public void setChampionStarred(String id) {
@@ -109,7 +105,6 @@ public class MatchupRepository implements MatchupDataSource {
         commentDao.deleteComment(comment);
     }
 
-    @Override
     public void updateComment(Comment comment) {
         commentDao.updateComment(comment);
     }

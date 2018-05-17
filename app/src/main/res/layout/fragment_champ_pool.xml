@@ -4,41 +4,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <import type="android.view.View" />
-
-        <variable
-            name="lane"
-            type="Integer" />
-
-        <variable
-            name="viewmodel"
-            type="com.danielakinola.loljournal.champpool.ChampPoolViewModel" />
-    </data>
+    <data></data>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? @color/colorEmptyStateBackground : @color/colorAppBackground}">
+        android:layout_height="match_parent">
 
+        <!--TODO: maybe try databinding again, if its 'cleaner'?-->
         <android.support.v7.widget.RecyclerView
             android:id="@+id/champ_pool_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingEnd="16dp"
-            android:paddingStart="16dp"
-            android:visibility="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? View.GONE : View.VISIBLE}"
-            app:champs="@{viewmodel.getChampions(safeUnbox(lane))}"
+            android:layout_gravity="center"
+            android:paddingEnd="6dp"
             app:layoutManager="android.support.v7.widget.GridLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:spanCount="2"
+            tools:ignore="RtlSymmetry"
             tools:listitem="@layout/item_champion" />
 
+        <!--TODO: do backgrounds-->
         <include
-            layout="@layout/empty_state"
-            android:background="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? @color/colorEmptyStateBackground : @color/colorAppBackground}"
-            android:visibility="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? View.VISIBLE : View.GONE}" />
+            android:id="@+id/empty_state"
+            layout="@layout/empty_state" />
 
     </FrameLayout>
 

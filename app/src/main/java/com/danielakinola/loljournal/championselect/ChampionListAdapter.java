@@ -145,7 +145,7 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ActiveChampionViewHolder holder = (ActiveChampionViewHolder) viewHolder;
             holder.textView.setText(champName);
             if (champName.length() > 10) {
-                holder.textView.setTextSize(22f);
+                holder.textView.setTextSize(19f);
             }
             holder.imageView.setImageResource(championSquare);
             if (currentlySelectedChampions.contains(champName)) {

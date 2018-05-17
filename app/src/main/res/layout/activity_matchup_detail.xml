@@ -13,11 +13,12 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/coltoolbar"
             app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
             app:expandedTitleTextAppearance="@style/ExpandedToolbar"
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed|exitUntilCollapsed"
             app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
-            app:title="Ezreal vs Aatrox"
+            tools:title="Ezreal vs Aatrox"
             app:titleEnabled="true"
             app:toolbarId="@+id/toolbar">
 
@@ -27,8 +28,8 @@
                 android:layout_height="56dp"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:subtitle="Mid Lane?"
-                app:title="Ezreal vs Aatrox"
+                tools:subtitle="Mid Lane?"
+                tools:title="Ezreal vs Aatrox"
                 app:titleTextColor="@android:color/white" />
 
             <LinearLayout
@@ -45,15 +46,18 @@
                     android:scaleY="2.0"
                     android:translationY="90dp"
                     tools:ignore="ContentDescription"
-                    tools:src="@drawable/ezreal_loading" />
+                    tools:src="@drawable/annie_loading" />
 
                 <ImageView
                     android:id="@+id/img_enemy_champion"
                     android:layout_width="0dp"
                     android:layout_height="180dp"
                     android:layout_weight="1"
+                    android:scaleX="2.0"
+                    android:scaleY="2.0"
+                    android:translationY="90dp"
                     tools:ignore="ContentDescription"
-                    tools:scaleType="centerCrop"
+
                     tools:src="@drawable/aatrox_loading" />
             </LinearLayout>
 

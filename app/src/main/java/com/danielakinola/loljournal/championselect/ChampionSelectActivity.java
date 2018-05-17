@@ -21,6 +21,7 @@ public class ChampionSelectActivity extends AppCompatActivity {
 
     public static final String LANE = "LANE";
     public static final String CHAMP_NAME = "CHAMP_NAME";
+    public static final String PLAYER_CHAMPION_ID = "PLAYER_CHAMPION_ID";
     @Inject
     ViewModelFactory viewModelFactory;
     private ChampionSelectViewModel championSelectViewModel;
@@ -54,10 +55,12 @@ public class ChampionSelectActivity extends AppCompatActivity {
     private void setupViewModel() {
         int lane = getIntent().getIntExtra(LANE, -1);
         String champName = getIntent().getStringExtra(CHAMP_NAME);
+        String championId = getIntent().getStringExtra(PLAYER_CHAMPION_ID);
 
         championSelectViewModel.initialize(lane, champName,
                 getResources().getStringArray(R.array.lanes_array)[lane],
-                getResources().obtainTypedArray(R.array.lane_icons).getResourceId(lane, -1));
+                getResources().obtainTypedArray(R.array.lane_icons).getResourceId(lane, -1),
+                championId);
 
         championSelectViewModel.getCurrentlySelectedChampions()
                 .observe(this, currentlySelectedChampions -> {
@@ -66,7 +69,7 @@ public class ChampionSelectActivity extends AppCompatActivity {
                 });
 
         championSelectViewModel.getNavigateBackToPreviousActivityEvent()
-                .observe(this, aVoid -> navigateBack());
+                .observe(this, this::navigateBack);
     }
 
     private void setupToolbar() {
@@ -75,11 +78,12 @@ public class ChampionSelectActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         getSupportActionBar().setTitle(championSelectViewModel.getTitle());
         getSupportActionBar().setSubtitle(championSelectViewModel.getSubtitle());
-        //toolbar.setLogo(championSelectViewModel.getLaneIcon());
+        toolbar.setLogo(championSelectViewModel.getLaneIcon());
     }
 
-    public void navigateBack() {
-        setResult(RESULT_OK);
+    //TODO: DEAL WITH ERROR/SUCCESS RESULT
+    public void navigateBack(int result) {
+        setResult(result);
         finish();
     }
 }

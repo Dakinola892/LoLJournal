@@ -10,7 +10,7 @@ import com.danielakinola.loljournal.data.models.Champion;
 import com.danielakinola.loljournal.data.models.Comment;
 import com.danielakinola.loljournal.data.models.Matchup;
 
-@Database(entities = {Champion.class, Matchup.class, Comment.class}, version = 1, exportSchema = false)
+@Database(entities = {Champion.class, Matchup.class, Comment.class}, version = 2, exportSchema = false)
 public abstract class MatchupDatabase extends RoomDatabase {
     private static MatchupDatabase ourInstance;
 
