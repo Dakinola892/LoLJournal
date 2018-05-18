@@ -82,6 +82,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
                 android:onCheckedChanged="@{() -> listener.onCommentFavourited(comment)}"
+                android:checked="@{comment.starred}"
                 android:text="Favourite"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/space"

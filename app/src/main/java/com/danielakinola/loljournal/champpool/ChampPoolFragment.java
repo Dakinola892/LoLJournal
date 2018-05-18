@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.ViewModelFactory;
+import com.danielakinola.loljournal.utils.ScreenUtils;
 
 import java.util.Objects;
 
@@ -66,10 +68,13 @@ public class ChampPoolFragment extends Fragment {
 
 
     private void setupRecyclerView(View rootView) {
-        View emptyState = rootView.findViewById(R.id.empty_state);
         RecyclerView recyclerView = Objects.requireNonNull(rootView.findViewById(R.id.champ_pool_recycler_view));
+        int spanCount = ScreenUtils.calculateNoOfColumns(Objects.requireNonNull(this.getContext()));
+        recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), spanCount));
         championAdapter = new ChampionAdapter(champPoolViewModel);
         recyclerView.setAdapter(championAdapter);
+
+        View emptyState = rootView.findViewById(R.id.empty_state);
 
         champPoolViewModel.getChampions(lane).observe(this, champions -> {
             if (champions == null || champions.isEmpty()) {

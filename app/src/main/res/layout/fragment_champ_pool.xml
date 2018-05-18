@@ -8,7 +8,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <!--TODO: maybe try databinding again, if its 'cleaner'?-->
         <android.support.v7.widget.RecyclerView
@@ -16,12 +17,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:paddingEnd="6dp"
-            app:layoutManager="android.support.v7.widget.GridLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:spanCount="2"
+            android:foregroundGravity="center"
+            tools:layoutManager="android.support.v7.widget.GridLayoutManager"
+            tools:spanCount="2"
             tools:ignore="RtlSymmetry"
             tools:listitem="@layout/item_champion" />
+
+        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
 
         <!--TODO: do backgrounds-->
         <include

@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.data.models.Champion;
 import com.danielakinola.loljournal.databinding.ItemChampionBinding;
+import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,7 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.Starre
     public StarredChampionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ItemChampionBinding itemChampionBinding = ItemChampionBinding.inflate(inflater, parent, false);
+        StarredChampionViewHolder holder = new StarredChampionViewHolder(itemChampionBinding);
         itemChampionBinding.setListener(new ChampionItemActionListener() {
             @Override
             public void onChampionClicked(Champion champion) {
@@ -42,9 +45,19 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.Starre
             @Override
             public void onFavouriteChanged(Champion champion, View v) {
                 champPoolViewModel.updateFavourited(champion);
+                /*MaterialFavoriteButton favoriteButton = (MaterialFavoriteButton) v;
+                favoriteButton.setFavorite(!champion.isStarred(), false);*/
+
             }
         });
-        return new StarredChampionViewHolder(itemChampionBinding);
+
+        MaterialFavoriteButton materialFavoriteButton = itemChampionBinding.getRoot().findViewById(R.id.champion_favorite_button);
+        materialFavoriteButton.setOnClickListener(v -> {
+            Champion champion = itemChampionBinding.getChampion() != null ? itemChampionBinding.getChampion() : champions.get(holder.getAdapterPosition());
+            champPoolViewModel.updateFavourited(champion);
+        });
+        holder.setItemChampionBinding(itemChampionBinding);
+        return holder;
     }
 
     @Override
@@ -60,17 +73,29 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.Starre
 
     class StarredChampionViewHolder extends RecyclerView.ViewHolder {
 
-        private final ItemChampionBinding itemChampionBinding;
+        private final MaterialFavoriteButton favoriteButton;
+        private ItemChampionBinding itemChampionBinding;
 
         StarredChampionViewHolder(ItemChampionBinding itemChampionBinding) {
             super(itemChampionBinding.getRoot());
             this.itemChampionBinding = itemChampionBinding;
+            favoriteButton = itemChampionBinding.getRoot().findViewById(R.id.champion_favorite_button);
         }
 
         void bind(Champion champion) {
             itemChampionBinding.setChampion(champion);
             itemChampionBinding.executePendingBindings();
+            //settting twice? once in create and once in bind?
+            favoriteButton.setFavorite(champion.isStarred(), false);
+
         }
 
+        public MaterialFavoriteButton getFavoriteButton() {
+            return favoriteButton;
+        }
+
+        public void setItemChampionBinding(ItemChampionBinding itemChampionBinding) {
+            this.itemChampionBinding = itemChampionBinding;
+        }
     }
 }

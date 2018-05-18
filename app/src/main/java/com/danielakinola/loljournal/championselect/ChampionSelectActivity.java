@@ -59,7 +59,7 @@ public class ChampionSelectActivity extends AppCompatActivity {
 
         championSelectViewModel.initialize(lane, champName,
                 getResources().getStringArray(R.array.lanes_array)[lane],
-                getResources().obtainTypedArray(R.array.lane_icons).getResourceId(lane, -1),
+                getResources().obtainTypedArray(R.array.ab_lane_icons).getResourceId(lane, -1),
                 championId);
 
         championSelectViewModel.getCurrentlySelectedChampions()
@@ -75,7 +75,6 @@ public class ChampionSelectActivity extends AppCompatActivity {
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_champion_select);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
         getSupportActionBar().setTitle(championSelectViewModel.getTitle());
         getSupportActionBar().setSubtitle(championSelectViewModel.getSubtitle());
         toolbar.setLogo(championSelectViewModel.getLaneIcon());

@@ -34,8 +34,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\dakin\AndroidStudioProjects\LolJournal\app\src\main\res\drawable\ic_jungle.png" />
-                                      <entry key="outputName" value="ic_jungle_2" />
+                                      <entry key="imageAsset" value="C:\Users\dakin\AndroidStudioProjects\LolJournal\app\src\main\res\drawable\ic_support.png" />
+                                      <entry key="outputName" value="ic_support_ab" />
                                       <entry key="theme" value="CUSTOM" />
                                       <entry key="themeColor" value="c8aa6e" />
                                     </map>

@@ -15,4 +15,5 @@
     <dimen name="list_item_avatar_width">@dimen/list_item_avatar_height</dimen>
     <dimen name="list_item_text_margin_start">72dp</dimen>
     <dimen name="list_item_divider_height">0.5dp</dimen>
+    <dimen name="champion_item_width">150dp</dimen>
 </resources>

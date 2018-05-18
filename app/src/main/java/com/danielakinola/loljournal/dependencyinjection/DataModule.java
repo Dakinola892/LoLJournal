@@ -18,7 +18,10 @@ public class DataModule {
     private MatchupDatabase matchupDatabase;
 
     public DataModule(Application application) {
-        this.matchupDatabase = Room.databaseBuilder(application, MatchupDatabase.class, "Matchups.db").build();
+        this.matchupDatabase = Room
+                .databaseBuilder(application, MatchupDatabase.class, "LolJournal.db")
+                .build();
+
     }
 
     @Singleton

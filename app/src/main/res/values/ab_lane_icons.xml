@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="ab_lane_icons">
+        <item>@drawable/ic_top_ab</item>
+        <item>@drawable/ic_jungle_2</item>
+        <item>@drawable/ic_mid_lane_ab</item>
+        <item>@drawable/ic_bot_lane_ab</item>
+        <item>@drawable/ic_support_ab</item>
+    </integer-array>
+</resources>

@@ -18,7 +18,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -171,8 +173,22 @@ public class ChampPoolViewModel extends ViewModel {
         Completable.fromAction(() -> matchupRepository.setChampionStarred(champion.getId()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete(() -> {
-                    if (!champion.isStarred()) showSnackbarMessage();
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (!champion.isStarred()) showSnackbarMessage();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
                 });
+
     }
 }
