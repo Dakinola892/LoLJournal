@@ -16,6 +16,12 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 //TODO: FINALIZE, check Dagger2 solution to constructor variables for factory
 
 public class MatchupsViewModel extends ViewModel {
@@ -84,7 +90,27 @@ public class MatchupsViewModel extends ViewModel {
     }
 
     public void updateFavourited(Matchup matchup) {
-        matchupRepository.changeMatchupStarred(matchup.getId());
+        Completable.fromAction(() -> matchupRepository.changeMatchupStarred(matchup.getId()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (!matchup.isStarred()) showSnackbar();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+
+
     }
 
     public void deleteMatchup(Matchup matchup) {

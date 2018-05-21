@@ -33,10 +33,6 @@
             android:scaleY="2.0"
             android:translationX="5dp"
             android:translationY="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
             app:portrait="@{champion.imageResource}"
             tools:src="@drawable/annie_loading_2" />
 
@@ -47,14 +43,11 @@
             android:layout_gravity="bottom|start"
             android:background="@color/colorAccent"
             android:gravity="center"
-            android:text="@{champion.name}"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_champion_portrait"
-            app:layout_constraintVertical_bias="1.0"
             tools:text="Aurelian Sol"
+            android:text="@{champion.name}"
             tools:textSize="20sp" />
 
         <com.github.ivbaranov.mfb.MaterialFavoriteButton

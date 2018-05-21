@@ -2,9 +2,13 @@ package com.danielakinola.loljournal.matchups;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -15,10 +19,14 @@ import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.ViewModelFactory;
 import com.danielakinola.loljournal.championselect.ChampionSelectActivity;
 import com.danielakinola.loljournal.champpool.ChampPoolActivity;
+import com.danielakinola.loljournal.data.models.Champion;
 import com.danielakinola.loljournal.editcomment.EditCommentActivity;
 import com.danielakinola.loljournal.matchupdetail.MatchupDetailActivity;
+import com.danielakinola.loljournal.utils.ScreenUtils;
 import com.danielakinola.loljournal.utils.SnackbarMessage;
 import com.danielakinola.loljournal.utils.SnackbarUtils;
+
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -37,7 +45,6 @@ public class MatchupsActivity extends AppCompatActivity {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matchups);
-        setupToolbars();
         setupViewModel();
         setupRecyclerView();
         setupFAB();
@@ -46,6 +53,8 @@ public class MatchupsActivity extends AppCompatActivity {
     private void setupRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.matchups_recylcer_view);
         View emptyState = findViewById(R.id.empty_state);
+        int spanCount = ScreenUtils.calculateNoOfColumns(Objects.requireNonNull(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, spanCount));
         MatchupAdapter matchupAdapter = new MatchupAdapter(matchupsViewModel);
         recyclerView.setAdapter(matchupAdapter);
 
@@ -69,31 +78,66 @@ public class MatchupsActivity extends AppCompatActivity {
         fab.setOnClickListener(v -> matchupsViewModel.navigateToMatchupSelect());
     }
 
-    private void setupToolbars() {
+    private void setupToolbars(Champion champion) {
         toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+
+        TextView championNameView = findViewById(R.id.text_champion_name_title);
+        ImageView championDiagonalPortrait = findViewById(R.id.diagonalImageView);
+        TextView laneSubtitleView = findViewById(R.id.text_lane_subtitle);
+
+        championNameView.setText(champion.getName());
+        championDiagonalPortrait.setImageResource(champion.getImageResource());
 
         int lane = getIntent().getIntExtra(ChampionSelectActivity.LANE, -1);
         String laneSubtitle = getResources().getStringArray(R.array.lanes_array)[lane];
-
-        TextView laneSubtitleView = findViewById(R.id.text_lane_subtitle);
+        Drawable laneLogo = getResources().obtainTypedArray(R.array.ab_lane_icons).getDrawable(lane);
         laneSubtitleView.setText(laneSubtitle);
-        getSupportActionBar().setSubtitle(laneSubtitle);
+
+        //todo: custom animations for visibility changes
+
+        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.coltoolbar);
+        AppBarLayout appBarLayout = findViewById(R.id.appbar);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = true;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset < 160) {
+                    collapsingToolbarLayout.setTitle(champion.getName());
+                    championNameView.setVisibility(View.GONE);
+                    laneSubtitleView.setVisibility(View.GONE);
+                    toolbar.setLogo(laneLogo);
+                    isShow = true;
+                } else if (isShow) {
+                    collapsingToolbarLayout.setTitle(" ");
+                    championNameView.setVisibility(View.VISIBLE);
+                    laneSubtitleView.setVisibility(View.VISIBLE);
+                    toolbar.setLogo(R.drawable.empty);
+                    isShow = false;
+                }
+            }
+        });
+
+
+
     }
 
     private void setupViewModel() {
         String championId = getIntent().getStringExtra(ChampPoolActivity.PLAYER_CHAMPION_ID);
-        TextView championNameView = findViewById(R.id.text_champion_name_title);
-        ImageView championDiagonalPortrait = findViewById(R.id.diagonalImageView);
         //ActivityMatchupsBinding activityMatchupsBinding = ActivityMatchupsBinding.inflate(getLayoutInflater());
         matchupsViewModel = ViewModelProviders.of(this, viewModelFactory).get(MatchupsViewModel.class);
         matchupsViewModel.initialize(championId);
         matchupsViewModel.getChampion().observe(this, champion -> {
             assert champion != null;
-            championNameView.setText(champion.getName());
-            toolbar.setTitle(champion.getName());
-            championDiagonalPortrait.setImageResource(champion.getImageResource());
+            setupToolbars(champion);
         });
         matchupsViewModel.getEditMatchupsEvent().observe(this, this::openMatchupSelect);
         matchupsViewModel.getOpenMatchupDetailEvent().observe(this, this::openMatchupDetail);
