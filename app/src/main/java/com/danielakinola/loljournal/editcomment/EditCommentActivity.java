@@ -1,15 +1,14 @@
 package com.danielakinola.loljournal.editcomment;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.ViewModelFactory;
-import com.danielakinola.loljournal.databinding.ActivityEditCommentBinding;
 
 import javax.inject.Inject;
 
@@ -29,20 +28,43 @@ public class EditCommentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        ActivityEditCommentBinding activityEditCommentBinding = DataBindingUtil.setContentView(this, R.layout.activity_edit_comment);
+        setContentView(R.layout.activity_edit_comment);
         setupFAB();
         setupViewModel();
-        activityEditCommentBinding.setViewmodel(editCommentViewModel);
+        //todo: loadData() to split up setupViewModel? - more SOLID
     }
+
+
+    //todo: possibily include category string in Comment & other model classes
+    //todo: change string formats to extracting string resources
+    //TODO: decide between comment detail & comment description
+    //todo: fix strengths vs strength, weaknesses vs weakness, maybe?
 
     private void setupViewModel() {
         int commentId = getIntent().getIntExtra(COMMENT_ID, -1);
         String matchupId = getIntent().getStringExtra(MATCHUP_ID);
         int category = getIntent().getIntExtra(CATEGORY, -1);
 
+        TextView commentTitleEditText = findViewById(R.id.edit_text_comment_title);
+        TextView commentDetailEditText = findViewById(R.id.edit_text_comment_detail);
+
         editCommentViewModel = ViewModelProviders.of(this, viewModelFactory).get(EditCommentViewModel.class);
         editCommentViewModel.initialize(commentId, matchupId, category);
         editCommentViewModel.getConfirmationEvent().observe(this, aVoid -> onConfirm());
+        editCommentViewModel.getComment().observe(this, comment -> {
+            assert comment != null;
+            commentTitleEditText.setText(comment.getTitle());
+            commentDetailEditText.setText(comment.getDescription());
+
+            //todo: less string building in view, move logic to view model and expose String
+            String title = editCommentViewModel.isNewComment() ? "Adding new Matchup " : "Editing Matchup ";
+            String categoryString = getResources().getStringArray(R.array.comment_categories)[comment.getCategory()];
+            getSupportActionBar().setTitle(title + categoryString);
+        });
+        editCommentViewModel.getMatchup().observe(this, matchup -> {
+            String laneString = getResources().getStringArray(R.array.lanes_array)[matchup.getLane()];
+            getSupportActionBar().setSubtitle(String.format("%s vs. %s %s", matchup.getPlayerChampion(), matchup.getEnemyChampion(), laneString));
+        });
     }
 
     private void setupFAB() {

@@ -45,10 +45,21 @@ public class MatchupsActivity extends AppCompatActivity {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matchups);
-        setupViewModel();
+        String championId = getIntent().getStringExtra(ChampPoolActivity.PLAYER_CHAMPION_ID);
+        if (savedInstanceState != null) {
+            championId = savedInstanceState.getString(ChampPoolActivity.PLAYER_CHAMPION_ID, "NO_ID");
+        }
+        setupViewModel(championId);
         setupRecyclerView();
         setupFAB();
     }
+
+    /*@Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String championId = savedInstanceState.getString(ChampPoolActivity.PLAYER_CHAMPION_ID, "NO_ID");
+        setupViewModel(championId);
+    }*/
 
     private void setupRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.matchups_recylcer_view);
@@ -130,8 +141,7 @@ public class MatchupsActivity extends AppCompatActivity {
 
     }
 
-    private void setupViewModel() {
-        String championId = getIntent().getStringExtra(ChampPoolActivity.PLAYER_CHAMPION_ID);
+    private void setupViewModel(String championId) {
         //ActivityMatchupsBinding activityMatchupsBinding = ActivityMatchupsBinding.inflate(getLayoutInflater());
         matchupsViewModel = ViewModelProviders.of(this, viewModelFactory).get(MatchupsViewModel.class);
         matchupsViewModel.initialize(championId);
@@ -177,7 +187,8 @@ public class MatchupsActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(ChampPoolActivity.PLAYER_CHAMPION_ID, matchupsViewModel.getChampionId());
         super.onSaveInstanceState(outState);
+        outState.putString(ChampPoolActivity.PLAYER_CHAMPION_ID, matchupsViewModel.getChampionId());
     }
+
 }

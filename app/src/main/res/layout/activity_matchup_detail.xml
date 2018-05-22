@@ -23,15 +23,7 @@
             app:toolbarId="@+id/toolbar"
             tools:title="Ezreal vs Aatrox">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:titleTextColor="@android:color/white"
-                tools:subtitle="Mid Lane?"
-                tools:title="Ezreal vs Aatrox" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,6 +67,17 @@
                 android:layout_height="?android:attr/actionBarSize"
                 android:layout_gravity="bottom"
                 android:background="@drawable/shape_scrim" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:titleTextColor="@android:color/white"
+                tools:subtitle="Mid Lane?"
+                tools:title="Ezreal vs Aatrox" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 

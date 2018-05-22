@@ -4,6 +4,7 @@
 
     <data>
 
+        <!--TODO: change to just bind Comment?-->
         <variable
             name="viewmodel"
             type="com.danielakinola.loljournal.commentdetail.CommentDetailViewModel" />
@@ -11,34 +12,83 @@
     </data>
 
 
-    <FrameLayout xmlns:tools="http://schemas.android.com/tools"
+    <android.support.design.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/frame_comment_detail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:theme="@style/LolJournalTheme">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:expanded="true"
+            app:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:title=" ">
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/comment_detail_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        tools:text="Tahm Kench vs. Tahm Kench" />
+
+                    <TextView
+                        android:id="@+id/comment_detail_subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
+                        tools:text="Strengths" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+
+        </android.support.design.widget.AppBarLayout>
 
         <LinearLayout
+            android:id="@+id/comment_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:theme="@style/LolJournalTheme"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context=".commentdetail.CommentDetailActivity">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_comment_detail"
-                android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize"
-                android:background="?android:attr/colorPrimary"
-                android:minHeight="?android:attr/actionBarSize"
-                android:theme="@style/LolJournalTheme" />
 
             <TextView
                 android:id="@+id/text_comment_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@{viewmodel.comment.title}"
-                tools:text="Watch for Taliyah Roams"
-                tools:textSize="24sp" />
+                android:textAlignment="center"
+                android:textSize="24sp"
+                tools:fontFamily="serif"
+                tools:text="Amumu outscales Aatrox" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@android:color/white" />
 
             <TextView
                 android:id="@+id/text_comment_detail"
@@ -48,6 +98,7 @@
                 android:layout_weight="1"
                 android:scrollbars="vertical"
                 android:text="@{viewmodel.comment.description}"
+                android:textSize="18sp"
                 tools:text="@string/large_text" />
         </LinearLayout>
 
@@ -56,11 +107,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:layout_gravity="bottom|end"
             android:clickable="true"
             android:focusable="true"
-            android:src="@android:drawable/ic_menu_edit"
-            app:fabSize="normal" />
+            android:src="@drawable/ic_edit_white_24dp"
+            app:fabSize="normal"
+            app:layout_anchor="@id/comment_layout"
+            app:layout_anchorGravity="end|bottom"
+            app:layout_dodgeInsetEdges="bottom" />
 
-    </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </layout>

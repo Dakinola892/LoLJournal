@@ -10,7 +10,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.danielakinola.loljournal.R;
@@ -50,6 +53,13 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
     }
 
     private void setupAppBar() {
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.bringToFront();
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.coltoolbar);
         ImageView playerChampionPortrait = findViewById(R.id.img_player_champion);
         ImageView enemyChampionPortrait = findViewById(R.id.img_enemy_champion);
@@ -61,6 +71,7 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
             playerChampionPortrait.setImageResource(matchup.getPlayerChampionImageResource());
             enemyChampionPortrait.setImageResource(matchup.getEnemyChampionImageResource());
         });
+
     }
 
     private void setupViewModel() {
@@ -71,7 +82,7 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
         matchupDetailViewModel.getAddCommentEvent().observe(this, this::addNewComment);
         matchupDetailViewModel.getCommentDetailEvent().observe(this, this::navigateToCommentDetail);
         matchupDetailViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId ->
-                SnackbarUtils.showSnackbar(findViewById(R.id.matchup_detail_coordinator_layout), getString(snackbarMessageResourceId)));
+                SnackbarUtils.showSnackbar(findViewById(R.id.matchup_detail_coordinator_layout), getString(snackbarMessageResourceId, "Comment")));
 
     }
 
@@ -107,6 +118,17 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
 
         TabLayout tabLayout = findViewById(R.id.tabs_matchup_detail);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     class MatchupDetailPagerAdapter extends FragmentPagerAdapter {

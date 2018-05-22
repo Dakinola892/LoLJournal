@@ -1,9 +1,12 @@
 package com.danielakinola.loljournal.editcomment;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.danielakinola.loljournal.data.MatchupRepository;
 import com.danielakinola.loljournal.data.models.Comment;
+import com.danielakinola.loljournal.data.models.Matchup;
 import com.danielakinola.loljournal.utils.SingleLiveEvent;
 
 import javax.inject.Inject;
@@ -18,8 +21,9 @@ public class EditCommentViewModel extends ViewModel {
 
     private final MatchupRepository matchupRepository;
     private SingleLiveEvent<Void> confirmationEvent = new SingleLiveEvent<>();
-    private Comment editableComment;
-    private boolean NEW_COMMENT;
+    private LiveData<Comment> editableComment;
+    private LiveData<Matchup> matchup;
+    private boolean newComment;
     /*private String matchupId;
     private int category;*/
 
@@ -28,7 +32,7 @@ public class EditCommentViewModel extends ViewModel {
     public EditCommentViewModel(MatchupRepository matchupRepository, @Named("editCommentId") int commentId) {
         this.matchupRepository = matchupRepository;
         this.editableComment = matchupRepository.getComment(commentId).getValue();
-        this.NEW_COMMENT = false;
+        this.newComment = false;
     }*/
 
     @Inject
@@ -37,21 +41,30 @@ public class EditCommentViewModel extends ViewModel {
     }
 
     public void initialize(int commentId, String matchupId, int category) {
-        /*this.matchupId = matchupId;
-        this.category = category;*/
+        this.matchup = matchupRepository.getMatchup(matchupId);
         if (commentId == -1) {
-            this.editableComment = new Comment(matchupId, category);
-            this.NEW_COMMENT = true;
+            this.editableComment = new MutableLiveData<>();
+            ((MutableLiveData<Comment>) this.editableComment).setValue(new Comment(matchupId, category));
+            this.newComment = true;
         } else {
-            this.editableComment = matchupRepository.getComment(commentId).getValue();
-            this.NEW_COMMENT = false;
+            this.editableComment = matchupRepository.getComment(commentId);
+            this.newComment = false;
         }
     }
 
-    public Comment getComment() {
+    public LiveData<Comment> getComment() {
         return editableComment;
     }
 
+    public LiveData<Matchup> getMatchup() {
+        return matchup;
+    }
+
+    public boolean isNewComment() {
+        return newComment;
+    }
+
+    //TODO: fix public/private acessibility & clean up code order
 
     public SingleLiveEvent<Void> getConfirmationEvent() {
         return confirmationEvent;
@@ -60,16 +73,18 @@ public class EditCommentViewModel extends ViewModel {
     public void onConfirm(String title, String description) {
         saveComment(title, description);
         confirmationEvent.setValue(null);
-
     }
 
     private void saveComment(String title, String description) {
 
-        editableComment.setTitle(title);
-        editableComment.setDescription(description);
+        Comment comment = editableComment.getValue();
+        comment.setTitle(title);
+        comment.setDescription(description);
 
-        if (NEW_COMMENT) {
-            Completable.fromAction(() -> matchupRepository.addComment(editableComment))
+        //todo: refactor to use common logic
+
+        if (newComment) {
+            Completable.fromAction(() -> matchupRepository.addComment(comment))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new CompletableObserver() {
@@ -91,7 +106,7 @@ public class EditCommentViewModel extends ViewModel {
 
 
         } else {
-            Completable.fromAction(() -> matchupRepository.updateComment(editableComment))
+            Completable.fromAction(() -> matchupRepository.updateComment(comment))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new CompletableObserver() {

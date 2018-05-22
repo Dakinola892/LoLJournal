@@ -94,4 +94,9 @@ public class Comment {
     public void setStarred(boolean starred) {
         this.starred = starred;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Comment: id = %s, matchupId = %s, title = %s, starred = %s", id, matchupId, title, starred);
+    }
 }
