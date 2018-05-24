@@ -10,8 +10,6 @@ import com.danielakinola.loljournal.utils.ChampionGallery;
 
 import java.util.Locale;
 
-//TODO: add more constructors
-
 @Entity(tableName = "ChampPool", indices = {@Index(value = {"id"}, unique = true), @Index(value = {"name", "lane"}, unique = true)})
 public class Champion {
 

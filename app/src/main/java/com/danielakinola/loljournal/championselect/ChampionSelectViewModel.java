@@ -22,42 +22,42 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class ChampionSelectViewModel extends ViewModel {
-    private final List<String> INTIALLY_SELECTED_CHAMPIONS = new ArrayList<>();
-    private int LANE;
-    private String TITLE;
-    private String SUBTITLE;
-    private int LANE_ICON;
-    private final MatchupRepository MATCHUP_REPOSITORY;
-    private String CHAMP_NAME;
-    private final SingleLiveEvent<Integer> NAVIGATE_BACK_TO_PREVIOUS_ACTIVITY_EVENT = new SingleLiveEvent<>();
-    private final MutableLiveData<List<String>> CURRENTLY_SELECTED_CHAMPIONS = new MutableLiveData<>();
+    private final List<String> intiallySelectedChampions = new ArrayList<>();
+    private final MatchupRepository matchupRepository;
+    private final SingleLiveEvent<Integer> navigateBackToPreviousActivityEvent = new SingleLiveEvent<>();
+    private final MutableLiveData<List<String>> currentlySelectedChampions = new MutableLiveData<>();
+    private int lane;
+    private String title;
+    private String subtitle;
+    private int laneIcon;
+    private String champName;
     private String championId;
 
 
     @Inject
     public ChampionSelectViewModel(MatchupRepository matchupRepository) {
-        this.MATCHUP_REPOSITORY = matchupRepository;
+        this.matchupRepository = matchupRepository;
     }
 
     public void initialize(int lane, @Nullable String champName, String laneTitle, int laneIcon, String championId) {
-        this.LANE = lane;
-        this.LANE_ICON = laneIcon;
-        this.CHAMP_NAME = champName;
+        this.lane = lane;
+        this.laneIcon = laneIcon;
         this.championId = championId;
 
         if (champName == null) {
-            this.TITLE = "Champion Select";
-            this.SUBTITLE = laneTitle;
-            List<String> result = MATCHUP_REPOSITORY.getChampNames(lane).getValue();
+            this.title = "Champion Select";
+            this.subtitle = laneTitle;
+            List<String> result = matchupRepository.getChampNames(lane).getValue();
             if (result != null) {
-                this.INTIALLY_SELECTED_CHAMPIONS.addAll(result);
+                this.intiallySelectedChampions.addAll(result);
             }
         } else {
-            this.TITLE = "Matchup Select";
-            this.SUBTITLE = String.format("%s %s", laneTitle, champName);
-            List<String> result = MATCHUP_REPOSITORY.getMatchupNames(championId).getValue();
+            this.champName = champName;
+            this.title = champName + "Matchup Select";
+            this.subtitle = laneTitle;
+            List<String> result = matchupRepository.getMatchupNames(championId).getValue();
             if (result != null) {
-                this.INTIALLY_SELECTED_CHAMPIONS.addAll(result);
+                this.intiallySelectedChampions.addAll(result);
             }
         }
     }
@@ -66,22 +66,22 @@ public class ChampionSelectViewModel extends ViewModel {
     //TODO: properly learn RxJava2
     //TODO: modularize
     public void applyChampionSelection() {
-        List<String> championsOrMatchups = CURRENTLY_SELECTED_CHAMPIONS.getValue();
+        List<String> championsOrMatchups = currentlySelectedChampions.getValue();
 
         if (championsOrMatchups != null) {
-            if (CHAMP_NAME == null) {
+            if (champName == null) {
                 Champion[] champions = new Champion[championsOrMatchups.size()];
                 for (int i = 0; i < championsOrMatchups.size(); i++) {
-                    champions[i] = new Champion(championsOrMatchups.get(i), LANE);
+                    champions[i] = new Champion(championsOrMatchups.get(i), lane);
                 }
                 addChampions(champions);
             } else {
                 Matchup[] matchups = new Matchup[championsOrMatchups.size()];
                 for (int i = 0; i < championsOrMatchups.size(); i++) {
-                    matchups[i] = new Matchup(CHAMP_NAME, championsOrMatchups.get(i), LANE, championId);
+                    matchups[i] = new Matchup(champName, championsOrMatchups.get(i), lane, championId);
                 }
                 addMatchups(matchups);
-                //MATCHUP_REPOSITORY.addMatchup(matchups);
+                //matchupRepository.addMatchup(matchups);
             }
         }
 
@@ -89,7 +89,7 @@ public class ChampionSelectViewModel extends ViewModel {
     }
 
     private void addMatchups(Matchup... matchups) {
-        Completable.fromAction(() -> MATCHUP_REPOSITORY.addMatchup(matchups))
+        Completable.fromAction(() -> matchupRepository.addMatchup(matchups))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
@@ -99,18 +99,18 @@ public class ChampionSelectViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        NAVIGATE_BACK_TO_PREVIOUS_ACTIVITY_EVENT.setValue(1);
+                        navigateBackToPreviousActivityEvent.setValue(1);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        NAVIGATE_BACK_TO_PREVIOUS_ACTIVITY_EVENT.setValue(-1);
+                        navigateBackToPreviousActivityEvent.setValue(-1);
                     }
                 });
     }
 
     private void addChampions(Champion... champions) {
-        Completable.fromAction(() -> MATCHUP_REPOSITORY.addChampion(champions))
+        Completable.fromAction(() -> matchupRepository.addChampion(champions))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
@@ -120,46 +120,46 @@ public class ChampionSelectViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        NAVIGATE_BACK_TO_PREVIOUS_ACTIVITY_EVENT.setValue(1);
+                        navigateBackToPreviousActivityEvent.setValue(1);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        NAVIGATE_BACK_TO_PREVIOUS_ACTIVITY_EVENT.setValue(-1);
+                        navigateBackToPreviousActivityEvent.setValue(-1);
                     }
                 });
     }
 
     public String getTitle() {
-        return TITLE;
+        return title;
     }
 
     public String getSubtitle() {
-        return SUBTITLE;
+        return subtitle;
     }
 
     public int getLaneIcon() {
-        return LANE_ICON;
+        return laneIcon;
     }
 
     public int getLane() {
-        return LANE;
+        return lane;
     }
 
     public SingleLiveEvent<Integer> getNavigateBackToPreviousActivityEvent() {
-        return NAVIGATE_BACK_TO_PREVIOUS_ACTIVITY_EVENT;
+        return navigateBackToPreviousActivityEvent;
     }
 
     public List<String> getIntiallySelectedChampions() {
-        return INTIALLY_SELECTED_CHAMPIONS;
+        return intiallySelectedChampions;
     }
 
     public LiveData<List<String>> getCurrentlySelectedChampions() {
-        return CURRENTLY_SELECTED_CHAMPIONS;
+        return currentlySelectedChampions;
     }
 
     public void onViewHolderClick(String name) {
-        List<String> champions = CURRENTLY_SELECTED_CHAMPIONS.getValue();
+        List<String> champions = currentlySelectedChampions.getValue();
 
         if (champions == null) {
             champions = new ArrayList<>();
@@ -170,6 +170,6 @@ public class ChampionSelectViewModel extends ViewModel {
         } else {
             champions.add(name);
         }
-        CURRENTLY_SELECTED_CHAMPIONS.setValue(champions);
+        currentlySelectedChampions.setValue(champions);
     }
 }

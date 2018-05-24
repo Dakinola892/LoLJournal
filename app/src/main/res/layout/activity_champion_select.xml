@@ -16,14 +16,13 @@
             android:id="@+id/toolbar_champion_select"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:logo="@drawable/ic_jungle_2"
+            app:subtitleTextAppearance="@style/SubtitleColor"
             app:contentInsetStart="16dp"
-            app:subtitleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle.Inverse"
-            app:subtitleTextColor="@android:color/white"
             app:titleTextAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            app:titleTextColor="@android:color/white"
-            tools:subtitle="Top Lane Heimderdinger"
-            tools:title="Matchup Select" />
+            app:titleMarginStart="32dp"
+            tools:logo="@drawable/ic_jungle_2"
+            tools:subtitle="Top Lane"
+            tools:title="Heimderdinger Matchup Select" />
 
 
     </android.support.design.widget.AppBarLayout>

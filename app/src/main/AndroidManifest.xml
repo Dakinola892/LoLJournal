@@ -13,7 +13,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".MainActivity"
-            android:theme="@style/LolJournalTheme"
+            android:theme="@style/AppTheme.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,17 +22,17 @@
         </activity>
         <activity
             android:name=".champpool.ChampPoolActivity"
-            android:theme="@style/LolJournalTheme"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/title_activity_champ_pool" />
         <activity
             android:name=".championselect.ChampionSelectActivity"
             android:label="Champion Select"
-            android:theme="@style/LolJournalTheme" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".matchups.MatchupsActivity"
             android:label="@string/title_activity_matchups"
             android:launchMode="singleTop"
-            android:theme="@style/LolJournalTheme"
+            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".champpool.ChampPoolActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -43,7 +43,7 @@
             android:label="MatchupDetailActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".matchups.MatchupsActivity"
-            android:theme="@style/LolJournalTheme">
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.danielakinola.loljournal.matchups.MatchupsActivity" />
@@ -51,12 +51,12 @@
         <activity
             android:name=".editcomment.EditCommentActivity"
             android:label="EditCommentActivity"
-            android:theme="@style/LolJournalTheme.ActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".commentdetail.CommentDetailActivity"
             android:label="CommentDetailActivity"
             android:parentActivityName=".matchupdetail.MatchupDetailActivity"
-            android:theme="@style/LolJournalTheme">
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.danielakinola.loljournal.matchupdetail.MatchupDetailActivity" />

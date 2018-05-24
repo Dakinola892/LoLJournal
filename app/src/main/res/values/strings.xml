@@ -122,8 +122,6 @@
     </string-array>
     <string name="title_activity_matchups">MatchupsActivity</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_champ_pool_activity">Champ Pool</string>
     <string name="champion_favourited">%s favourited!</string>
     <string name="strengths">Strengths</string>
@@ -132,4 +130,5 @@
     <string name="hint_comment_title">Add a quick summary of your comment here!</string>
     <string name="hint_comment_detail">(Optional) Add a longer more detailed description of your comment here.</string>
     <string name="comment_edited">Comment successfully edited</string>
+    <string name="versus">%s vs. %s</string>
 </resources>

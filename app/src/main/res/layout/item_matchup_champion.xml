@@ -21,33 +21,26 @@
         android:foregroundGravity="center"
         android:onClick="@{() -> listener.onMatchupClicked(matchup)}">
 
+        <!--TODO: refactor names - btn text img, etc.-->
+        <!--todo: check if can put app fields in styles-->
 
-            <ImageView
-                android:id="@+id/img_matchup_champion_portrait"
-                android:layout_width="@dimen/champion_item_width"
-                android:layout_height="160dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:scaleX="1.2"
-                android:scaleY="2.0"
-                android:translationX="5dp"
-                app:portrait="@{matchup.enemyChampionImageResource}"
-                android:translationY="40dp"
-                tools:src="@drawable/annie_loading_2" />
+        <ImageView
+            android:id="@+id/img_matchup_champion_portrait"
+            android:layout_width="@dimen/champion_item_width"
+            android:layout_height="160dp"
+            android:theme="@style/ItemChampionPortrait"
+            app:portrait="@{matchup.enemyChampionImageResource}"
+            tools:src="@drawable/annie_loading_2" />
 
-            <TextView
-                android:id="@+id/text_matchup_champion_name"
-                android:layout_width="@dimen/champion_item_width"
-                android:layout_height="40dp"
-                android:layout_gravity="bottom|start"
-                android:background="@color/colorAccent"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:text="@{matchup.enemyChampion}"
-                tools:text="Annie"
-                tools:textSize="18sp" />
+        <TextView
+            android:id="@+id/text_matchup_champion_name"
+            android:layout_width="@dimen/champion_item_width"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom|start"
+            android:text="@{matchup.enemyChampion}"
+            android:theme="@style/ItemChampionText"
+            tools:text="Annie"
+            tools:textSize="18sp" />
 
         <com.github.ivbaranov.mfb.MaterialFavoriteButton
             android:id="@+id/matchup_favorite_button"
@@ -62,7 +55,6 @@
             app:mfb_size="40"
             app:mfb_type="heart"
             tools:src="@drawable/ic_star_border_gold_24dp" />
-
 
     </FrameLayout>
 

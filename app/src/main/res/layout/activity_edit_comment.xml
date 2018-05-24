@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
-
-    <data>
-
-        <variable
-            name="comment"
-            type="com.danielakinola.loljournal.data.models.Comment" />
-    </data>
-
-    <!--TODO: remove databinding layouts-->
-    <!--TODO: look into textinputlayout-->
+    <!--TODO: look into textinputlayout--><!--TODO: decide logo or nah-->
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -40,7 +30,6 @@
                 android:layout_weight="1"
                 android:fadeScrollbars="true"
                 android:gravity="top"
-
                 android:hint="@string/hint_comment_detail"
                 android:inputType="textMultiLine"
                 android:scrollbars="vertical"
@@ -62,5 +51,3 @@
             app:fabSize="normal" />
 
     </FrameLayout>
-
-</layout>

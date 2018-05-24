@@ -157,16 +157,12 @@ public class MatchupsActivity extends AppCompatActivity {
                                 getString(snackbarMessageResourceId)));
     }
 
-
-    //TODO: CHECK IF REQUEST_CODE PARAMETER IS NECESSARY
-    //TODO: change to matchupId
     private void openMatchupSelect(String champName) {
         String championId = getIntent().getStringExtra(ChampPoolActivity.PLAYER_CHAMPION_ID);
         Intent intent = new Intent(this, ChampionSelectActivity.class);
         intent.putExtra(ChampionSelectActivity.LANE, matchupsViewModel.getLane());
         intent.putExtra(ChampionSelectActivity.CHAMP_NAME, champName);
         intent.putExtra(ChampionSelectActivity.PLAYER_CHAMPION_ID, championId);
-        intent.putExtra(getString(R.string.request_code), REQUEST_EDIT_MATCHUPS);
         startActivityForResult(intent, REQUEST_EDIT_MATCHUPS);
     }
 

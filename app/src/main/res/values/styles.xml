@@ -1,11 +1,15 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/text_color_primary</item>
+        <item name="android:textColorSecondary">@color/text_color_secondary</item>
+        <item name="android:colorBackground">@color/colorAppBackground</item>
+        <item name="android:toolbarStyle">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -14,30 +18,50 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="LolJournalTheme" parent="AppTheme">
-        <item name="android:textColorPrimary">@color/text_color_primary</item>
-        <item name="android:textColorSecondary">@color/text_color_secondary</item>
-        <item name="android:colorBackground">@color/colorAppBackground</item>
-        <item name="android:toolbarStyle">@color/colorPrimary</item>
+
+    <style name="DiagChampionPortrait">
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:scaleX">1.0</item>
+        <item name="android:scaleY">2.0</item>
+        <item name="android:translationX">-10dp</item>
+        <item name="android:translationY">50dp</item>
     </style>
 
-    <style name="LolJournalTheme.ActionBar">
-        <item name="windowActionBar">true</item>
-        <item name="windowNoTitle">false</item>
+    <style name="ItemChampionPortrait">
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:scaleX">1.2</item>
+        <item name="android:scaleY">2.0</item>
+        <item name="android:translationX">5dp</item>
+        <item name="android:translationY">40dp</item>
+        <item name="android:adjustViewBounds">true</item>
     </style>
 
-    <!--TODO:fix styles & themes + actionbar or no action bar-->
-
+    <style name="ItemChampionText">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20dp</item>
+    </style>
 
     <style name="ExpandedToolbar" parent="TextAppearance.AppCompat.Display1">
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="ChampPoolSubtitle">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <style name="TabText" parent="TextAppearance.AppCompat.Widget.Button">
         <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="SubtitleColor" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
+        <item name="android:textColor">@color/colorAppBackground</item>
     </style>
 
 </resources>

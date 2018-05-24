@@ -26,13 +26,7 @@
             android:id="@+id/img_champion_portrait"
             android:layout_width="@dimen/champion_item_width"
             android:layout_height="160dp"
-            android:layout_marginBottom="8dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:scaleX="1.2"
-            android:scaleY="2.0"
-            android:translationX="5dp"
-            android:translationY="40dp"
+            android:theme="@style/ItemChampionPortrait"
             app:portrait="@{champion.imageResource}"
             tools:src="@drawable/annie_loading_2" />
 
@@ -40,14 +34,10 @@
             android:id="@+id/text_champion_name"
             android:layout_width="@dimen/champion_item_width"
             android:layout_height="40dp"
-            android:layout_gravity="bottom|start"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            tools:text="Aurelian Sol"
+            android:layout_gravity="bottom"
+            android:theme="@style/ItemChampionText"
             android:text="@{champion.name}"
+            tools:text="Aurelian Sol"
             tools:textSize="20sp" />
 
         <com.github.ivbaranov.mfb.MaterialFavoriteButton
@@ -56,7 +46,6 @@
             android:layout_height="48dp"
             android:layout_gravity="top|end"
             android:background="@color/colorPrimary"
-            android:gravity="center"
             app:mfb_animate_favorite="true"
             app:mfb_color="white"
             app:mfb_padding="4"

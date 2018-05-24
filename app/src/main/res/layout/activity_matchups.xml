@@ -78,21 +78,19 @@
                         android:layout_below="@id/text_champion_name_title"
                         android:layout_centerVertical="true"
                         android:layout_marginBottom="8dp"
-                        android:textStyle="italic"
+                        android:textAppearance="@style/ChampPoolSubtitle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/text_champion_name_title"
                         app:layout_constraintTop_toBottomOf="@+id/text_champion_name_title"
                         app:layout_constraintVertical_bias="0.0"
-                        tools:text="Mid Lane"
-                        android:textColor="@android:color/white"
-                        android:textSize="28sp" />
+                        tools:text="Mid Lane" />
 
 
                     <com.santalu.diagonalimageview.DiagonalImageView
                         android:id="@+id/diagonalImageView"
                         android:layout_width="130dp"
                         android:layout_height="match_parent"
-                        android:layout_alignParentEnd="true"
+                        android:minHeight="?android:attr/actionBarSize"
                         android:layout_marginEnd="8dp"
                         android:adjustViewBounds="true"
                         android:cropToPadding="true"
@@ -102,28 +100,19 @@
                         android:src="@{champion.imageResource}"
                         android:translationX="10dp"
                         android:translationY="10dp"
+                        android:scaleX="2.7"
+                        android:scaleY="2.7"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_scrollFlags="scroll|exitUntilCollapsed"
                         app:di_borderEnabled="true"
                         app:di_direction="right"
                         app:di_overlap="60dp"
                         app:di_position="left"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:minHeight="?android:attr/actionBarSize"
-                        app:layout_scrollFlags="scroll|exitUntilCollapsed"
                         tools:ignore="ContentDescription"
-                        android:scaleX="2.7"
-                        android:scaleY="2.7"
                         tools:src="@drawable/heimerdinger_loading" />
                 </android.support.constraint.ConstraintLayout>
-
-                <!--TODO: SCRIM MAY BE UNNECESSARY-->
-                <!--<View
-                    android:layout_width="match_parent"
-                    android:layout_height="?android:attr/actionBarSize"
-                    android:layout_gravity="bottom"
-                    android:background="@drawable/shape_scrim" />-->
-
 
             </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -135,8 +124,8 @@
             android:id="@+id/matchups_recylcer_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layoutManager="android.support.v7.widget.GridLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:layoutManager="android.support.v7.widget.GridLayoutManager"
             tools:spanCount="2"
             tools:listitem="@layout/item_champion" />
 

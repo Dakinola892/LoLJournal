@@ -55,7 +55,7 @@ public class EditCommentActivity extends AppCompatActivity {
             assert comment != null;
             commentTitleEditText.setText(comment.getTitle());
             commentDetailEditText.setText(comment.getDescription());
-
+            //todo: more mvvm, dagger, less gets, provide string arrays and such (injection)
             //todo: less string building in view, move logic to view model and expose String
             String title = editCommentViewModel.isNewComment() ? "Adding new Matchup " : "Editing Matchup ";
             String categoryString = getResources().getStringArray(R.array.comment_categories)[comment.getCategory()];
@@ -74,7 +74,7 @@ public class EditCommentActivity extends AppCompatActivity {
 
         fab.setOnClickListener(v -> {
             editCommentViewModel.onConfirm(title.getText().toString(), description.getText().toString());
-            //editCommentViewModel.onConfirm("test", "test");
+
         });
     }
 

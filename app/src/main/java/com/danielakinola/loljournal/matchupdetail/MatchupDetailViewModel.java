@@ -7,7 +7,6 @@ import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.data.MatchupRepository;
 import com.danielakinola.loljournal.data.models.Comment;
 import com.danielakinola.loljournal.data.models.Matchup;
-import com.danielakinola.loljournal.utils.ChampionGallery;
 import com.danielakinola.loljournal.utils.SingleLiveEvent;
 import com.danielakinola.loljournal.utils.SnackbarMessage;
 
@@ -23,24 +22,21 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MatchupDetailViewModel extends ViewModel {
     private final MatchupRepository matchupRepository;
-    private final ChampionGallery championGallery;
-    private String MATCHUP_ID;
+    private String matchupId;
     private SingleLiveEvent<Integer> addCommentEvent = new SingleLiveEvent<>();
     private SingleLiveEvent<Integer> commentDetailEvent = new SingleLiveEvent<>();
     private LiveData<Matchup> matchup;
     private SnackbarMessage snackbarMessage = new SnackbarMessage();
     private int currentPage;
     //TODO: finalize all possible variables with correct uppercase
-    //TODO: rename to ChampionGallery
 
     @Inject
-    public MatchupDetailViewModel(MatchupRepository matchupRepository, ChampionGallery championGallery) {
+    public MatchupDetailViewModel(MatchupRepository matchupRepository) {
         this.matchupRepository = matchupRepository;
-        this.championGallery = championGallery;
     }
 
     public void initialize(String matchupId) {
-        this.MATCHUP_ID = matchupId;
+        this.matchupId = matchupId;
         this.matchup = matchupRepository.getMatchup(matchupId);
     }
 
@@ -71,11 +67,11 @@ public class MatchupDetailViewModel extends ViewModel {
     public LiveData<List<Comment>> getComments(int category) {
         switch (category) {
             case 0:
-                return matchupRepository.getStrengths(MATCHUP_ID);
+                return matchupRepository.getStrengths(matchupId);
             case 1:
-                return matchupRepository.getGeneralComments(MATCHUP_ID);
+                return matchupRepository.getGeneralComments(matchupId);
             default:
-                return matchupRepository.getWeaknesses(MATCHUP_ID);
+                return matchupRepository.getWeaknesses(matchupId);
         }
     }
 

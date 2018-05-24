@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <data>
-
-        <!--TODO: change to just bind Comment?-->
-        <variable
-            name="viewmodel"
-            type="com.danielakinola.loljournal.commentdetail.CommentDetailViewModel" />
-
-    </data>
 
 
-    <android.support.design.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/frame_comment_detail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:theme="@style/LolJournalTheme">
+    android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -32,7 +22,6 @@
                 app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:title=" ">
-
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -55,13 +44,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:textAlignment="center"
-                        android:textAppearance="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
+                        android:textAppearance="@style/SubtitleColor"
                         tools:text="Strengths" />
 
                 </LinearLayout>
-
             </android.support.v7.widget.Toolbar>
-
 
         </android.support.design.widget.AppBarLayout>
 
@@ -97,9 +84,9 @@
                 android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:scrollbars="vertical"
-                android:text="@{viewmodel.comment.description}"
                 android:textSize="18sp"
                 tools:text="@string/large_text" />
+
         </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton
@@ -116,4 +103,3 @@
             app:layout_dodgeInsetEdges="bottom" />
 
     </android.support.design.widget.CoordinatorLayout>
-</layout>

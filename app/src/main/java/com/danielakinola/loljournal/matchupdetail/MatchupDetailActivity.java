@@ -45,11 +45,7 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
         setupFAB();
         setupViewModel();
         setupAppBar();
-
         //TODO: RENAME FROM PLAYERCHAMPION TO USERCHAMPION
-        //TODO: databind these?
-
-
     }
 
     private void setupAppBar() {

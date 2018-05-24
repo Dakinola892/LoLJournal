@@ -22,7 +22,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-//TODO: FINALIZE, check Dagger2 solution to constructor variables for factory
+//TODO: FINALIZE
 
 public class MatchupsViewModel extends ViewModel {
 

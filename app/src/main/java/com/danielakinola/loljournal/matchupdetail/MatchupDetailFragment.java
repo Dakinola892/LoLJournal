@@ -1,7 +1,6 @@
 package com.danielakinola.loljournal.matchupdetail;
 
 
-import android.app.Fragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,16 +21,10 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MatchupDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MatchupDetailFragment extends android.support.v4.app.Fragment {
     private static final String TITLE = "TITLE";
     private static final String CATEGORY = "CATERGORY";
 
-    // TODO: Rename and change types of parameters
     private String title;
     private int category;
     @Inject
@@ -43,7 +36,6 @@ public class MatchupDetailFragment extends android.support.v4.app.Fragment {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static MatchupDetailFragment newInstance(int category, String title) {
         MatchupDetailFragment fragment = new MatchupDetailFragment();
         Bundle args = new Bundle();
@@ -63,7 +55,6 @@ public class MatchupDetailFragment extends android.support.v4.app.Fragment {
         matchupDetailViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity()), viewModelFactory).get(MatchupDetailViewModel.class);
     }
 
-    //TODO: add empty state
     private void setupRecyclerView(View rootView) {
         RecyclerView recyclerView = Objects.requireNonNull(rootView.findViewById(R.id.comment_recyler_view));
         View emptyState = rootView.findViewById(R.id.empty_state);
@@ -81,13 +72,11 @@ public class MatchupDetailFragment extends android.support.v4.app.Fragment {
                 commentAdapter.notifyDataSetChanged();
             }
         });
-
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         View rootView = inflater.inflate(R.layout.fragment_matchup_detail, container, false);
 
@@ -103,9 +92,7 @@ public class MatchupDetailFragment extends android.support.v4.app.Fragment {
     class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
         ArrayList<Comment> comments = new ArrayList<>();
-        CommentAdapter(List<Comment> comments) {
-            this.comments = (ArrayList<Comment>) comments;
-        }
+
         CommentAdapter() {
 
         }
@@ -164,6 +151,5 @@ public class MatchupDetailFragment extends android.support.v4.app.Fragment {
                 itemCommentBinding.executePendingBindings();
             }
         }
-
     }
 }

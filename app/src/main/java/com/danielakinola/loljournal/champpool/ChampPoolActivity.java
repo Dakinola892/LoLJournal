@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -37,7 +38,7 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
     LanePagerAdapter lanePagerAdapter;
     @Inject
     ViewModelFactory viewModelFactory;
-    private int lane = 0;
+    private int lane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +68,6 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
         activityChampPoolBinding.setViewmodel(champPoolViewModel);
     }
 
-
-    //tODO: remove this change int arrays to typed arrays
     private void setupViewModel() {
         ImageView icon = findViewById(R.id.img_lane_icon);
         TextView title = findViewById(R.id.text_lane_title);
@@ -125,11 +124,9 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
         startActivity(intent);
     }
 
-
     public void openChampionSelect() {
         Intent intent = new Intent(this, ChampionSelectActivity.class);
         intent.putExtra(ChampionSelectActivity.LANE, lane);
-        intent.putExtra(getString(R.string.request_code), REQUEST_EDIT_CHAMP_POOL);
         startActivityForResult(intent, REQUEST_EDIT_CHAMP_POOL);
     }
 
@@ -140,6 +137,11 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(ChampionSelectActivity.LANE, lane);
+    }
 
     public static class LanePagerAdapter extends FragmentPagerAdapter {
 
@@ -152,7 +154,7 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
         }
 
         @Override
-        public android.support.v4.app.Fragment getItem(int position) {
+        public Fragment getItem(int position) {
             return ChampPoolFragment.getInstance(position);
         }
 

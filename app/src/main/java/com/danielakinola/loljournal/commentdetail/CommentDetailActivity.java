@@ -64,7 +64,7 @@ public class CommentDetailActivity extends AppCompatActivity {
     }
 
     //TODO: extract string resource for %s vs %s
-    //todo: clean up
+    //todo: move logic to viewmodel, only expose what needed
 
     private void setupToolbar(int category) {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -74,11 +74,11 @@ public class CommentDetailActivity extends AppCompatActivity {
         TextView titleView = findViewById(R.id.comment_detail_title);
         TextView subtitleView = findViewById(R.id.comment_detail_subtitle);
 
+
         commentDetailViewModel.getMatchup().observe(this, matchup -> {
             assert matchup != null;
             String categoryString = getResources().getStringArray(R.array.comment_categories)[category];
-            titleView.setText(String.format("%s vs. %s ",
-                    matchup.getPlayerChampion(), matchup.getEnemyChampion()));
+            titleView.setText(getString(R.string.versus, matchup.getPlayerChampion(), matchup.getEnemyChampion()));
             subtitleView.setText(categoryString);
             getSupportActionBar().setLogo(
                     getResources().obtainTypedArray(R.array.ab_lane_icons).getDrawable(matchup.getLane()));
@@ -92,7 +92,6 @@ public class CommentDetailActivity extends AppCompatActivity {
         intent.putExtra(EditCommentActivity.COMMENT_ID, comment.getId());
         intent.putExtra(EditCommentActivity.MATCHUP_ID, comment.getMatchupId());
         intent.putExtra(EditCommentActivity.CATEGORY, comment.getCategory());
-        intent.putExtra(getString(R.string.request_code), REQUEST_EDIT_COMMENT);
         startActivityForResult(intent, REQUEST_EDIT_COMMENT);
     }
 

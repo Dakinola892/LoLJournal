@@ -1,7 +1,6 @@
 package com.danielakinola.loljournal;
 
 import com.danielakinola.loljournal.dependencyinjection.DaggerApplicationComponent;
-import com.facebook.stetho.Stetho;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
@@ -10,7 +9,6 @@ import dagger.android.DaggerApplication;
  * Created by dakin on 13/01/2018.
  */
 
-//TODO: ADD TO MANIFEST
 //todo: addd on destroys & save states
 
 public class LolJournalApplication extends DaggerApplication {
@@ -18,7 +16,7 @@ public class LolJournalApplication extends DaggerApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        Stetho.initializeWithDefaults(this);
+        //Stetho.initializeWithDefaults(this);
     }
 
     //Android Injector that injects Application with ApplicationComponent to get Application-level dependencies

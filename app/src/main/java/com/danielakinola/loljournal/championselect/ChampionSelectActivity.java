@@ -22,6 +22,7 @@ public class ChampionSelectActivity extends AppCompatActivity {
     public static final String LANE = "LANE";
     public static final String CHAMP_NAME = "CHAMP_NAME";
     public static final String PLAYER_CHAMPION_ID = "PLAYER_CHAMPION_ID";
+
     @Inject
     ViewModelFactory viewModelFactory;
     private ChampionSelectViewModel championSelectViewModel;

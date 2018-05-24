@@ -29,23 +29,15 @@ import io.reactivex.schedulers.Schedulers;
 
 @SuppressWarnings("ALL")
 public class ChampPoolViewModel extends ViewModel {
-    private static final int TOP_LANE = 0;
-    private static final int JUNGLE = 1;
-    private static final int MID_LANE = 2;
-    private static final int BOT_LANE = 3;
-    private static final int SUPPORT = 4;
-
+    private final MatchupRepository matchupRepository;
     private final String[] laneTitles;
     private final TypedArray laneIcons;
-    private final MatchupRepository matchupRepository;
 
     private final MutableLiveData<Integer> currentLane = new MutableLiveData<>();
     private LiveData<String> laneTitle;
     private LiveData<Integer> laneIcon;
-    private LiveData<Integer> emptyStateVisibility;
 
     private LiveData<List<Champion>>[] champions = new LiveData[5];
-    private LiveData<Boolean>[] noChampions = new LiveData[5];
 
     private SnackbarMessage snackbarMessage = new SnackbarMessage();
     private SingleLiveEvent<Void> editChampPoolEvent = new SingleLiveEvent<>();
@@ -53,11 +45,12 @@ public class ChampPoolViewModel extends ViewModel {
 
 
     @Inject
-    public ChampPoolViewModel(MatchupRepository matchupRepository, @Named("laneTitles") String[] laneTitles, @Named("laneIcons") TypedArray laneIcons/*, @Named("visibilities") int[] visibilities*/) {
+    public ChampPoolViewModel(MatchupRepository matchupRepository,
+                              @Named("laneTitles") String[] laneTitles,
+                              @Named("laneIcons") TypedArray laneIcons) {
         this.matchupRepository = matchupRepository;
         this.laneTitles = laneTitles;
         this.laneIcons = laneIcons;
-        /*this.visibilityValues = visibilities;*/
         getChampPoolData();
         subscribeToLaneChanges();
     }
@@ -78,31 +71,6 @@ public class ChampPoolViewModel extends ViewModel {
             return laneIcons.getResourceId(newLane, 0);
         });
 
-        for (int i = 0; i < noChampions.length; i++) {
-            this.noChampions[i] = Transformations.map(champions[i], newChampions -> {
-                return (newChampions.isEmpty() || newChampions == null) ? true : false;
-            });
-        }
-
-        //TODO: GIANT SWITCH STATEMENT?
-        /*for (int i = 0; i < emptyStateVisibilities.length; i++) {
-            this.emptyStateVisibilities[i] = Transformations.map(champions[i], newChampions -> {
-                if(newChampions.isEmpty()) {
-                    return visibilityValues[0];
-                } else{
-                    return visibilityValues[1];
-                }
-            });
-
-            this.recyclerViewVisibilities[i] = Transformations.map(emptyStateVisibilities[i], newValue -> {
-                if(newValue == visibilityValues[0]) {
-                    return visibilityValues[1];
-                } else{
-                    return visibilityValues[0];
-                }
-            });
-        }*/
-
     }
 
     public LiveData<List<Champion>> getChampions(int lane) {
@@ -115,18 +83,6 @@ public class ChampPoolViewModel extends ViewModel {
 
     public void setCurrentLane(int currentLane) {
         this.currentLane.setValue(currentLane);
-    }
-
-    /*public LiveData<Integer> getEmptyStateVisibility(int lane) {
-        return emptyStateVisibilities[lane];
-    }
-
-    public LiveData<Integer> getRecyclerViewVisibility(int lane) {
-        return recyclerViewVisibilities[lane];
-    }*/
-
-    public LiveData<Boolean> getNoChampions(int lane) {
-        return noChampions[lane];
     }
 
     public LiveData<String> getLaneTitle() {
@@ -162,14 +118,6 @@ public class ChampPoolViewModel extends ViewModel {
     }
 
     public void updateFavourited(Champion champion) {
-        update(champion);
-    }
-
-    //TODO: fix because it isn't an int array its a string array
-
-    //TODO: RxJava-ify for thread safety
-    //TODO: CHANGE SO ONLY NEED ID
-    private void update(Champion champion) {
         Completable.fromAction(() -> matchupRepository.setChampionStarred(champion.getId()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

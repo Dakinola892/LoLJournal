@@ -23,8 +23,6 @@
             app:toolbarId="@+id/toolbar"
             tools:title="Ezreal vs Aatrox">
 
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -35,11 +33,7 @@
                     android:layout_width="0dp"
                     android:layout_height="180dp"
                     android:layout_weight="1"
-                    android:scaleType="fitXY"
-                    android:scaleX="1.0"
-                    android:scaleY="2.0"
-                    android:translationX="-10dp"
-                    android:translationY="50dp"
+                    android:theme="@style/DiagChampionPortrait"
                     app:di_direction="top"
                     app:di_overlap="50dp"
                     app:di_position="right"
@@ -51,15 +45,13 @@
                     android:layout_width="0dp"
                     android:layout_height="180dp"
                     android:layout_weight="1"
-                    android:scaleType="fitXY"
-                    android:scaleX="1.0"
-                    android:scaleY="2.0"
-                    android:translationY="50dp"
+                    android:theme="@style/DiagChampionPortrait"
                     app:di_direction="right"
                     app:di_overlap="50dp"
                     app:di_position="left"
                     tools:ignore="ContentDescription"
                     tools:src="@drawable/aatrox_loading" />
+
             </LinearLayout>
 
             <View
@@ -105,6 +97,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/weaknesses" />
         </android.support.design.widget.TabLayout>
+
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
@@ -123,4 +116,5 @@
         android:focusable="true"
         android:src="@drawable/ic_add_black_24dp"
         app:fabSize="normal" />
+
 </android.support.design.widget.CoordinatorLayout>
