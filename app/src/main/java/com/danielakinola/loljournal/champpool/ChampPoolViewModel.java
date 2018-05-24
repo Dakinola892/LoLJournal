@@ -34,14 +34,14 @@ public class ChampPoolViewModel extends ViewModel {
     private final TypedArray laneIcons;
 
     private final MutableLiveData<Integer> currentLane = new MutableLiveData<>();
-    private LiveData<String> laneTitle;
+    private final LiveData<String> laneTitle;
     private LiveData<Integer> laneIcon;
 
     private LiveData<List<Champion>>[] champions = new LiveData[5];
 
-    private SnackbarMessage snackbarMessage = new SnackbarMessage();
-    private SingleLiveEvent<Void> editChampPoolEvent = new SingleLiveEvent<>();
-    private SingleLiveEvent<String> championDetailEvent = new SingleLiveEvent<>();
+    private final SnackbarMessage snackbarMessage = new SnackbarMessage();
+    private final SingleLiveEvent<Void> editChampPoolEvent = new SingleLiveEvent<>();
+    private final SingleLiveEvent<String> championDetailEvent = new SingleLiveEvent<>();
 
 
     @Inject
@@ -51,26 +51,15 @@ public class ChampPoolViewModel extends ViewModel {
         this.matchupRepository = matchupRepository;
         this.laneTitles = laneTitles;
         this.laneIcons = laneIcons;
+        this.laneTitle = Transformations.map(currentLane, newLane -> laneTitles[newLane]);
+        this.laneIcon = Transformations.map(currentLane, newLane -> laneIcons.getResourceId(newLane, 0));
         getChampPoolData();
-        subscribeToLaneChanges();
     }
 
     private void getChampPoolData() {
         for (int i = 0; i < champions.length; i++) {
             this.champions[i] = this.matchupRepository.getChampPool(i);
         }
-    }
-
-    private void subscribeToLaneChanges() {
-
-        this.laneTitle = Transformations.map(currentLane, newLane -> {
-            return laneTitles[newLane];
-        });
-
-        this.laneIcon = Transformations.map(currentLane, newLane -> {
-            return laneIcons.getResourceId(newLane, 0);
-        });
-
     }
 
     public LiveData<List<Champion>> getChampions(int lane) {
@@ -138,5 +127,13 @@ public class ChampPoolViewModel extends ViewModel {
                     }
                 });
 
+    }
+
+    public void onEdit(int resultCode) {
+        if (resultCode == 1) {
+            snackbarMessage.setValue(R.string.champ_pool_edited);
+        } else {
+            snackbarMessage.setValue(R.string.error);
+        }
     }
 }

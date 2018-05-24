@@ -9,21 +9,19 @@ import android.arch.persistence.room.PrimaryKey;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
-
-//TODO: finalise ids, put them constructor for database but choose another one for actual project use
-@Entity(tableName = "Comments", indices = @Index("matchup_id"), foreignKeys = @ForeignKey(entity = Matchup.class,
-        parentColumns = "matchup_id",
-        childColumns = "matchup_id",
-        onDelete = CASCADE))
+@Entity(tableName = "Comments",
+        indices = @Index("matchup_id"),
+        foreignKeys = @ForeignKey(entity = Matchup.class, parentColumns = "matchup_id",
+                childColumns = "matchup_id", onDelete = CASCADE))
 public class Comment {
-    @ColumnInfo(name = "matchup_id")
-    private final String matchupId;
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "comment_id")
     private int id;
+    @ColumnInfo(name = "matchup_id")
+    private final String matchupId;
+    private final int category;
     private String title;
     private String description;
-    private int category;
     private boolean starred;
 
     public Comment(int id, String matchupId, String title, String description, int category, boolean starred) {
@@ -81,10 +79,6 @@ public class Comment {
 
     public int getCategory() {
         return category;
-    }
-
-    public void setCategory(int category) {
-        this.category = category;
     }
 
     public boolean isStarred() {

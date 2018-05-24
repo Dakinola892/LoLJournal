@@ -27,7 +27,7 @@
         <activity
             android:name=".championselect.ChampionSelectActivity"
             android:label="Champion Select"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".matchups.MatchupsActivity"
             android:label="@string/title_activity_matchups"

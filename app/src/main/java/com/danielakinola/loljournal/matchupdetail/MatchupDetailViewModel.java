@@ -22,16 +22,16 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MatchupDetailViewModel extends ViewModel {
     private final MatchupRepository matchupRepository;
+    private final SingleLiveEvent<Comment> addCommentEvent = new SingleLiveEvent<>();
+    private final SingleLiveEvent<Integer> commentDetailEvent = new SingleLiveEvent<>();
+    private final SnackbarMessage snackbarMessage = new SnackbarMessage();
     private String matchupId;
-    private SingleLiveEvent<Integer> addCommentEvent = new SingleLiveEvent<>();
-    private SingleLiveEvent<Integer> commentDetailEvent = new SingleLiveEvent<>();
     private LiveData<Matchup> matchup;
-    private SnackbarMessage snackbarMessage = new SnackbarMessage();
     private int currentPage;
-    //TODO: finalize all possible variables with correct uppercase
+
 
     @Inject
-    public MatchupDetailViewModel(MatchupRepository matchupRepository) {
+    MatchupDetailViewModel(MatchupRepository matchupRepository) {
         this.matchupRepository = matchupRepository;
     }
 
@@ -49,10 +49,10 @@ public class MatchupDetailViewModel extends ViewModel {
     }
 
     public void addComment() {
-        addCommentEvent.setValue(currentPage);
+        addCommentEvent.setValue(new Comment(matchupId, currentPage));
     }
 
-    public SingleLiveEvent<Integer> getAddCommentEvent() {
+    public SingleLiveEvent<Comment> getAddCommentEvent() {
         return addCommentEvent;
     }
 

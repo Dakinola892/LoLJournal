@@ -2,7 +2,9 @@ package com.danielakinola.loljournal.championselect;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
+import android.content.res.TypedArray;
 
 import com.danielakinola.loljournal.data.MatchupRepository;
 import com.danielakinola.loljournal.data.models.Champion;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
@@ -22,50 +25,50 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class ChampionSelectViewModel extends ViewModel {
-    private final List<String> intiallySelectedChampions = new ArrayList<>();
     private final MatchupRepository matchupRepository;
     private final SingleLiveEvent<Integer> navigateBackToPreviousActivityEvent = new SingleLiveEvent<>();
     private final MutableLiveData<List<String>> currentlySelectedChampions = new MutableLiveData<>();
-    private int lane;
-    private String title;
-    private String subtitle;
-    private int laneIcon;
+    private final MutableLiveData<Integer> lane = new MutableLiveData<>();
+    private final MutableLiveData<String> title = new MutableLiveData<>();
+    private LiveData<String> subtitle;
+    private LiveData<Integer> logo;
+    private List<String> intiallySelectedChampions;
     private String champName;
     private String championId;
+    private String[] laneTitles;
+    private TypedArray laneIcons;
 
 
     @Inject
-    public ChampionSelectViewModel(MatchupRepository matchupRepository) {
+    ChampionSelectViewModel(MatchupRepository matchupRepository, @Named("laneTitles") String[] laneTitles, @Named("actionBarIcons") TypedArray laneIcons) {
         this.matchupRepository = matchupRepository;
+        this.laneTitles = laneTitles;
+        this.laneIcons = laneIcons;
     }
 
-    public void initialize(int lane, @Nullable String champName, String laneTitle, int laneIcon, String championId) {
-        this.lane = lane;
-        this.laneIcon = laneIcon;
+    public void initialize(int lane, @Nullable String champName, String championId) {
+        this.lane.setValue(lane);
         this.championId = championId;
 
         if (champName == null) {
-            this.title = "Champion Select";
-            this.subtitle = laneTitle;
-            List<String> result = matchupRepository.getChampNames(lane).getValue();
-            if (result != null) {
-                this.intiallySelectedChampions.addAll(result);
-            }
+            title.setValue("Champion Select");
+            intiallySelectedChampions = matchupRepository.getChampNames(lane).getValue();
         } else {
             this.champName = champName;
-            this.title = champName + "Matchup Select";
-            this.subtitle = laneTitle;
-            List<String> result = matchupRepository.getMatchupNames(championId).getValue();
-            if (result != null) {
-                this.intiallySelectedChampions.addAll(result);
-            }
+            title.setValue(champName + " Matchup Select");
+            intiallySelectedChampions = matchupRepository.getMatchupNames(championId).getValue();
         }
+
+        //todo: transformations may be unnecessary with no forward references
+        this.subtitle = Transformations.map(this.lane, newLane -> laneTitles[newLane]);
+        this.logo = Transformations.map(this.lane, newLane -> laneIcons.getResourceId(newLane, -1));
     }
 
 
     //TODO: properly learn RxJava2
-    //TODO: modularize
+    //fixme: no champions added if choose already added champion & already added champions dont have ticks & grayscale
     public void applyChampionSelection() {
+        int lane = this.lane.getValue();
         List<String> championsOrMatchups = currentlySelectedChampions.getValue();
 
         if (championsOrMatchups != null) {
@@ -81,11 +84,32 @@ public class ChampionSelectViewModel extends ViewModel {
                     matchups[i] = new Matchup(champName, championsOrMatchups.get(i), lane, championId);
                 }
                 addMatchups(matchups);
-                //matchupRepository.addMatchup(matchups);
             }
         }
+    }
 
+    public LiveData<String> getTitle() {
+        return title;
+    }
 
+    public LiveData<String> getSubtitle() {
+        return subtitle;
+    }
+
+    public LiveData<Integer> getLogo() {
+        return logo;
+    }
+
+    public SingleLiveEvent<Integer> getNavigateBackToPreviousActivityEvent() {
+        return navigateBackToPreviousActivityEvent;
+    }
+
+    public List<String> getIntiallySelectedChampions() {
+        return intiallySelectedChampions != null ? intiallySelectedChampions : new ArrayList<>();
+    }
+
+    public LiveData<List<String>> getCurrentlySelectedChampions() {
+        return currentlySelectedChampions;
     }
 
     private void addMatchups(Matchup... matchups) {
@@ -128,34 +152,6 @@ public class ChampionSelectViewModel extends ViewModel {
                         navigateBackToPreviousActivityEvent.setValue(-1);
                     }
                 });
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getSubtitle() {
-        return subtitle;
-    }
-
-    public int getLaneIcon() {
-        return laneIcon;
-    }
-
-    public int getLane() {
-        return lane;
-    }
-
-    public SingleLiveEvent<Integer> getNavigateBackToPreviousActivityEvent() {
-        return navigateBackToPreviousActivityEvent;
-    }
-
-    public List<String> getIntiallySelectedChampions() {
-        return intiallySelectedChampions;
-    }
-
-    public LiveData<List<String>> getCurrentlySelectedChampions() {
-        return currentlySelectedChampions;
     }
 
     public void onViewHolderClick(String name) {

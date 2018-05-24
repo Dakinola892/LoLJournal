@@ -14,16 +14,16 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.ViewModelFactory;
 import com.danielakinola.loljournal.commentdetail.CommentDetailActivity;
+import com.danielakinola.loljournal.data.models.Comment;
 import com.danielakinola.loljournal.editcomment.EditCommentActivity;
 import com.danielakinola.loljournal.utils.SnackbarMessage;
 import com.danielakinola.loljournal.utils.SnackbarUtils;
-
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -62,7 +62,7 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
 
         matchupDetailViewModel.getMatchup().observe(this, matchup -> {
             assert matchup != null;
-            String title = String.format("%s vs. %s", matchup.getPlayerChampion(), matchup.getEnemyChampion());
+            String title = getString(R.string.versus, matchup.getPlayerChampion(), matchup.getEnemyChampion());
             collapsingToolbarLayout.setTitle(title);
             playerChampionPortrait.setImageResource(matchup.getPlayerChampionImageResource());
             enemyChampionPortrait.setImageResource(matchup.getEnemyChampionImageResource());
@@ -72,14 +72,13 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
 
     private void setupViewModel() {
         String matchupId = getIntent().getStringExtra(EditCommentActivity.MATCHUP_ID);
-
+        View root = findViewById(R.id.matchup_detail_coordinator_layout);
         matchupDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(MatchupDetailViewModel.class);
         matchupDetailViewModel.initialize(matchupId);
         matchupDetailViewModel.getAddCommentEvent().observe(this, this::addNewComment);
         matchupDetailViewModel.getCommentDetailEvent().observe(this, this::navigateToCommentDetail);
         matchupDetailViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId ->
-                SnackbarUtils.showSnackbar(findViewById(R.id.matchup_detail_coordinator_layout), getString(snackbarMessageResourceId, "Comment")));
-
+                SnackbarUtils.showSnackbar(root, getString(snackbarMessageResourceId, "Comment")));
     }
 
     private void navigateToCommentDetail(int commentId) {
@@ -88,10 +87,10 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
         startActivity(intent);
     }
 
-    private void addNewComment(int category) {
+    private void addNewComment(Comment comment) {
         Intent intent = new Intent(this, EditCommentActivity.class);
-        intent.putExtra(EditCommentActivity.CATEGORY, category);
-        intent.putExtra(EditCommentActivity.MATCHUP_ID, Objects.requireNonNull(matchupDetailViewModel.getMatchup().getValue()).getId());
+        intent.putExtra(EditCommentActivity.CATEGORY, comment.getCategory());
+        intent.putExtra(EditCommentActivity.MATCHUP_ID, comment.getMatchupId());
         intent.putExtra(getString(R.string.request_code), REQUEST_ADD_COMMENT);
         startActivityForResult(intent, REQUEST_ADD_COMMENT);
     }

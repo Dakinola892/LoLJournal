@@ -3,6 +3,7 @@ package com.danielakinola.loljournal.matchups;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
+import android.content.res.TypedArray;
 
 import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.data.MatchupRepository;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
@@ -22,31 +24,48 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-//TODO: FINALIZE
+//TODO: inject Snackbar Messages & SingleLiveEvents?
 
 public class MatchupsViewModel extends ViewModel {
 
     private final MatchupRepository matchupRepository;
+    private final String[] laneTitles;
+    private final TypedArray laneIcons;
+    private final SingleLiveEvent<String> openMatchupDetailEvent = new SingleLiveEvent<>();
+    private final SingleLiveEvent<Champion> editMatchupsEvent = new SingleLiveEvent<>();
+    private final SnackbarMessage snackbarMessage = new SnackbarMessage();
     private String championId;
+    private LiveData<String> laneSubtitle;
+    private LiveData<Integer> logo;
     private LiveData<Champion> champion;
-    //private String laneSubtitle;
-
     private LiveData<List<Matchup>> matchups;
-    private SingleLiveEvent<String> openMatchupDetailEvent = new SingleLiveEvent<>();
-    private SingleLiveEvent<String> editMatchupsEvent = new SingleLiveEvent<>();
-    private SnackbarMessage snackbarMessage = new SnackbarMessage();
 
     @Inject
-    public MatchupsViewModel(MatchupRepository matchupRepository) {
+    MatchupsViewModel(MatchupRepository matchupRepository,
+                      @Named("laneTitles") String[] laneTitles,
+                      @Named("actionBarIcons") TypedArray laneIcons) {
         this.matchupRepository = matchupRepository;
+        this.laneTitles = laneTitles;
+        this.laneIcons = laneIcons;
     }
 
 
     public void initialize(String championId) {
         this.championId = championId;
-        //this.laneSubtitle = laneSubtitle;
         champion = matchupRepository.getChampion(championId);
-        matchups = Transformations.switchMap(champion, newChampion -> matchupRepository.getMatchups(newChampion.getLane(), newChampion.getName()));
+        matchups = Transformations.switchMap(champion, champion ->
+                matchupRepository.getMatchups(champion.getLane(), champion.getName()));
+        this.laneSubtitle = Transformations.map(champion, champion -> laneTitles[champion.getLane()]);
+        this.logo = Transformations.map(champion,
+                champion -> laneIcons.getResourceId(champion.getLane(), -1));
+    }
+
+    public LiveData<String> getLaneSubtitle() {
+        return laneSubtitle;
+    }
+
+    public LiveData<Integer> getLogo() {
+        return logo;
     }
 
     public int getLane() {
@@ -61,10 +80,6 @@ public class MatchupsViewModel extends ViewModel {
         return champion;
     }
 
-    /*public String getLaneSubtitle() {
-        return laneSubtitle;
-    }*/
-
     public String getChampionId() {
         return championId;
     }
@@ -73,7 +88,7 @@ public class MatchupsViewModel extends ViewModel {
         return openMatchupDetailEvent;
     }
 
-    public SingleLiveEvent<String> getEditMatchupsEvent() {
+    public SingleLiveEvent<Champion> getEditMatchupsEvent() {
         return editMatchupsEvent;
     }
 
@@ -83,10 +98,6 @@ public class MatchupsViewModel extends ViewModel {
 
     public void navigateToMatchupDetail(String id) {
         openMatchupDetailEvent.setValue(id);
-    }
-
-    private void editMatchups() {
-        editMatchupsEvent.setValue(Objects.requireNonNull(champion.getValue()).getName());
     }
 
     public void updateFavourited(Matchup matchup) {
@@ -101,7 +112,7 @@ public class MatchupsViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        if (!matchup.isStarred()) showSnackbar();
+                        if (!matchup.isStarred()) showSuccessSnackbar();
                     }
 
                     @Override
@@ -109,19 +120,47 @@ public class MatchupsViewModel extends ViewModel {
 
                     }
                 });
-
-
     }
 
     public void deleteMatchup(Matchup matchup) {
-        matchupRepository.deleteMatchup(matchup);
+        Completable.fromAction(() -> matchupRepository.deleteMatchup(matchup))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        showSuccessSnackbar();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        showErrorSnackbar();
+                    }
+                });
     }
 
-    public void showSnackbar() {
+    void showSuccessSnackbar() {
         snackbarMessage.setValue(R.string.matchup_updated);
     }
 
+    private void showErrorSnackbar() {
+        snackbarMessage.setValue(R.string.error);
+    }
+
     public void navigateToMatchupSelect() {
-        editMatchups();
+        editMatchupsEvent.setValue(champion.getValue());
+    }
+
+    public void onEdit(int resultCode) {
+        if (resultCode == 1) {
+            showSuccessSnackbar();
+        } else {
+            showErrorSnackbar();
+        }
     }
 }

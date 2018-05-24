@@ -131,4 +131,6 @@
     <string name="hint_comment_detail">(Optional) Add a longer more detailed description of your comment here.</string>
     <string name="comment_edited">Comment successfully edited</string>
     <string name="versus">%s vs. %s</string>
+    <string name="error">Error</string>
+    <string name="comment_favourited">Comment favourited!</string>
 </resources>

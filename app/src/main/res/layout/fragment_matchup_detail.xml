@@ -6,8 +6,6 @@
 
     <data>
 
-        <import type="android.view.View" />
-
         <variable
             name="category"
             type="Integer" />
@@ -15,13 +13,13 @@
         <variable
             name="viewmodel"
             type="com.danielakinola.loljournal.matchupdetail.MatchupDetailViewModel" />
+
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <!--android:background="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? @color/colorEmptyStateBackground : @color/colorAppBackground}">
--->
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/comment_recyler_view"
             android:layout_width="match_parent"
@@ -32,8 +30,8 @@
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/item_comment" />
-        <!--android:visibility="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? View.GONE : View.VISIBLE}" />-->
 
+        <!--todo: proper empty states-->
         <include
             android:id="@+id/empty_state"
             layout="@layout/empty_state"
@@ -41,7 +39,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone" />
-        <!--android:visibility="@{safeUnbox(viewmodel.getEmpty(safeUnbox(lane))) ? View.VISIBLE : View.GONE}" />-->
 
     </FrameLayout>
 

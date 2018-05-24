@@ -4,12 +4,10 @@ import com.danielakinola.loljournal.R;
 
 import java.util.HashMap;
 
-/**
- * Created by Guest on 28/12/2017.
- */
 
+//todo: javadoc this
 //TODO: change to immutable map?
-//TODO: change to do add Kaisa
+
 public class ChampionGallery {
     public static final HashMap<String, Integer> champions = new HashMap<>();
 
@@ -61,7 +59,7 @@ public class ChampionGallery {
         champions.put("Jayce", R.drawable.jayce_loading);
         champions.put("Jhin", R.drawable.jhin_loading);
         champions.put("Jinx", R.drawable.jinx_loading);
-        champions.put("Kai'Sa", R.drawable.annie_loading);
+        champions.put("Kai'Sa", R.drawable.kaisa_loading);
         champions.put("Kalista", R.drawable.kalista_loading);
         champions.put("Karma", R.drawable.karma_loading);
         champions.put("Karthus", R.drawable.karthus_loading);
@@ -99,6 +97,7 @@ public class ChampionGallery {
         champions.put("Ornn", R.drawable.ornn_loading);
         champions.put("Pantheon", R.drawable.pantheon_loading);
         champions.put("Poppy", R.drawable.poppy_loading);
+        champions.put("Pyke", R.drawable.pyke_loading);
         champions.put("Quinn", R.drawable.quinn_loading);
         champions.put("Rakan", R.drawable.rakan_loading);
         champions.put("Rammus", R.drawable.rammus_loading);

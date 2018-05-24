@@ -22,7 +22,7 @@
         android:onClick="@{() -> listener.onMatchupClicked(matchup)}">
 
         <!--TODO: refactor names - btn text img, etc.-->
-        <!--todo: check if can put app fields in styles-->
+
 
         <ImageView
             android:id="@+id/img_matchup_champion_portrait"
@@ -47,14 +47,10 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="top|end"
-            android:background="@color/colorPrimary"
+            android:theme="@style/FavoriteButton"
             android:gravity="center"
-            app:mfb_animate_favorite="true"
-            app:mfb_color="white"
-            app:mfb_padding="4"
-            app:mfb_size="40"
-            app:mfb_type="heart"
             tools:src="@drawable/ic_star_border_gold_24dp" />
+
 
     </FrameLayout>
 

@@ -10,23 +10,26 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:expanded="true"
-            app:theme="@style/AppTheme.AppBarOverlay">
+            android:layout_height="wrap_content">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:gravity="center_horizontal"
                 app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+                app:contentInsetStartWithNavigation="4dp"
+                tools:logo="@drawable/ic_top_ab"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:title=" ">
 
+                <!--TODO: fix margin so its consistent for variety of titles & phone sizes-->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:layout_marginStart="28dp"
                     android:orientation="vertical">
 
                     <TextView

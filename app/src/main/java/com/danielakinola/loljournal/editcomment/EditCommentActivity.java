@@ -5,10 +5,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.ViewModelFactory;
+
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -22,6 +23,8 @@ public class EditCommentActivity extends AppCompatActivity {
     @Inject
     ViewModelFactory viewModelFactory;
     private EditCommentViewModel editCommentViewModel;
+    private EditText commentTitle;
+    private EditText commentDetail;
 
 
     @Override
@@ -29,14 +32,13 @@ public class EditCommentActivity extends AppCompatActivity {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_comment);
-        setupFAB();
+        commentTitle = findViewById(R.id.edit_text_comment_title);
+        commentDetail = findViewById(R.id.edit_text_comment_detail);
         setupViewModel();
-        //todo: loadData() to split up setupViewModel? - more SOLID
+        setupFAB();
+        loadData();
     }
 
-
-    //todo: possibily include category string in Comment & other model classes
-    //todo: change string formats to extracting string resources
     //TODO: decide between comment detail & comment description
     //todo: fix strengths vs strength, weaknesses vs weakness, maybe?
 
@@ -45,41 +47,32 @@ public class EditCommentActivity extends AppCompatActivity {
         String matchupId = getIntent().getStringExtra(MATCHUP_ID);
         int category = getIntent().getIntExtra(CATEGORY, -1);
 
-        TextView commentTitleEditText = findViewById(R.id.edit_text_comment_title);
-        TextView commentDetailEditText = findViewById(R.id.edit_text_comment_detail);
-
         editCommentViewModel = ViewModelProviders.of(this, viewModelFactory).get(EditCommentViewModel.class);
         editCommentViewModel.initialize(commentId, matchupId, category);
-        editCommentViewModel.getConfirmationEvent().observe(this, aVoid -> onConfirm());
+    }
+
+    private void loadData() {
+        editCommentViewModel.getConfirmationEvent().observe(this, this::onConfirm);
+        editCommentViewModel.getTitle().observe(this, Objects.requireNonNull(getSupportActionBar())::setTitle);
+        editCommentViewModel.getSubtitle().observe(this, getSupportActionBar()::setSubtitle);
         editCommentViewModel.getComment().observe(this, comment -> {
             assert comment != null;
-            commentTitleEditText.setText(comment.getTitle());
-            commentDetailEditText.setText(comment.getDescription());
-            //todo: more mvvm, dagger, less gets, provide string arrays and such (injection)
-            //todo: less string building in view, move logic to view model and expose String
-            String title = editCommentViewModel.isNewComment() ? "Adding new Matchup " : "Editing Matchup ";
-            String categoryString = getResources().getStringArray(R.array.comment_categories)[comment.getCategory()];
-            getSupportActionBar().setTitle(title + categoryString);
-        });
-        editCommentViewModel.getMatchup().observe(this, matchup -> {
-            String laneString = getResources().getStringArray(R.array.lanes_array)[matchup.getLane()];
-            getSupportActionBar().setSubtitle(String.format("%s vs. %s %s", matchup.getPlayerChampion(), matchup.getEnemyChampion(), laneString));
+            commentTitle.setText(comment.getTitle());
+            commentDetail.setText(comment.getDescription());
         });
     }
 
     private void setupFAB() {
         FloatingActionButton fab = findViewById(R.id.fab_confirm_comment_edit);
-        EditText title = findViewById(R.id.edit_text_comment_title);
-        EditText description = findViewById(R.id.edit_text_comment_detail);
-
         fab.setOnClickListener(v -> {
-            editCommentViewModel.onConfirm(title.getText().toString(), description.getText().toString());
-
+            String newCommentTitle = commentTitle.getText().toString();
+            String newCommentDescription = commentDetail.getText().toString();
+            editCommentViewModel.saveComment(newCommentTitle, newCommentDescription);
         });
     }
 
-    private void onConfirm() {
-        setResult(RESULT_OK);
+    private void onConfirm(int result) {
+        setResult(result);
         finish();
     }
 

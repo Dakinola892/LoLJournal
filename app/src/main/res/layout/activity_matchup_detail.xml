@@ -34,21 +34,24 @@
                     android:layout_height="180dp"
                     android:layout_weight="1"
                     android:theme="@style/DiagChampionPortrait"
+                    android:layout_gravity="start"
                     app:di_direction="top"
-                    app:di_overlap="50dp"
                     app:di_position="right"
+                    tools:di_overlap="50dp"
                     tools:ignore="ContentDescription"
                     tools:src="@drawable/annie_loading" />
 
+                <!--fixme: picture no longer stretches to edge-->
                 <com.santalu.diagonalimageview.DiagonalImageView
                     android:id="@+id/img_enemy_champion"
                     android:layout_width="0dp"
                     android:layout_height="180dp"
                     android:layout_weight="1"
                     android:theme="@style/DiagChampionPortrait"
+                    android:layout_gravity="end"
                     app:di_direction="right"
-                    app:di_overlap="50dp"
                     app:di_position="left"
+                    tools:di_overlap="50dp"
                     tools:ignore="ContentDescription"
                     tools:src="@drawable/aatrox_loading" />
 

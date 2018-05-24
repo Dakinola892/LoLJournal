@@ -2,6 +2,7 @@ package com.danielakinola.loljournal.editcomment;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
 import com.danielakinola.loljournal.data.MatchupRepository;
@@ -10,6 +11,7 @@ import com.danielakinola.loljournal.data.models.Matchup;
 import com.danielakinola.loljournal.utils.SingleLiveEvent;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
@@ -20,36 +22,44 @@ import io.reactivex.schedulers.Schedulers;
 public class EditCommentViewModel extends ViewModel {
 
     private final MatchupRepository matchupRepository;
-    private SingleLiveEvent<Void> confirmationEvent = new SingleLiveEvent<>();
+    private final String[] commentCategories;
+    private final String[] laneTitles;
+    private final SingleLiveEvent<Integer> confirmationEvent = new SingleLiveEvent<>();
+    private LiveData<String> title;
+    private LiveData<String> subtitle;
     private LiveData<Comment> editableComment;
     private LiveData<Matchup> matchup;
     private boolean newComment;
-    /*private String matchupId;
-    private int category;*/
 
-
-    /*@Inject
-    public EditCommentViewModel(MatchupRepository matchupRepository, @Named("editCommentId") int commentId) {
-        this.matchupRepository = matchupRepository;
-        this.editableComment = matchupRepository.getComment(commentId).getValue();
-        this.newComment = false;
-    }*/
 
     @Inject
-    public EditCommentViewModel(MatchupRepository matchupRepository) {
+    EditCommentViewModel(MatchupRepository matchupRepository, @Named("laneTitles") String[] laneTitles,
+                         @Named("commentCategories") String[] commentCategories) {
         this.matchupRepository = matchupRepository;
+        this.commentCategories = commentCategories;
+        this.laneTitles = laneTitles;
     }
 
     public void initialize(int commentId, String matchupId, int category) {
         this.matchup = matchupRepository.getMatchup(matchupId);
         if (commentId == -1) {
-            this.editableComment = new MutableLiveData<>();
-            ((MutableLiveData<Comment>) this.editableComment).setValue(new Comment(matchupId, category));
-            this.newComment = true;
+            editableComment = new MutableLiveData<>();
+            ((MutableLiveData<Comment>) editableComment).setValue(new Comment(matchupId, category));
+            newComment = true;
         } else {
-            this.editableComment = matchupRepository.getComment(commentId);
-            this.newComment = false;
+            editableComment = matchupRepository.getComment(commentId);
+            newComment = false;
         }
+
+        this.title = Transformations.map(editableComment, comment -> {
+            String titleStart = newComment ? "Adding new Matchup " : "Editing Matchup ";
+            String categoryString = commentCategories[comment.getCategory()];
+            return titleStart + categoryString;
+        });
+        this.subtitle = Transformations.map(matchup, matchup -> {
+            String laneString = laneTitles[matchup.getLane()];
+            return String.format("%s vs. %s %s", matchup.getPlayerChampion(), matchup.getEnemyChampion(), laneString);
+        });
     }
 
     public LiveData<Comment> getComment() {
@@ -60,70 +70,45 @@ public class EditCommentViewModel extends ViewModel {
         return matchup;
     }
 
-    public boolean isNewComment() {
-        return newComment;
+    public LiveData<String> getTitle() {
+        return title;
     }
 
-    //TODO: fix public/private acessibility & clean up code order
+    public LiveData<String> getSubtitle() {
+        return subtitle;
+    }
 
-    public SingleLiveEvent<Void> getConfirmationEvent() {
+    public SingleLiveEvent<Integer> getConfirmationEvent() {
         return confirmationEvent;
     }
 
-    public void onConfirm(String title, String description) {
-        saveComment(title, description);
-        confirmationEvent.setValue(null);
-    }
-
-    private void saveComment(String title, String description) {
+    public void saveComment(String title, String description) {
 
         Comment comment = editableComment.getValue();
+        assert comment != null;
         comment.setTitle(title);
         comment.setDescription(description);
 
-        //todo: refactor to use common logic
+        Completable saveComment = newComment ? Completable.fromAction(() -> matchupRepository.addComment(comment)) : Completable.fromAction(() -> matchupRepository.updateComment(comment));
+        saveComment
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-        if (newComment) {
-            Completable.fromAction(() -> matchupRepository.addComment(comment))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new CompletableObserver() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+                    }
 
-                        }
+                    @Override
+                    public void onComplete() {
+                        confirmationEvent.setValue(1);
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onError(Throwable e) {
+                        confirmationEvent.setValue(-1);
+                    }
+                });
 
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-                    });
-
-
-        } else {
-            Completable.fromAction(() -> matchupRepository.updateComment(comment))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new CompletableObserver() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-                        }
-
-                        @Override
-                        public void onComplete() {
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                    });
-        }
     }
 }

@@ -119,7 +119,6 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
 
     public void openChosenChampion(String championId) {
         Intent intent = new Intent(this, MatchupsActivity.class);
-        intent.putExtra(ChampionSelectActivity.LANE, lane);
         intent.putExtra(PLAYER_CHAMPION_ID, championId);
         startActivity(intent);
     }
@@ -132,9 +131,7 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_EDIT_CHAMP_POOL && resultCode == RESULT_OK) {
-            champPoolViewModel.showSnackbarMessage();
-        }
+        champPoolViewModel.onEdit(resultCode);
     }
 
     @Override

@@ -58,11 +58,6 @@ public class ChampPoolFragment extends Fragment {
 
         View rootView = getLayoutInflater().inflate(R.layout.fragment_champ_pool, container, false);
         setupRecyclerView(rootView);
-
-        /*FragmentChampPoolBinding fragmentChampPoolBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_champ_pool, container, false);
-        View rootView = fragmentChampPoolBinding.getRoot();
-        setupDataBinding(fragmentChampPoolBinding);*/
-        //setupRecyclerView(recyclerView);
         return rootView;
     }
 
@@ -81,7 +76,6 @@ public class ChampPoolFragment extends Fragment {
                 emptyState.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
             } else {
-                //TODO; find way to stop setting visibiity when already data?
                 emptyState.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 championAdapter.setChampions(champions);

@@ -9,7 +9,9 @@ import dagger.android.DaggerApplication;
  * Created by dakin on 13/01/2018.
  */
 
-//todo: addd on destroys & save states
+//todo: add on destroys & save states
+//todo: delete actions
+//todo: main activity
 
 public class LolJournalApplication extends DaggerApplication {
 

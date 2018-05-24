@@ -45,12 +45,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="top|end"
-            android:background="@color/colorPrimary"
-            app:mfb_animate_favorite="true"
-            app:mfb_color="white"
-            app:mfb_padding="4"
-            app:mfb_size="40"
-            app:mfb_type="heart"
+            android:theme="@style/FavoriteButton"
             tools:src="@drawable/ic_star_border_gold_24dp" />
 
 

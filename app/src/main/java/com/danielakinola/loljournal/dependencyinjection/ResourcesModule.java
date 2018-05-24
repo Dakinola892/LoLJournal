@@ -2,7 +2,6 @@ package com.danielakinola.loljournal.dependencyinjection;
 
 import android.app.Application;
 import android.content.res.TypedArray;
-import android.view.View;
 
 import com.danielakinola.loljournal.R;
 
@@ -27,8 +26,20 @@ public class ResourcesModule {
     }
 
     @Provides
-    @Named("visibilities")
-    int[] provideVisibilities() {
-        return new int[]{View.GONE, View.VISIBLE};
+    @Named("actionBarIcons")
+    TypedArray provideActionBarLaneIcons(Application application) {
+        return application.getResources().obtainTypedArray(R.array.ab_lane_icons);
+    }
+
+    @Provides
+    @Named("commentCategories")
+    String[] provideCommentCategories(Application application) {
+        return application.getResources().getStringArray(R.array.comment_categories);
+    }
+
+    @Provides
+    @Named("versus")
+    String provideVersusString(Application application) {
+        return application.getString(R.string.versus);
     }
 }

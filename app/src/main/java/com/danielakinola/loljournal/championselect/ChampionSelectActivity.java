@@ -15,8 +15,6 @@ import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
 
-//TODO: rename all viewmodels to 'viewmodel'
-
 public class ChampionSelectActivity extends AppCompatActivity {
 
     public static final String LANE = "LANE";
@@ -33,9 +31,8 @@ public class ChampionSelectActivity extends AppCompatActivity {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_champion_select);
-        championSelectViewModel = ViewModelProviders.of(this, viewModelFactory).get(ChampionSelectViewModel.class);
-        setupRecylerView();
         setupViewModel();
+        setupRecylerView();
         setupToolbar();
         setupFAB();
     }
@@ -51,6 +48,11 @@ public class ChampionSelectActivity extends AppCompatActivity {
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new GridLayoutManager(ChampionSelectActivity.this, 3));
         recyclerView.setAdapter(championListAdapter);
+        championSelectViewModel.getCurrentlySelectedChampions().observe(this,
+                currentlySelectedChampions -> {
+                    championListAdapter.setCurrentlySelectedChampions(currentlySelectedChampions);
+                    championListAdapter.notifyDataSetChanged();
+                });
     }
 
     private void setupViewModel() {
@@ -58,17 +60,8 @@ public class ChampionSelectActivity extends AppCompatActivity {
         String champName = getIntent().getStringExtra(CHAMP_NAME);
         String championId = getIntent().getStringExtra(PLAYER_CHAMPION_ID);
 
-        championSelectViewModel.initialize(lane, champName,
-                getResources().getStringArray(R.array.lanes_array)[lane],
-                getResources().obtainTypedArray(R.array.ab_lane_icons).getResourceId(lane, -1),
-                championId);
-
-        championSelectViewModel.getCurrentlySelectedChampions()
-                .observe(this, currentlySelectedChampions -> {
-                    championListAdapter.setCurrentlySelectedChampions(currentlySelectedChampions);
-                    championListAdapter.notifyDataSetChanged();
-                });
-
+        championSelectViewModel = ViewModelProviders.of(this, viewModelFactory).get(ChampionSelectViewModel.class);
+        championSelectViewModel.initialize(lane, champName, championId);
         championSelectViewModel.getNavigateBackToPreviousActivityEvent()
                 .observe(this, this::navigateBack);
     }
@@ -76,12 +69,12 @@ public class ChampionSelectActivity extends AppCompatActivity {
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_champion_select);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(championSelectViewModel.getTitle());
-        getSupportActionBar().setSubtitle(championSelectViewModel.getSubtitle());
-        toolbar.setLogo(championSelectViewModel.getLaneIcon());
+        assert getSupportActionBar() != null;
+        championSelectViewModel.getTitle().observe(this, getSupportActionBar()::setTitle);
+        championSelectViewModel.getSubtitle().observe(this, getSupportActionBar()::setSubtitle);
+        championSelectViewModel.getLogo().observe(this, getSupportActionBar()::setLogo);
     }
 
-    //TODO: DEAL WITH ERROR/SUCCESS RESULT
     public void navigateBack(int result) {
         setResult(result);
         finish();

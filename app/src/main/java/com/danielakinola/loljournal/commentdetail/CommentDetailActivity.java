@@ -34,12 +34,10 @@ public class CommentDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        /*ActivityCommentDetailBinding activityCommentDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_comment_detail);*/
         setContentView(R.layout.activity_comment_detail);
         setupViewModel();
         setupFAB();
-        /*activityCommentDetailBinding.setViewmodel(commentDetailViewModel);
-        activityCommentDetailBinding.executePendingBindings();*/
+
     }
 
     private void setupViewModel() {
@@ -52,21 +50,17 @@ public class CommentDetailActivity extends AppCompatActivity {
         commentDetailViewModel.initialize(commentId);
         commentDetailViewModel.getEditCommentEvent().observe(this, this::navigateToEditComment);
         commentDetailViewModel.getSnackbarMessage().observe(this,
-                (SnackbarMessage.SnackbarObserver) message -> {
-                    SnackbarUtils.showSnackbar(findViewById(R.id.frame_comment_detail), getString(message));
-                });
+                (SnackbarMessage.SnackbarObserver) message ->
+                        SnackbarUtils.showSnackbar(findViewById(R.id.frame_comment_detail), getString(message)));
         commentDetailViewModel.getComment().observe(this, comment -> {
             assert comment != null;
             titleView.setText(comment.getTitle());
             descriptionView.setText(comment.getDescription());
-            setupToolbar(comment.getCategory());
+            setupToolbar();
         });
     }
 
-    //TODO: extract string resource for %s vs %s
-    //todo: move logic to viewmodel, only expose what needed
-
-    private void setupToolbar(int category) {
+    private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -74,18 +68,10 @@ public class CommentDetailActivity extends AppCompatActivity {
         TextView titleView = findViewById(R.id.comment_detail_title);
         TextView subtitleView = findViewById(R.id.comment_detail_subtitle);
 
-
-        commentDetailViewModel.getMatchup().observe(this, matchup -> {
-            assert matchup != null;
-            String categoryString = getResources().getStringArray(R.array.comment_categories)[category];
-            titleView.setText(getString(R.string.versus, matchup.getPlayerChampion(), matchup.getEnemyChampion()));
-            subtitleView.setText(categoryString);
-            getSupportActionBar().setLogo(
-                    getResources().obtainTypedArray(R.array.ab_lane_icons).getDrawable(matchup.getLane()));
-        });
+        commentDetailViewModel.getTitle().observe(this, titleView::setText);
+        commentDetailViewModel.getSubtitle().observe(this, subtitleView::setText);
+        commentDetailViewModel.getLogo().observe(this, getSupportActionBar()::setLogo);
     }
-
-    //todo: clean up intents & events, see if everything is used/necessary
 
     private void navigateToEditComment(Comment comment) {
         Intent intent = new Intent(this, EditCommentActivity.class);
@@ -102,9 +88,7 @@ public class CommentDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_EDIT_COMMENT && resultCode == RESULT_OK) {
-            commentDetailViewModel.onSuccessfulEdit();
-        }
+        commentDetailViewModel.onEdit(resultCode);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -120,6 +104,7 @@ public class CommentDetailActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_delete:
+                //open delete dialog
                 Toast.makeText(this, "Delete", Toast.LENGTH_LONG).show();
                 break;
             case R.id.action_favourite:
