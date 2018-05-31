@@ -1,6 +1,7 @@
 package com.danielakinola.loljournal.champpool;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.ViewModelFactory;
 import com.danielakinola.loljournal.championselect.ChampionSelectActivity;
+import com.danielakinola.loljournal.data.models.Champion;
 import com.danielakinola.loljournal.databinding.ActivityChampPoolBinding;
 import com.danielakinola.loljournal.matchups.MatchupsActivity;
 import com.danielakinola.loljournal.utils.SnackbarMessage;
@@ -80,6 +83,7 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
         champPoolViewModel.getLaneIcon().observe(this, icon::setImageResource);
         champPoolViewModel.getEditChampPoolEvent().observe(this, aVoid -> openChampionSelect());
         champPoolViewModel.getChampionDetailEvent().observe(this, this::openChosenChampion);
+        champPoolViewModel.getDeleteChampionEvent().observe(this, this::showDeleteDialog);
         champPoolViewModel.getSnackbarMessage().observe(this,
                 (SnackbarMessage.SnackbarObserver) message ->
                         SnackbarUtils.showSnackbar(
@@ -96,6 +100,22 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
             }
         });
         viewPager.setCurrentItem(lane, true);
+    }
+
+    private void showDeleteDialog(Champion champion) {
+        String championTitle = champPoolViewModel.getLaneTitle().getValue() + " " + champion.getName();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Dialog);
+        AlertDialog dialog = builder.setTitle(getString(R.string.delete_dialog_title, championTitle))
+                .setMessage(getString(R.string.delete_dialog_champool_message, championTitle))
+                .setPositiveButton(R.string.delete, (dialog1, which) -> champPoolViewModel.deleteChampion(champion))
+                .setNegativeButton(R.string.cancel, (dialog12, which) -> {
+                })
+                .create();
+
+        dialog.setOnShowListener(dialog13 -> dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                .setTextColor(getResources().getColor(R.color.colorAccent)));
+
+        dialog.show();
     }
 
     @Override

@@ -8,4 +8,6 @@ public interface ChampionItemActionListener {
     void onChampionClicked(Champion champion);
 
     void onFavouriteChanged(Champion champion, View v);
+
+    void onDeleteClicked(Champion champion);
 }

@@ -31,6 +31,7 @@ public class MatchupsViewModel extends ViewModel {
     private final TypedArray laneIcons;
     private final SingleLiveEvent<String> openMatchupDetailEvent;
     private final SingleLiveEvent<Champion> editMatchupsEvent;
+    private final SingleLiveEvent<Matchup> deleteMatchupEvent;
     private final SnackbarMessage snackbarMessage;
     private String championId;
     private LiveData<String> laneSubtitle;
@@ -44,6 +45,7 @@ public class MatchupsViewModel extends ViewModel {
                       SnackbarMessage snackbarMessage,
                       SingleLiveEvent<Champion> editMatchupsEvent,
                       SingleLiveEvent<String> openMatchupDetailEvent,
+                      SingleLiveEvent<Matchup> deleteMatchupEvent,
                       @Named("laneTitles") String[] laneTitles,
                       @Named("actionBarIcons") TypedArray laneIcons) {
         this.matchupRepository = matchupRepository;
@@ -52,6 +54,7 @@ public class MatchupsViewModel extends ViewModel {
         this.snackbarMessage = snackbarMessage;
         this.openMatchupDetailEvent = openMatchupDetailEvent;
         this.editMatchupsEvent = editMatchupsEvent;
+        this.deleteMatchupEvent = deleteMatchupEvent;
     }
 
 
@@ -101,6 +104,10 @@ public class MatchupsViewModel extends ViewModel {
         return editMatchupsEvent;
     }
 
+    public SingleLiveEvent<Matchup> getDeleteMatchupEvent() {
+        return deleteMatchupEvent;
+    }
+
     public SnackbarMessage getSnackbarMessage() {
         return snackbarMessage;
     }
@@ -141,12 +148,10 @@ public class MatchupsViewModel extends ViewModel {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
                     }
 
                     @Override
                     public void onComplete() {
-                        showSuccessSnackbar();
                     }
 
                     @Override

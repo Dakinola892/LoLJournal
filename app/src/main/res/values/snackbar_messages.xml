@@ -4,7 +4,7 @@
     <string name="champion_favourited">%s favourited!</string>
     <string name="champion_deleted">Champion successfuly deleted from %s Champ Pool</string>
     <string name="matchup_updated">%s matchups successfully updated</string>
-    <string name="matchup_deleted">%s successfully deleted from %s Matchups</string>
+    <string name="matchup_deleted">Matchup successfully deleted from %s Matchups</string>
     <string name="matchup_favorited">%s Matchup favorited</string>
     <string name="comment_added">New Matchup %s successfully added</string>
     <string name="comment_deleted">Comment successfully deleted</string>

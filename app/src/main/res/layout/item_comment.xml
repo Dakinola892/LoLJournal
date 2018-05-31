@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -14,8 +16,6 @@
     </data>
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -23,41 +23,72 @@
         app:cardCornerRadius="16dp"
         app:cardElevation="6dp">
 
-        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/text_comment_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:paddingEnd="4dp"
+                android:paddingStart="4dp"
                 android:text="@{comment.title}"
+                android:textSize="22sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Watch for taliyah roams" />
+                tools:text="Taliyah Taliyah Taliyah " />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:background="@color/text_color_secondary"
+                app:layout_constraintBottom_toTopOf="@+id/text_comment_detail"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_comment_title" />
 
             <TextView
                 android:id="@+id/text_comment_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:paddingEnd="4dp"
+                android:paddingStart="4dp"
                 android:layout_marginTop="12dp"
-                android:layout_marginEnd="16dp"
                 android:text="@{comment.detail}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toEndOf="@+id/text_comment_title"
+                app:layout_constraintHorizontal_bias="0.48"
                 app:layout_constraintStart_toStartOf="@+id/text_comment_title"
                 app:layout_constraintTop_toBottomOf="@+id/text_comment_title"
                 tools:text="Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text" />
 
-            <Button
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/text_color_secondary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_comment_detail"
+                app:layout_constraintVertical_bias="0.187" />
+
+            <!--<Button
                 android:id="@+id/btn_comment_plus_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,36 +101,53 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/space"
-                app:layout_constraintTop_toBottomOf="@+id/text_comment_detail" />
+                app:layout_constraintTop_toBottomOf="@+id/text_comment_detail" />-->
 
             <CheckBox
                 android:id="@+id/cbox_comment_favourite"
-                android:layout_marginStart="44dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
-                android:onCheckedChanged="@{() -> listener.onCommentFavourited(comment)}"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:button="@drawable/selector_favourite_red"
                 android:checked="@{comment.starred}"
-                android:text="Favourite"
+                android:onClick="@{() -> listener.onCommentFavourited(comment)}"
+                android:paddingStart="4dp"
+                android:text="@string/favorite"
+                android:textColor="@color/text_color_secondary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/space"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_comment_detail"
-                app:layout_constraintVertical_bias="0.53999996" />
+                app:layout_constraintTop_toBottomOf="@+id/view" />
 
-            <Space
+            <View
                 android:id="@+id/space"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_width="1px"
+                android:layout_height="24dp"
                 android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/text_color_secondary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_comment_detail" />
+                app:layout_constraintTop_toBottomOf="@+id/view" />
+
+            <Button
+                android:id="@+id/btn_delete_comment"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_delete_grey_24dp"
+                android:onClick="@{() -> listener.onDeleteClicked(comment)}"
+                android:text="@string/delete"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toEndOf="@+id/space"
+                app:layout_constraintTop_toBottomOf="@+id/view" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>

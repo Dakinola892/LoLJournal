@@ -8,4 +8,6 @@ public interface CommentActionListener {
     void onCommentPlusOned();
 
     void onCommentSelected(Comment commentId);
+
+    void onDeleteClicked(Comment comment);
 }

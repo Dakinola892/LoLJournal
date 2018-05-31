@@ -35,6 +35,11 @@ public class MatchupAdapter extends RecyclerView.Adapter<MatchupAdapter.MatchupV
             public void onFavouriteChanged(Matchup matchup, View v) {
                 matchupsViewModel.updateFavourited(matchup);
             }
+
+            @Override
+            public void onDeleteClicked(Matchup matchup) {
+                matchupsViewModel.getDeleteMatchupEvent().setValue(matchup);
+            }
         });
 
         MatchupViewHolder holder = new MatchupViewHolder(itemMatchupChampionBinding);

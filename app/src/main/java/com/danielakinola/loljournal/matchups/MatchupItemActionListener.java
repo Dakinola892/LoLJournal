@@ -9,4 +9,5 @@ public interface MatchupItemActionListener {
 
     void onFavouriteChanged(Matchup matchup, View v);
 
+    void onDeleteClicked(Matchup matchup);
 }

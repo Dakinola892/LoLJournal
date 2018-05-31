@@ -42,6 +42,7 @@ public class ChampPoolViewModel extends ViewModel {
     private final SnackbarMessage snackbarMessage;
     private final SingleLiveEvent<Void> editChampPoolEvent;
     private final SingleLiveEvent<String> championDetailEvent;
+    private final SingleLiveEvent<Champion> deleteChampionEvent;
     private String messageArgument;
 
 
@@ -50,6 +51,7 @@ public class ChampPoolViewModel extends ViewModel {
                               SnackbarMessage snackbarMessage,
                               SingleLiveEvent<Void> editChampPoolEvent,
                               SingleLiveEvent<String> championDetailEvent,
+                              SingleLiveEvent<Champion> deleteChampionEvent,
                               @Named("champPoolArray") LiveData[] champions,
                               @Named("laneTitles") String[] laneTitles,
                               @Named("laneIcons") TypedArray laneIcons, MutableLiveData<Integer> currentLane) {
@@ -63,6 +65,7 @@ public class ChampPoolViewModel extends ViewModel {
         this.editChampPoolEvent = editChampPoolEvent;
         this.snackbarMessage = snackbarMessage;
         this.championDetailEvent = championDetailEvent;
+        this.deleteChampionEvent = deleteChampionEvent;
         getChampPoolData();
     }
 
@@ -108,6 +111,10 @@ public class ChampPoolViewModel extends ViewModel {
         return championDetailEvent;
     }
 
+    public SingleLiveEvent<Champion> getDeleteChampionEvent() {
+        return deleteChampionEvent;
+    }
+
     public void editChampPool() {
         editChampPoolEvent.call();
     }
@@ -115,6 +122,33 @@ public class ChampPoolViewModel extends ViewModel {
     public void navigateToChampDetail() {
         championDetailEvent.call();
     }
+
+    public void deleteChampion(Champion champion) {
+        Completable.fromAction(() -> matchupRepository.deleteChampion(champion))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (!champion.isStarred()) {
+                            messageArgument = laneTitles[champion.getLane()];
+                            snackbarMessage.setValue(R.string.champion_deleted);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        snackbarMessage.setValue(R.string.error);
+                    }
+                });
+
+    }
+
 
     public void updateFavourited(Champion champion) {
         Completable.fromAction(() -> matchupRepository.setChampionStarred(champion.getId()))

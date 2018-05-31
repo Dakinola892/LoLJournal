@@ -1,6 +1,7 @@
 package com.danielakinola.loljournal.matchupdetail;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
@@ -74,8 +76,24 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
         matchupDetailViewModel.initialize(matchupId);
         matchupDetailViewModel.getAddCommentEvent().observe(this, this::addNewComment);
         matchupDetailViewModel.getCommentDetailEvent().observe(this, this::navigateToCommentDetail);
+        matchupDetailViewModel.getDeleteCommentEvent().observe(this, this::showDeleteDialog);
         matchupDetailViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) message ->
                 SnackbarUtils.showSnackbar(root, getString(message, matchupDetailViewModel.getMessageArgument())));
+    }
+
+    private void showDeleteDialog(Comment comment) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Dialog);
+        AlertDialog dialog = builder.setTitle(getString(R.string.delete_dialog_comment_title, comment.getTitle()))
+                .setPositiveButton(R.string.delete, (dialog1, which) -> matchupDetailViewModel.deleteComment(comment))
+                .setNegativeButton(R.string.cancel, (dialog12, which) -> {
+                })
+                .create();
+
+        dialog.setOnShowListener(dialog13 -> dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                .setTextColor(getResources().getColor(R.color.colorAccent)));
+
+        dialog.show();
+
     }
 
     private void navigateToCommentDetail(int commentId) {

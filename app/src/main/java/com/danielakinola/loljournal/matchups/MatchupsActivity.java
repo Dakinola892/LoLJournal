@@ -1,11 +1,13 @@
 package com.danielakinola.loljournal.matchups;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +22,7 @@ import com.danielakinola.loljournal.ViewModelFactory;
 import com.danielakinola.loljournal.championselect.ChampionSelectActivity;
 import com.danielakinola.loljournal.champpool.ChampPoolActivity;
 import com.danielakinola.loljournal.data.models.Champion;
+import com.danielakinola.loljournal.data.models.Matchup;
 import com.danielakinola.loljournal.editcomment.EditCommentActivity;
 import com.danielakinola.loljournal.matchupdetail.MatchupDetailActivity;
 import com.danielakinola.loljournal.utils.ScreenUtils;
@@ -95,12 +98,12 @@ public class MatchupsActivity extends AppCompatActivity {
 
         matchupsViewModel.getChampion().observe(this, champion -> {
             assert champion != null;
+            champName = champion.getName();
             championNameView.setText(champion.getName());
             championDiagonalPortrait.setImageResource(champion.getImageResource());
-            champName = champion.getName();
-            favouriteCheckBox.setChecked(champion.isStarred());
             String favouriteText = champion.isStarred() ? getString(R.string.favorited) : getString(R.string.favorite);
             favouriteCheckBox.setText(favouriteText);
+            favouriteCheckBox.setChecked(champion.isStarred());
         });
 
         favouriteCheckBox.setOnClickListener(v -> matchupsViewModel.updateChampionStarred());
@@ -150,10 +153,29 @@ public class MatchupsActivity extends AppCompatActivity {
         matchupsViewModel.initialize(championId);
         matchupsViewModel.getEditMatchupsEvent().observe(this, this::openMatchupSelect);
         matchupsViewModel.getOpenMatchupDetailEvent().observe(this, this::openMatchupDetail);
+        matchupsViewModel.getDeleteMatchupEvent().observe(this, this::showDeleteDialog);
         matchupsViewModel.getSnackbarMessage().observe(this,
                 (SnackbarMessage.SnackbarObserver) message ->
                         SnackbarUtils.showSnackbar(root, getString(message, matchupsViewModel.getMessageArgument())));
     }
+
+    private void showDeleteDialog(Matchup matchup) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Dialog);
+        String matchupTitle = getString(R.string.versus, matchup.getPlayerChampion(), matchup.getEnemyChampion()) + " " + matchupsViewModel.getLaneSubtitle().getValue();
+
+        AlertDialog dialog = builder.setTitle(getString(R.string.delete_dialog_title, matchupTitle))
+                .setMessage(getString(R.string.delete_dialog_matchup_message))
+                .setPositiveButton(R.string.delete, (dialog1, which) -> matchupsViewModel.deleteMatchup(matchup))
+                .setNegativeButton(R.string.cancel, (dialog12, which) -> {
+                })
+                .create();
+
+        dialog.setOnShowListener(dialog13 -> dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                .setTextColor(getResources().getColor(R.color.colorAccent)));
+
+        dialog.show();
+    }
+
 
     private void openMatchupSelect(Champion champion) {
         Intent intent = new Intent(this, ChampionSelectActivity.class);

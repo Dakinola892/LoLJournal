@@ -92,13 +92,11 @@ public class EditCommentViewModel extends ViewModel {
         comment.setDetail(detail);
 
         Completable saveComment = newComment ? Completable.fromAction(() -> matchupRepository.addComment(comment)) : Completable.fromAction(() -> matchupRepository.updateComment(comment));
-        saveComment
-                .subscribeOn(Schedulers.io())
+        saveComment.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
                     }
 
                     @Override

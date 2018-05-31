@@ -45,9 +45,11 @@ public class ChampionAdapter extends RecyclerView.Adapter<ChampionAdapter.Starre
             @Override
             public void onFavouriteChanged(Champion champion, View v) {
                 champPoolViewModel.updateFavourited(champion);
-                /*MaterialFavoriteButton favoriteButton = (MaterialFavoriteButton) v;
-                favoriteButton.setFavorite(!champion.isStarred(), false);*/
+            }
 
+            @Override
+            public void onDeleteClicked(Champion champion) {
+                champPoolViewModel.getDeleteChampionEvent().setValue(champion);
             }
         });
 

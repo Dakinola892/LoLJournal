@@ -132,6 +132,11 @@ public class MatchupDetailFragment extends android.support.v4.app.Fragment {
                 public void onCommentSelected(Comment comment) {
                     matchupDetailViewModel.onCommentSelected(comment);
                 }
+
+                @Override
+                public void onDeleteClicked(Comment comment) {
+                    matchupDetailViewModel.getDeleteCommentEvent().setValue(comment);
+                }
             });
 
             return new CommentViewHolder(itemCommentBinding);

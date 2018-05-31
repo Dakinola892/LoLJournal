@@ -25,6 +25,7 @@ public class MatchupDetailViewModel extends ViewModel {
     private final MatchupRepository matchupRepository;
     private final SingleLiveEvent<Comment> addCommentEvent;
     private final SingleLiveEvent<Integer> commentDetailEvent;
+    private final SingleLiveEvent<Comment> deleteCommentEvent;
     private final SnackbarMessage snackbarMessage;
     private final String[] commentCategories;
     private String matchupId;
@@ -37,11 +38,12 @@ public class MatchupDetailViewModel extends ViewModel {
     MatchupDetailViewModel(MatchupRepository matchupRepository,
                            SingleLiveEvent<Comment> addCommentEvent,
                            SingleLiveEvent<Integer> commentDetailEvent,
-                           SnackbarMessage snackbarMessage,
+                           SingleLiveEvent<Comment> deleteCommentEvent, SnackbarMessage snackbarMessage,
                            @Named("commentCategoriesSingular") String[] commentCategories) {
         this.matchupRepository = matchupRepository;
         this.addCommentEvent = addCommentEvent;
         this.commentDetailEvent = commentDetailEvent;
+        this.deleteCommentEvent = deleteCommentEvent;
         this.snackbarMessage = snackbarMessage;
         this.commentCategories = commentCategories;
     }
@@ -75,6 +77,10 @@ public class MatchupDetailViewModel extends ViewModel {
         return commentDetailEvent;
     }
 
+    public SingleLiveEvent<Comment> getDeleteCommentEvent() {
+        return deleteCommentEvent;
+    }
+
     public SnackbarMessage getSnackbarMessage() {
         return snackbarMessage;
     }
@@ -97,13 +103,14 @@ public class MatchupDetailViewModel extends ViewModel {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
                     }
 
                     @Override
                     public void onComplete() {
-                        messageArgument = commentCategories[comment.getCategory()];
-                        snackbarMessage.setValue(R.string.comment_favourited);
+                        if (!comment.isStarred()) {
+                            messageArgument = commentCategories[comment.getCategory()];
+                            snackbarMessage.setValue(R.string.comment_favourited);
+                        }
                     }
 
                     @Override
@@ -129,5 +136,27 @@ public class MatchupDetailViewModel extends ViewModel {
             messageArgument = commentCategories[category];
             snackbarMessage.setValue(R.string.comment_added);
         }
+    }
+
+    public void deleteComment(Comment comment) {
+        Completable.fromAction(() -> matchupRepository.deleteComment(comment))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        snackbarMessage.setValue(R.string.comment_deleted);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        snackbarMessage.setValue(R.string.error);
+                    }
+                });
     }
 }

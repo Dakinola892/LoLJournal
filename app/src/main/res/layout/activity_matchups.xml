@@ -57,9 +57,10 @@
                     android:textAppearance="@style/TextAppearance.Design.CollapsingToolbar.Expanded"
                     android:textStyle="bold|normal"
                     app:layout_constraintEnd_toStartOf="@+id/diagonalImageView"
+                    app:layout_constraintHorizontal_bias="0.282"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Heimerdinger" />
+                    tools:text="Fiddlesticks" />
 
                 <TextView
                     android:id="@+id/text_lane_subtitle"
@@ -68,8 +69,11 @@
                     android:layout_below="@id/text_champion_name_title"
                     android:layout_centerVertical="true"
                     android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
                     android:textAppearance="@style/ChampPoolSubtitle"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/diagonalImageView"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/text_champion_name_title"
                     app:layout_constraintTop_toBottomOf="@+id/text_champion_name_title"
                     app:layout_constraintVertical_bias="0.0"

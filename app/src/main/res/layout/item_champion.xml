@@ -47,6 +47,14 @@
             android:theme="@style/FavoriteButton"
             tools:src="@drawable/ic_star_border_gold_24dp" />
 
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@color/colorPrimary"
+            android:onClick="@{() -> listener.onDeleteClicked(champion)}"
+            android:padding="8dp"
+            android:src="@drawable/ic_delete_white_24dp" />
+
 
     </FrameLayout>
 
