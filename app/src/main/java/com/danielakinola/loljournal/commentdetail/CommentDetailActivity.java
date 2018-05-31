@@ -43,7 +43,7 @@ public class CommentDetailActivity extends AppCompatActivity {
     private void setupViewModel() {
         int commentId = getIntent().getIntExtra(EditCommentActivity.COMMENT_ID, -1);
         TextView titleView = findViewById(R.id.text_comment_title);
-        TextView descriptionView = findViewById(R.id.text_comment_detail);
+        TextView detailView = findViewById(R.id.text_comment_detail);
 
         commentDetailViewModel = ViewModelProviders.of(this, viewModelFactory).get(CommentDetailViewModel.class);
 
@@ -55,7 +55,7 @@ public class CommentDetailActivity extends AppCompatActivity {
         commentDetailViewModel.getComment().observe(this, comment -> {
             assert comment != null;
             titleView.setText(comment.getTitle());
-            descriptionView.setText(comment.getDescription());
+            detailView.setText(comment.getDetail());
             setupToolbar();
         });
     }

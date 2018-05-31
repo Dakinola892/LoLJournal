@@ -21,14 +21,14 @@ public class Comment {
     private final String matchupId;
     private final int category;
     private String title;
-    private String description;
+    private String detail;
     private boolean starred;
 
-    public Comment(int id, String matchupId, String title, String description, int category, boolean starred) {
+    public Comment(int id, String matchupId, String title, String detail, int category, boolean starred) {
         this.id = id;
         this.matchupId = matchupId;
         this.title = title;
-        this.description = description;
+        this.detail = detail;
         this.category = category;
         this.starred = starred;
     }
@@ -41,10 +41,10 @@ public class Comment {
     }
 
     @Ignore
-    public Comment(String matchupId, String title, String description, int category) {
+    public Comment(String matchupId, String title, String detail, int category) {
         this.matchupId = matchupId;
         this.title = title;
-        this.description = description;
+        this.detail = detail;
         this.category = category;
         this.starred = false;
     }
@@ -69,12 +69,12 @@ public class Comment {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDetail(String description) {
+        this.detail = description;
     }
 
     public int getCategory() {

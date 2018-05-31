@@ -5,9 +5,12 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.ViewModelFactory;
@@ -57,9 +60,16 @@ public class MatchupDetailFragment extends android.support.v4.app.Fragment {
 
     private void setupRecyclerView(View rootView) {
         RecyclerView recyclerView = Objects.requireNonNull(rootView.findViewById(R.id.comment_recyler_view));
-        View emptyState = rootView.findViewById(R.id.empty_state);
         CommentAdapter commentAdapter = new CommentAdapter();
         recyclerView.setAdapter(commentAdapter);
+
+        View emptyState = rootView.findViewById(R.id.empty_state);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) emptyState.getLayoutParams();
+        int topMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16f, getResources().getDisplayMetrics());
+        params.setMargins(params.leftMargin, topMargin, params.rightMargin, params.bottomMargin);
+        emptyState.setLayoutParams(params);
+        TextView emptyStateText = emptyState.findViewById(R.id.empty_state_title);
+        emptyStateText.setText(getString(R.string.empty_state, "Comments"));
 
         matchupDetailViewModel.getComments(category).observe(this, comments -> {
             if (comments == null || comments.isEmpty()) {
@@ -91,7 +101,7 @@ public class MatchupDetailFragment extends android.support.v4.app.Fragment {
 
     class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
-        ArrayList<Comment> comments = new ArrayList<>();
+        List<Comment> comments = new ArrayList<>();
 
         CommentAdapter() {
 
@@ -99,7 +109,7 @@ public class MatchupDetailFragment extends android.support.v4.app.Fragment {
 
 
         public void setComments(List<Comment> comments) {
-            this.comments = (ArrayList<Comment>) comments;
+            this.comments = comments;
         }
 
         @NonNull
@@ -141,7 +151,7 @@ public class MatchupDetailFragment extends android.support.v4.app.Fragment {
 
             private final ItemCommentBinding itemCommentBinding;
 
-            public CommentViewHolder(ItemCommentBinding itemCommentBinding) {
+            CommentViewHolder(ItemCommentBinding itemCommentBinding) {
                 super(itemCommentBinding.getRoot());
                 this.itemCommentBinding = itemCommentBinding;
             }

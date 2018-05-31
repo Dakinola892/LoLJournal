@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,7 +29,6 @@ import javax.inject.Named;
 import dagger.android.AndroidInjection;
 import dagger.android.support.DaggerAppCompatActivity;
 
-//todo: fix scrolling problem with viewpager
 public class ChampPoolActivity extends DaggerAppCompatActivity {
 
     public static final int REQUEST_EDIT_CHAMP_POOL = RESULT_FIRST_USER + 1;
@@ -71,6 +71,7 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
     private void setupViewModel() {
         ImageView icon = findViewById(R.id.img_lane_icon);
         TextView title = findViewById(R.id.text_lane_title);
+        View root = findViewById(R.id.coordinator_layout);
 
         champPoolViewModel = ViewModelProviders.of(this, viewModelFactory).get(ChampPoolViewModel.class);
         champPoolViewModel.setCurrentLane(lane);
@@ -79,8 +80,10 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
         champPoolViewModel.getLaneIcon().observe(this, icon::setImageResource);
         champPoolViewModel.getEditChampPoolEvent().observe(this, aVoid -> openChampionSelect());
         champPoolViewModel.getChampionDetailEvent().observe(this, this::openChosenChampion);
-        champPoolViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) laneString ->
-                SnackbarUtils.showSnackbar(findViewById(R.id.coordinator_layout), getString(R.string.champ_pool_edited, getString(laneString))));
+        champPoolViewModel.getSnackbarMessage().observe(this,
+                (SnackbarMessage.SnackbarObserver) message ->
+                        SnackbarUtils.showSnackbar(
+                                root, getString(message, champPoolViewModel.getMessageArgument())));
     }
 
     private void setupViewPager() {

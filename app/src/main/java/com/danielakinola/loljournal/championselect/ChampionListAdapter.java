@@ -25,12 +25,10 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int ACTIVE = 1;
 
     private final ChampionSelectViewModel championSelectViewModel;
-    private final ArrayList<String> initallySelectedChampions;
-    private ArrayList<String> currentlySelectedChampions = new ArrayList<>();
-
+    private final List<String> initallySelectedChampions;
     private final String[] champNames = {"Aatrox", "Ahri", "Akali", "Alistar", "Amumu", "Anivia", "Annie",
             "Ashe", "Aurelion Sol", "Azir", "Bard", "Blitzcrank", "Brand", "Braum", "Caitlyn", "Camille",
-            "Cassiopeia", "Cho'Gath", "Corki", "Darius", "Diana", "DrMundo", "Draven", "Ekko", "Elise",
+            "Cassiopeia", "Cho'Gath", "Corki", "Darius", "Diana", "Dr. Mundo", "Draven", "Ekko", "Elise",
             "Evelynn", "Ezreal", "Fiddlesticks", "Fiora", "Fizz", "Galio", "Gangplank", "Garen",
             "Gnar", "Gragas", "Graves", "Hecarim", "Heimerdinger", "Illaoi", "Irelia", "Ivern", "Janna",
             "Jarvan IV", "Jax", "Jayce", "Jhin", "Jinx", "Kai'Sa", "Kalista", "Karma", "Karthus", "Kassadin",
@@ -44,7 +42,6 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             "Tryndamere", "Twisted Fate", "Twitch", "Udyr", "Urgot", "Varus", "Vayne", "Veigar",
             "Vel'Koz", "Vi", "Viktor", "Vladimir", "Volibear", "Warwick", "Wukong", "Xayah", "Xerath",
             "Xin Zhao", "Yasuo", "Yorick", "Zac", "Zed", "Ziggs", "Zilean", "Zoe", "Zyra"};
-
     final private int[] championSquares = {
             R.drawable.aatrox_loading, R.drawable.ahri_loading, R.drawable.akali_loading,
             R.drawable.alistar_loading, R.drawable.amumu_loading, R.drawable.anivia_loading,
@@ -61,8 +58,8 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             R.drawable.hecarim_loading, R.drawable.heimerdinger_loading, R.drawable.illaoi_loading,
             R.drawable.irelia_loading, R.drawable.ivern_loading, R.drawable.janna_loading,
             R.drawable.jarvaniv_loading, R.drawable.jax_loading, R.drawable.jayce_loading,
-            R.drawable.jhin_loading, R.drawable.jinx_loading, R.drawable.kalista_loading,
-            R.drawable.kaisa_loading, R.drawable.karma_loading, R.drawable.karthus_loading,
+            R.drawable.jhin_loading, R.drawable.jinx_loading, R.drawable.kaisa_loading,
+            R.drawable.kalista_loading, R.drawable.karma_loading, R.drawable.karthus_loading,
             R.drawable.kassadin_loading, R.drawable.katarina_loading, R.drawable.kayn_loading,
             R.drawable.kayle_loading, R.drawable.kennen_loading, R.drawable.kled_loading,
             R.drawable.kindred_loading, R.drawable.khazix_loading, R.drawable.kogmaw_loading,
@@ -89,16 +86,17 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             R.drawable.varus_loading, R.drawable.vayne_loading, R.drawable.veigar_loading,
             R.drawable.velkoz_loading, R.drawable.vi_loading, R.drawable.viktor_loading,
             R.drawable.vladimir_loading, R.drawable.volibear_loading, R.drawable.warwick_loading,
-            R.drawable.wukong_loading, R.drawable.xerath_loading, R.drawable.xayah_loading,
+            R.drawable.wukong_loading, R.drawable.xayah_loading, R.drawable.xerath_loading,
             R.drawable.xinzhao_loading, R.drawable.yasuo_loading, R.drawable.yorick_loading,
             R.drawable.zac_loading, R.drawable.zed_loading, R.drawable.ziggs_loading,
             R.drawable.zilean_loading, R.drawable.zoe_loading, R.drawable.zyra_loading};
+    private List<String> currentlySelectedChampions = new ArrayList<>();
 
 
 
     ChampionListAdapter(ChampionSelectViewModel championSelectViewModel) {
         this.championSelectViewModel = championSelectViewModel;
-        this.initallySelectedChampions = (ArrayList<String>) championSelectViewModel.getIntiallySelectedChampions();
+        this.initallySelectedChampions = championSelectViewModel.getIntiallySelectedChampions();
     }
 
     @Override
@@ -109,6 +107,7 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return ACTIVE;
         }
     }
+
 
     @NonNull
     @Override
@@ -136,8 +135,8 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (viewHolder.getItemViewType() == INACTIVE) {
             InactiveChampionViewHolder holder = (InactiveChampionViewHolder) viewHolder;
             holder.textView.setText(champName);
-            if (champName.length() > 10) {
-                holder.textView.setTextSize(19f);
+            if (champName.length() >= 9) {
+                holder.textView.setTextSize(18f);
             }
             holder.imageView.setImageResource(championSquare);
             holder.imageView.setImageAlpha(128);
@@ -146,8 +145,8 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else {
             ActiveChampionViewHolder holder = (ActiveChampionViewHolder) viewHolder;
             holder.textView.setText(champName);
-            if (champName.length() > 10) {
-                holder.textView.setTextSize(19f);
+            if (champName.length() >= 9) {
+                holder.textView.setTextSize(18f);
             }
             holder.imageView.setImageResource(championSquare);
             if (currentlySelectedChampions.contains(champName)) {
@@ -165,7 +164,7 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public void setCurrentlySelectedChampions(List<String> currentlySelectedChampions) {
-        this.currentlySelectedChampions = (ArrayList<String>) currentlySelectedChampions;
+        this.currentlySelectedChampions = currentlySelectedChampions;
     }
 
     class ActiveChampionViewHolder extends RecyclerView.ViewHolder {

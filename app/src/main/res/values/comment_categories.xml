@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="comment_categories">
-        <item>@string/strengths</item>
-        <item>@string/general</item>
-        <item>@string/weaknesses</item>
-    </string-array>
-</resources>

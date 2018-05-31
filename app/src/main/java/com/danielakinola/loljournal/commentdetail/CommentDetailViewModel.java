@@ -23,25 +23,33 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CommentDetailViewModel extends ViewModel {
     private final MatchupRepository matchupRepository;
-    private final SingleLiveEvent<Comment> editCommentEvent = new SingleLiveEvent<>();
-    private final SingleLiveEvent<Integer> deleteCommentEvent = new SingleLiveEvent<>();
-    private final SnackbarMessage snackbarMessage = new SnackbarMessage();
+    private final SingleLiveEvent<Comment> editCommentEvent;
+    private final SingleLiveEvent<Integer> deleteCommentEvent;
+    private final SnackbarMessage snackbarMessage;
     private LiveData<String> title;
     private LiveData<String> subtitle;
     private LiveData<Integer> logo;
     private LiveData<Matchup> matchup;
     private LiveData<Comment> comment;
     private int commentId;
-    private String[] commentCategories;
-    private TypedArray laneIcons;
-    private String versusString;
+    private final String[] commentCategories;
+    private final TypedArray laneIcons;
+    private final String versusString;
+    private String messageArgument;
+
 
     @Inject
     public CommentDetailViewModel(MatchupRepository matchupRepository,
+                                  SingleLiveEvent<Comment> editCommentEvent,
+                                  SingleLiveEvent<Integer> deleteCommentEvent,
+                                  SnackbarMessage snackbarMessage,
                                   @Named("commentCategories") String[] commentCategories,
                                   @Named("actionBarIcons") TypedArray laneIcons,
                                   @Named("versus") String versusString) {
         this.matchupRepository = matchupRepository;
+        this.editCommentEvent = editCommentEvent;
+        this.deleteCommentEvent = deleteCommentEvent;
+        this.snackbarMessage = snackbarMessage;
         this.commentCategories = commentCategories;
         this.laneIcons = laneIcons;
         this.versusString = versusString;
@@ -138,7 +146,7 @@ public class CommentDetailViewModel extends ViewModel {
 
     public void onEdit(int resultCode) {
         if (resultCode == 1) {
-            snackbarMessage.setValue(R.string.comment_plus_1);
+            snackbarMessage.setValue(R.string.comment_edited);
         } else {
             snackbarMessage.setValue(R.string.error);
         }

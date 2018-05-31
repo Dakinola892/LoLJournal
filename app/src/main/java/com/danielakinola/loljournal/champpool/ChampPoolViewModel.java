@@ -33,26 +33,36 @@ public class ChampPoolViewModel extends ViewModel {
     private final String[] laneTitles;
     private final TypedArray laneIcons;
 
-    private final MutableLiveData<Integer> currentLane = new MutableLiveData<>();
+    private final MutableLiveData<Integer> currentLane;
     private final LiveData<String> laneTitle;
     private LiveData<Integer> laneIcon;
 
-    private LiveData<List<Champion>>[] champions = new LiveData[5];
+    private final LiveData<List<Champion>>[] champions;
 
-    private final SnackbarMessage snackbarMessage = new SnackbarMessage();
-    private final SingleLiveEvent<Void> editChampPoolEvent = new SingleLiveEvent<>();
-    private final SingleLiveEvent<String> championDetailEvent = new SingleLiveEvent<>();
+    private final SnackbarMessage snackbarMessage;
+    private final SingleLiveEvent<Void> editChampPoolEvent;
+    private final SingleLiveEvent<String> championDetailEvent;
+    private String messageArgument;
 
 
     @Inject
     public ChampPoolViewModel(MatchupRepository matchupRepository,
+                              SnackbarMessage snackbarMessage,
+                              SingleLiveEvent<Void> editChampPoolEvent,
+                              SingleLiveEvent<String> championDetailEvent,
+                              @Named("champPoolArray") LiveData[] champions,
                               @Named("laneTitles") String[] laneTitles,
-                              @Named("laneIcons") TypedArray laneIcons) {
+                              @Named("laneIcons") TypedArray laneIcons, MutableLiveData<Integer> currentLane) {
         this.matchupRepository = matchupRepository;
         this.laneTitles = laneTitles;
         this.laneIcons = laneIcons;
+        this.currentLane = currentLane;
+        this.champions = champions;
         this.laneTitle = Transformations.map(currentLane, newLane -> laneTitles[newLane]);
         this.laneIcon = Transformations.map(currentLane, newLane -> laneIcons.getResourceId(newLane, 0));
+        this.editChampPoolEvent = editChampPoolEvent;
+        this.snackbarMessage = snackbarMessage;
+        this.championDetailEvent = championDetailEvent;
         getChampPoolData();
     }
 
@@ -60,6 +70,10 @@ public class ChampPoolViewModel extends ViewModel {
         for (int i = 0; i < champions.length; i++) {
             this.champions[i] = this.matchupRepository.getChampPool(i);
         }
+    }
+
+    public String getMessageArgument() {
+        return messageArgument;
     }
 
     public LiveData<List<Champion>> getChampions(int lane) {
@@ -102,10 +116,6 @@ public class ChampPoolViewModel extends ViewModel {
         championDetailEvent.call();
     }
 
-    public void showSnackbarMessage() {
-        snackbarMessage.setValue(R.string.champ_pool_edited);
-    }
-
     public void updateFavourited(Champion champion) {
         Completable.fromAction(() -> matchupRepository.setChampionStarred(champion.getId()))
                 .subscribeOn(Schedulers.io())
@@ -118,12 +128,15 @@ public class ChampPoolViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        if (!champion.isStarred()) showSnackbarMessage();
+                        if (!champion.isStarred()) {
+                            messageArgument = laneTitle.getValue() + " " + champion.getName();
+                            snackbarMessage.setValue(R.string.champion_favourited);
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        snackbarMessage.setValue(R.string.error);
                     }
                 });
 
@@ -131,6 +144,7 @@ public class ChampPoolViewModel extends ViewModel {
 
     public void onEdit(int resultCode) {
         if (resultCode == 1) {
+            messageArgument = laneTitle.getValue();
             snackbarMessage.setValue(R.string.champ_pool_edited);
         } else {
             snackbarMessage.setValue(R.string.error);

@@ -21,7 +21,6 @@
         android:foregroundGravity="center"
         android:onClick="@{() -> listener.onChampionClicked(champion)}">
 
-
         <ImageView
             android:id="@+id/img_champion_portrait"
             android:layout_width="@dimen/champion_item_width"

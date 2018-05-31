@@ -2,4 +2,5 @@
 <resources>
     <string name="versus">%s vs. %s</string>
     <string name="comment_favourited">Comment favourited!</string>
+    <string name="matchup_favorited">%s Matchup favorited</string>
 </resources>

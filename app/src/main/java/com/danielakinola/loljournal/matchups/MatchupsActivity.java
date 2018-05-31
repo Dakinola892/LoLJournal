@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -59,11 +60,14 @@ public class MatchupsActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.matchups_recylcer_view);
-        View emptyState = findViewById(R.id.empty_state);
         int spanCount = ScreenUtils.calculateNoOfColumns(Objects.requireNonNull(this));
         recyclerView.setLayoutManager(new GridLayoutManager(this, spanCount));
         MatchupAdapter matchupAdapter = new MatchupAdapter(matchupsViewModel);
         recyclerView.setAdapter(matchupAdapter);
+
+        View emptyState = findViewById(R.id.empty_state);
+        TextView emptyStateText = emptyState.findViewById(R.id.empty_state_title);
+        emptyStateText.setText(getString(R.string.empty_state, "Matchups"));
 
         matchupsViewModel.getMatchups().observe(this, matchups -> {
             if (matchups == null || matchups.isEmpty()) {
@@ -84,17 +88,22 @@ public class MatchupsActivity extends AppCompatActivity {
     }
 
     private void setupToolbars() {
-
         TextView championNameView = findViewById(R.id.text_champion_name_title);
         ImageView championDiagonalPortrait = findViewById(R.id.diagonalImageView);
         TextView laneSubtitleView = findViewById(R.id.text_lane_subtitle);
+        CheckBox favouriteCheckBox = findViewById(R.id.champion_favorite_checkbox);
 
         matchupsViewModel.getChampion().observe(this, champion -> {
             assert champion != null;
             championNameView.setText(champion.getName());
             championDiagonalPortrait.setImageResource(champion.getImageResource());
             champName = champion.getName();
+            favouriteCheckBox.setChecked(champion.isStarred());
+            String favouriteText = champion.isStarred() ? getString(R.string.favorited) : getString(R.string.favorite);
+            favouriteCheckBox.setText(favouriteText);
         });
+
+        favouriteCheckBox.setOnClickListener(v -> matchupsViewModel.updateChampionStarred());
 
         matchupsViewModel.getLaneSubtitle().observe(this, laneSubtitleView::setText);
         matchupsViewModel.getLogo().observe(this, logoResource -> logo = logoResource);
@@ -136,14 +145,14 @@ public class MatchupsActivity extends AppCompatActivity {
     }
 
     private void setupViewModel(String championId) {
+        View root = findViewById(R.id.matchups_coordinator_layout);
         matchupsViewModel = ViewModelProviders.of(this, viewModelFactory).get(MatchupsViewModel.class);
         matchupsViewModel.initialize(championId);
         matchupsViewModel.getEditMatchupsEvent().observe(this, this::openMatchupSelect);
         matchupsViewModel.getOpenMatchupDetailEvent().observe(this, this::openMatchupDetail);
         matchupsViewModel.getSnackbarMessage().observe(this,
-                (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId ->
-                        SnackbarUtils.showSnackbar(findViewById(R.id.matchups_coordinator_layout),
-                                getString(snackbarMessageResourceId)));
+                (SnackbarMessage.SnackbarObserver) message ->
+                        SnackbarUtils.showSnackbar(root, getString(message, matchupsViewModel.getMessageArgument())));
     }
 
     private void openMatchupSelect(Champion champion) {
@@ -160,8 +169,6 @@ public class MatchupsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-    //TODO: setup with correct Snackbar showing
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         matchupsViewModel.onEdit(resultCode);

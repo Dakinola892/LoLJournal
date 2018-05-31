@@ -9,7 +9,6 @@ import dagger.android.DaggerApplication;
  * Created by dakin on 13/01/2018.
  */
 
-//todo: add on destroys & save states
 //todo: delete actions
 //todo: main activity
 

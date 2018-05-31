@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.ViewModelFactory;
@@ -70,6 +71,8 @@ public class ChampPoolFragment extends Fragment {
         recyclerView.setAdapter(championAdapter);
 
         View emptyState = rootView.findViewById(R.id.empty_state);
+        TextView emptyStateText = emptyState.findViewById(R.id.empty_state_title);
+        emptyStateText.setText(getString(R.string.empty_state, "Champions"));
 
         champPoolViewModel.getChampions(lane).observe(this, champions -> {
             if (champions == null || champions.isEmpty()) {

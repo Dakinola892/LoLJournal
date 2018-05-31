@@ -24,12 +24,11 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:title=" ">
 
-                <!--TODO: fix margin so its consistent for variety of titles & phone sizes-->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:layout_marginStart="28dp"
+                    android:layout_gravity="center_horizontal"
                     android:orientation="vertical">
 
                     <TextView
@@ -85,9 +84,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
                 android:layout_weight="1"
                 android:scrollbars="vertical"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                tools:fontFamily="serif"
                 tools:text="@string/large_text" />
 
         </LinearLayout>

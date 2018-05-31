@@ -10,10 +10,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -45,7 +43,6 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
         setupFAB();
         setupViewModel();
         setupAppBar();
-        //TODO: RENAME FROM PLAYERCHAMPION TO USERCHAMPION
     }
 
     private void setupAppBar() {
@@ -77,8 +74,8 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
         matchupDetailViewModel.initialize(matchupId);
         matchupDetailViewModel.getAddCommentEvent().observe(this, this::addNewComment);
         matchupDetailViewModel.getCommentDetailEvent().observe(this, this::navigateToCommentDetail);
-        matchupDetailViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) snackbarMessageResourceId ->
-                SnackbarUtils.showSnackbar(root, getString(snackbarMessageResourceId, "Comment")));
+        matchupDetailViewModel.getSnackbarMessage().observe(this, (SnackbarMessage.SnackbarObserver) message ->
+                SnackbarUtils.showSnackbar(root, getString(message, matchupDetailViewModel.getMessageArgument())));
     }
 
     private void navigateToCommentDetail(int commentId) {
@@ -91,8 +88,12 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
         Intent intent = new Intent(this, EditCommentActivity.class);
         intent.putExtra(EditCommentActivity.CATEGORY, comment.getCategory());
         intent.putExtra(EditCommentActivity.MATCHUP_ID, comment.getMatchupId());
-        intent.putExtra(getString(R.string.request_code), REQUEST_ADD_COMMENT);
         startActivityForResult(intent, REQUEST_ADD_COMMENT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        matchupDetailViewModel.onCommentEdit(resultCode, data.getIntExtra(EditCommentActivity.CATEGORY, -1));
     }
 
     private void setupFAB() {
@@ -102,8 +103,7 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
 
     private void setupViewPager() {
         ViewPager viewPager = findViewById(R.id.viewpager_matchup_detail);
-        viewPager.setAdapter(new MatchupDetailPagerAdapter(getSupportFragmentManager(),
-                getResources().getStringArray(R.array.comment_categories)));
+        viewPager.setAdapter(new MatchupDetailPagerAdapter(getSupportFragmentManager()));
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -115,24 +115,13 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     class MatchupDetailPagerAdapter extends FragmentPagerAdapter {
 
-        String[] categories;
+        String[] categories = getResources().getStringArray(R.array.comment_categories);
 
-        MatchupDetailPagerAdapter(FragmentManager fm, String[] categories) {
+        MatchupDetailPagerAdapter(FragmentManager fm) {
             super(fm);
-            this.categories = categories;
         }
 
         @Override

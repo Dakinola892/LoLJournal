@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="top">Top</string>
+    <string name="jungle">Jungle</string>
+    <string name="mid">Mid</string>
+    <string name="bottom">Bottom</string>
+    <string name="support">Support</string>
+
+    <string-array name="lanes_array">
+        <item>Top Lane</item>
+        <item>@string/jungle</item>
+        <item>Mid Lane</item>
+        <item>Bot Lane</item>
+        <item>@string/support</item>
+    </string-array>
+
+    <integer-array name="lane_icons">
+        <item>@drawable/ic_top_lane</item>
+        <item>@drawable/ic_jungle</item>
+        <item>@drawable/ic_mid_lane</item>
+        <item>@drawable/ic_bot_lane</item>
+        <item>@drawable/ic_support</item>
+    </integer-array>
+
+    <integer-array name="ab_lane_icons">
+        <item>@drawable/ic_top_ab</item>
+        <item>@drawable/ic_jungle_2</item>
+        <item>@drawable/ic_mid_lane_ab</item>
+        <item>@drawable/ic_bot_lane_ab</item>
+        <item>@drawable/ic_support_ab</item>
+    </integer-array>
+</resources>

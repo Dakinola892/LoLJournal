@@ -24,29 +24,34 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-//TODO: inject Snackbar Messages & SingleLiveEvents?
-
 public class MatchupsViewModel extends ViewModel {
 
     private final MatchupRepository matchupRepository;
     private final String[] laneTitles;
     private final TypedArray laneIcons;
-    private final SingleLiveEvent<String> openMatchupDetailEvent = new SingleLiveEvent<>();
-    private final SingleLiveEvent<Champion> editMatchupsEvent = new SingleLiveEvent<>();
-    private final SnackbarMessage snackbarMessage = new SnackbarMessage();
+    private final SingleLiveEvent<String> openMatchupDetailEvent;
+    private final SingleLiveEvent<Champion> editMatchupsEvent;
+    private final SnackbarMessage snackbarMessage;
     private String championId;
     private LiveData<String> laneSubtitle;
     private LiveData<Integer> logo;
     private LiveData<Champion> champion;
     private LiveData<List<Matchup>> matchups;
+    private String messageArgument;
 
     @Inject
     MatchupsViewModel(MatchupRepository matchupRepository,
+                      SnackbarMessage snackbarMessage,
+                      SingleLiveEvent<Champion> editMatchupsEvent,
+                      SingleLiveEvent<String> openMatchupDetailEvent,
                       @Named("laneTitles") String[] laneTitles,
                       @Named("actionBarIcons") TypedArray laneIcons) {
         this.matchupRepository = matchupRepository;
         this.laneTitles = laneTitles;
         this.laneIcons = laneIcons;
+        this.snackbarMessage = snackbarMessage;
+        this.openMatchupDetailEvent = openMatchupDetailEvent;
+        this.editMatchupsEvent = editMatchupsEvent;
     }
 
 
@@ -58,6 +63,10 @@ public class MatchupsViewModel extends ViewModel {
         this.laneSubtitle = Transformations.map(champion, champion -> laneTitles[champion.getLane()]);
         this.logo = Transformations.map(champion,
                 champion -> laneIcons.getResourceId(champion.getLane(), -1));
+    }
+
+    public String getMessageArgument() {
+        return messageArgument;
     }
 
     public LiveData<String> getLaneSubtitle() {
@@ -112,12 +121,15 @@ public class MatchupsViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        if (!matchup.isStarred()) showSuccessSnackbar();
+                        if (!matchup.isStarred()) {
+                            messageArgument = String.format("%s vs. %s %s", matchup.getPlayerChampion(), matchup.getEnemyChampion(), laneSubtitle.getValue());
+                            snackbarMessage.setValue(R.string.matchup_favorited);
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        showErrorSnackbar();
                     }
                 });
     }
@@ -145,6 +157,7 @@ public class MatchupsViewModel extends ViewModel {
     }
 
     void showSuccessSnackbar() {
+        messageArgument = laneSubtitle.getValue() + " " + champion.getValue().getName();
         snackbarMessage.setValue(R.string.matchup_updated);
     }
 
@@ -162,5 +175,28 @@ public class MatchupsViewModel extends ViewModel {
         } else {
             showErrorSnackbar();
         }
+    }
+
+    public void updateChampionStarred() {
+        Completable.fromAction(() -> matchupRepository.setChampionStarred(championId))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        messageArgument = champion.getValue().getName();
+                        snackbarMessage.setValue(R.string.champion_favourited);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        showErrorSnackbar();
+                    }
+                });
     }
 }

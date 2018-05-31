@@ -24,7 +24,7 @@ public class EditCommentViewModel extends ViewModel {
     private final MatchupRepository matchupRepository;
     private final String[] commentCategories;
     private final String[] laneTitles;
-    private final SingleLiveEvent<Integer> confirmationEvent = new SingleLiveEvent<>();
+    private final SingleLiveEvent<Integer> confirmationEvent;
     private LiveData<String> title;
     private LiveData<String> subtitle;
     private LiveData<Comment> editableComment;
@@ -34,10 +34,12 @@ public class EditCommentViewModel extends ViewModel {
 
     @Inject
     EditCommentViewModel(MatchupRepository matchupRepository, @Named("laneTitles") String[] laneTitles,
-                         @Named("commentCategories") String[] commentCategories) {
+                         @Named("commentCategoriesSingular") String[] commentCategories,
+                         SingleLiveEvent<Integer> confirmationEvent) {
         this.matchupRepository = matchupRepository;
         this.commentCategories = commentCategories;
         this.laneTitles = laneTitles;
+        this.confirmationEvent = confirmationEvent;
     }
 
     public void initialize(int commentId, String matchupId, int category) {
@@ -82,12 +84,12 @@ public class EditCommentViewModel extends ViewModel {
         return confirmationEvent;
     }
 
-    public void saveComment(String title, String description) {
+    public void saveComment(String title, String detail) {
 
         Comment comment = editableComment.getValue();
         assert comment != null;
         comment.setTitle(title);
-        comment.setDescription(description);
+        comment.setDetail(detail);
 
         Completable saveComment = newComment ? Completable.fromAction(() -> matchupRepository.addComment(comment)) : Completable.fromAction(() -> matchupRepository.updateComment(comment));
         saveComment

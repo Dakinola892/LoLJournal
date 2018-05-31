@@ -1,6 +1,21 @@
 <resources>
     <string name="app_name">LoLJournal</string>
+
     <string name="title_activity_champ_pool">ChampPool</string>
+    <string name="title_champ_pool_activity">Champ Pool</string>
+    <string name="title_activity_matchups">MatchupsActivity</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="drawer_open">Drawer Open</string>
+    <string name="drawer_close">Drawer Closed</string>
+
+    <string name="versus">%s vs. %s</string>
+    <string name="empty_state">%s Missing</string>
+    <string name="error">An error occurred - Please try again</string>
+    <string name="favorite">Favorite</string>
+    <string name="favorited">Favorited</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -90,47 +105,4 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
-    <string name="drawer_open">Drawer Open</string>
-    <string name="drawer_close">Drawer Closed</string>
-    <string name="no_champs">You have no champs in your %s Champ Pool!</string>
-    <string name="request_code">REQUEST_CODE</string>
-
-    <string name="champ_pool_edited">%s Champ Pool successfully updated</string>
-    <string name="champion_deleted">Champion successfuly deleted from %s Champ Pool</string>
-    <string name="matchup_updated">%s matchups successfully updated</string>
-    <string name="matchup_deleted">%s successfully deleted from %s Matchups</string>
-    <string name="comment_added">Comment successfully added</string>
-    <string name="comment_deleted">Comment successfully deleted</string>
-    <string name="comment_plus_1">Comment successfully +1\'ed</string>
-    <string name="upvote">You believe you improved in this area!</string>
-    <string name="downvote">You believe you need to improve in this area</string>
-
-    <string name="top">Top</string>
-    <string name="jungle">Jungle</string>
-    <string name="mid">Mid</string>
-    <string name="bottom">Bottom</string>
-    <string name="support">Support</string>
-
-    <string-array name="lanes_array">
-        <item>Top Lane</item>
-        <item>@string/jungle</item>
-        <item>Mid Lane</item>
-        <item>Bot Lane</item>
-        <item>@string/support</item>
-    </string-array>
-    <string name="title_activity_matchups">MatchupsActivity</string>
-
-    <string name="title_champ_pool_activity">Champ Pool</string>
-    <string name="champion_favourited">%s favourited!</string>
-    <string name="strengths">Strengths</string>
-    <string name="general">General</string>
-    <string name="weaknesses">Weaknesses</string>
-    <string name="hint_comment_title">Add a quick summary of your comment here!</string>
-    <string name="hint_comment_detail">(Optional) Add a longer more detailed description of your comment here.</string>
-    <string name="comment_edited">Comment successfully edited</string>
-    <string name="versus">%s vs. %s</string>
-    <string name="error">Error</string>
-    <string name="comment_favourited">Comment favourited!</string>
 </resources>

@@ -26,10 +26,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ChampionSelectViewModel extends ViewModel {
     private final MatchupRepository matchupRepository;
-    private final SingleLiveEvent<Integer> navigateBackToPreviousActivityEvent = new SingleLiveEvent<>();
-    private final MutableLiveData<List<String>> currentlySelectedChampions = new MutableLiveData<>();
-    private final MutableLiveData<Integer> lane = new MutableLiveData<>();
-    private final MutableLiveData<String> title = new MutableLiveData<>();
+    private final SingleLiveEvent<Integer> finishActivityEvent;
+    private final MutableLiveData<List<String>> currentlySelectedChampions;
+    private final MutableLiveData<Integer> lane;
+    private final MutableLiveData<String> title;
     private LiveData<String> subtitle;
     private LiveData<Integer> logo;
     private List<String> intiallySelectedChampions;
@@ -40,10 +40,20 @@ public class ChampionSelectViewModel extends ViewModel {
 
 
     @Inject
-    ChampionSelectViewModel(MatchupRepository matchupRepository, @Named("laneTitles") String[] laneTitles, @Named("actionBarIcons") TypedArray laneIcons) {
+    ChampionSelectViewModel(MatchupRepository matchupRepository,
+                            SingleLiveEvent<Integer> finishActivityEvent,
+                            MutableLiveData<List<String>> currentlySelectedChampions,
+                            MutableLiveData<Integer> lane,
+                            MutableLiveData<String> title,
+                            @Named("laneTitles") String[] laneTitles,
+                            @Named("actionBarIcons") TypedArray laneIcons) {
         this.matchupRepository = matchupRepository;
+        this.currentlySelectedChampions = currentlySelectedChampions;
+        this.lane = lane;
+        this.title = title;
         this.laneTitles = laneTitles;
         this.laneIcons = laneIcons;
+        this.finishActivityEvent = finishActivityEvent;
     }
 
     public void initialize(int lane, @Nullable String champName, String championId) {
@@ -59,14 +69,13 @@ public class ChampionSelectViewModel extends ViewModel {
             intiallySelectedChampions = matchupRepository.getMatchupNames(championId).getValue();
         }
 
-        //todo: transformations may be unnecessary with no forward references
+        //transformations may be unnecessary with no forward references
         this.subtitle = Transformations.map(this.lane, newLane -> laneTitles[newLane]);
         this.logo = Transformations.map(this.lane, newLane -> laneIcons.getResourceId(newLane, -1));
     }
 
 
-    //TODO: properly learn RxJava2
-    //fixme: no champions added if choose already added champion & already added champions dont have ticks & grayscale
+    //fixme: no CHAMPIONS added if choose already added champion & already added CHAMPIONS dont have ticks & grayscale
     public void applyChampionSelection() {
         int lane = this.lane.getValue();
         List<String> championsOrMatchups = currentlySelectedChampions.getValue();
@@ -100,8 +109,8 @@ public class ChampionSelectViewModel extends ViewModel {
         return logo;
     }
 
-    public SingleLiveEvent<Integer> getNavigateBackToPreviousActivityEvent() {
-        return navigateBackToPreviousActivityEvent;
+    public SingleLiveEvent<Integer> getFinishActivityEvent() {
+        return finishActivityEvent;
     }
 
     public List<String> getIntiallySelectedChampions() {
@@ -123,12 +132,12 @@ public class ChampionSelectViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        navigateBackToPreviousActivityEvent.setValue(1);
+                        finishActivityEvent.setValue(1);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        navigateBackToPreviousActivityEvent.setValue(-1);
+                        finishActivityEvent.setValue(-1);
                     }
                 });
     }
@@ -144,12 +153,12 @@ public class ChampionSelectViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        navigateBackToPreviousActivityEvent.setValue(1);
+                        finishActivityEvent.setValue(1);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        navigateBackToPreviousActivityEvent.setValue(-1);
+                        finishActivityEvent.setValue(-1);
                     }
                 });
     }

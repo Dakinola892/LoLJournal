@@ -25,7 +25,7 @@ public class Champion {
     public Champion(@NonNull String id, @NonNull String name, int lane, boolean starred) {
         this.id = String.format(Locale.ENGLISH, "%s_%d", name, lane);
         this.name = name;
-        this.imageResource = ChampionGallery.champions.get(name);
+        this.imageResource = (int) ChampionGallery.CHAMPIONS.get(name);
         this.lane = lane;
         this.starred = starred;
     }
@@ -34,7 +34,7 @@ public class Champion {
     public Champion(@NonNull String name, int lane, boolean starred) {
         this.id = String.format(Locale.ENGLISH, "%s_%d", name, lane);
         this.name = name;
-        this.imageResource = ChampionGallery.champions.get(name);
+        this.imageResource = (int) ChampionGallery.CHAMPIONS.get(name);
         this.lane = lane;
         this.starred = starred;
     }
@@ -43,7 +43,7 @@ public class Champion {
     public Champion(@NonNull String name, int lane) {
         this.id = String.format(Locale.ENGLISH, "%s_%d", name, lane);
         this.name = name;
-        this.imageResource = ChampionGallery.champions.get(name);
+        this.imageResource = (int) ChampionGallery.CHAMPIONS.get(name);
         this.lane = lane;
         this.starred = false;
     }
@@ -52,7 +52,7 @@ public class Champion {
     public Champion(String id, @NonNull String name, int lane) {
         this.id = id;
         this.name = name;
-        this.imageResource = ChampionGallery.champions.get(name);
+        this.imageResource = (int) ChampionGallery.CHAMPIONS.get(name);
         this.lane = lane;
         this.starred = false;
     }

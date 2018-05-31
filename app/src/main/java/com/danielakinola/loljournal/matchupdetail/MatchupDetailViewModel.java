@@ -13,6 +13,7 @@ import com.danielakinola.loljournal.utils.SnackbarMessage;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
@@ -22,22 +23,36 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MatchupDetailViewModel extends ViewModel {
     private final MatchupRepository matchupRepository;
-    private final SingleLiveEvent<Comment> addCommentEvent = new SingleLiveEvent<>();
-    private final SingleLiveEvent<Integer> commentDetailEvent = new SingleLiveEvent<>();
-    private final SnackbarMessage snackbarMessage = new SnackbarMessage();
+    private final SingleLiveEvent<Comment> addCommentEvent;
+    private final SingleLiveEvent<Integer> commentDetailEvent;
+    private final SnackbarMessage snackbarMessage;
+    private final String[] commentCategories;
     private String matchupId;
     private LiveData<Matchup> matchup;
     private int currentPage;
+    private String messageArgument;
 
 
     @Inject
-    MatchupDetailViewModel(MatchupRepository matchupRepository) {
+    MatchupDetailViewModel(MatchupRepository matchupRepository,
+                           SingleLiveEvent<Comment> addCommentEvent,
+                           SingleLiveEvent<Integer> commentDetailEvent,
+                           SnackbarMessage snackbarMessage,
+                           @Named("commentCategoriesSingular") String[] commentCategories) {
         this.matchupRepository = matchupRepository;
+        this.addCommentEvent = addCommentEvent;
+        this.commentDetailEvent = commentDetailEvent;
+        this.snackbarMessage = snackbarMessage;
+        this.commentCategories = commentCategories;
     }
 
     public void initialize(String matchupId) {
         this.matchupId = matchupId;
         this.matchup = matchupRepository.getMatchup(matchupId);
+    }
+
+    public String getMessageArgument() {
+        return messageArgument;
     }
 
     public void setCurrentPage(int currentPage) {
@@ -87,12 +102,13 @@ public class MatchupDetailViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        snackbarMessage.setValue(R.string.champion_favourited);
+                        messageArgument = commentCategories[comment.getCategory()];
+                        snackbarMessage.setValue(R.string.comment_favourited);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        snackbarMessage.setValue(R.string.error);
                     }
                 });
 
@@ -104,5 +120,14 @@ public class MatchupDetailViewModel extends ViewModel {
 
     public void onCommentSelected(Comment comment) {
         commentDetailEvent.setValue(comment.getId());
+    }
+
+    public void onCommentEdit(int resultCode, int category) {
+        if (resultCode == -1 || category == -1) {
+            snackbarMessage.setValue(R.string.error);
+        } else {
+            messageArgument = commentCategories[category];
+            snackbarMessage.setValue(R.string.comment_added);
+        }
     }
 }

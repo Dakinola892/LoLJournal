@@ -38,6 +38,12 @@ public class ResourcesModule {
     }
 
     @Provides
+    @Named("commentCategoriesSingular")
+    String[] provideCommentCategoriesSingular(Application application) {
+        return application.getResources().getStringArray(R.array.comment_categories_singular);
+    }
+
+    @Provides
     @Named("versus")
     String provideVersusString(Application application) {
         return application.getString(R.string.versus);

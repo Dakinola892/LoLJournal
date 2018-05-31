@@ -31,14 +31,9 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/item_comment" />
 
-        <!--todo: proper empty states-->
         <include
             android:id="@+id/empty_state"
-            layout="@layout/empty_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
+            layout="@layout/empty_state" />
 
     </FrameLayout>
 

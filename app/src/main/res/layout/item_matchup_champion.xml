@@ -21,9 +21,6 @@
         android:foregroundGravity="center"
         android:onClick="@{() -> listener.onMatchupClicked(matchup)}">
 
-        <!--TODO: refactor names - btn text img, etc.-->
-
-
         <ImageView
             android:id="@+id/img_matchup_champion_portrait"
             android:layout_width="@dimen/champion_item_width"

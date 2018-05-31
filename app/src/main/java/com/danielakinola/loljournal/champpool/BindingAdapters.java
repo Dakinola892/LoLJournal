@@ -7,9 +7,9 @@ import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 
 public class BindingAdapters {
     /*@BindingAdapter("champs")
-    public static void setChampPoolListItems(RecyclerView recyclerView, List<Champion> champions) {
+    public static void setChampPoolListItems(RecyclerView recyclerView, List<Champion> CHAMPIONS) {
         ChampionAdapter adapter = (ChampionAdapter) recyclerView.getAdapter();
-        adapter.setChampions(champions);
+        adapter.setChampions(CHAMPIONS);
         adapter.notifyDataSetChanged();
     }*/
 

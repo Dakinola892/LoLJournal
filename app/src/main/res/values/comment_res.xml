@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="strengths">Strengths</string>
+    <string name="strength">Strength</string>
+    <string name="general">General</string>
+    <string name="general_comment">General Comment</string>
+    <string name="weaknesses">Weaknesses</string>
+    <string name="weakness">Weakness</string>
+
+    <string-array name="comment_categories">
+        <item>@string/strengths</item>
+        <item>@string/general</item>
+        <item>@string/weaknesses</item>
+    </string-array>
+
+    <string-array name="comment_categories_singular">
+        <item>@string/strength</item>
+        <item>@string/general_comment</item>
+        <item>@string/weakness</item>
+    </string-array>
+
+    <string name="hint_comment_title">Comment Title</string>
+    <string name="hint_comment_detail">Comment Detail (Optional) </string>
+</resources>

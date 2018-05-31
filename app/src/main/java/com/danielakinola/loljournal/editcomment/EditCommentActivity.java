@@ -1,10 +1,11 @@
 package com.danielakinola.loljournal.editcomment;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.EditText;
 
 import com.danielakinola.loljournal.R;
 import com.danielakinola.loljournal.ViewModelFactory;
@@ -23,8 +24,8 @@ public class EditCommentActivity extends AppCompatActivity {
     @Inject
     ViewModelFactory viewModelFactory;
     private EditCommentViewModel editCommentViewModel;
-    private EditText commentTitle;
-    private EditText commentDetail;
+    private TextInputEditText commentTitle;
+    private TextInputEditText commentDetail;
 
 
     @Override
@@ -38,9 +39,6 @@ public class EditCommentActivity extends AppCompatActivity {
         setupFAB();
         loadData();
     }
-
-    //TODO: decide between comment detail & comment description
-    //todo: fix strengths vs strength, weaknesses vs weakness, maybe?
 
     private void setupViewModel() {
         int commentId = getIntent().getIntExtra(COMMENT_ID, -1);
@@ -58,7 +56,7 @@ public class EditCommentActivity extends AppCompatActivity {
         editCommentViewModel.getComment().observe(this, comment -> {
             assert comment != null;
             commentTitle.setText(comment.getTitle());
-            commentDetail.setText(comment.getDescription());
+            commentDetail.setText(comment.getDetail());
         });
     }
 
@@ -66,13 +64,15 @@ public class EditCommentActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab_confirm_comment_edit);
         fab.setOnClickListener(v -> {
             String newCommentTitle = commentTitle.getText().toString();
-            String newCommentDescription = commentDetail.getText().toString();
-            editCommentViewModel.saveComment(newCommentTitle, newCommentDescription);
+            String newCommentDetail = commentDetail.getText().toString();
+            editCommentViewModel.saveComment(newCommentTitle, newCommentDetail);
         });
     }
 
     private void onConfirm(int result) {
-        setResult(result);
+        Intent intent = new Intent();
+        intent.putExtra(CATEGORY, editCommentViewModel.getComment().getValue().getCategory());
+        setResult(result, intent);
         finish();
     }
 

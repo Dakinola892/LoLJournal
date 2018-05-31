@@ -62,7 +62,7 @@ public class ChampionSelectActivity extends AppCompatActivity {
 
         championSelectViewModel = ViewModelProviders.of(this, viewModelFactory).get(ChampionSelectViewModel.class);
         championSelectViewModel.initialize(lane, champName, championId);
-        championSelectViewModel.getNavigateBackToPreviousActivityEvent()
+        championSelectViewModel.getFinishActivityEvent()
                 .observe(this, this::navigateBack);
     }
 

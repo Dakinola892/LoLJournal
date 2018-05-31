@@ -31,6 +31,7 @@
         android:background="@color/colorAccent"
         android:textColor="@android:color/white"
         tools:text="Annie" />
+    <!--app:autoSizeTextType="uniform"-->
 
     <ImageView
         android:id="@+id/img_champion_selected"

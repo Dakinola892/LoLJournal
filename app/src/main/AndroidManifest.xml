@@ -23,7 +23,8 @@
         <activity
             android:name=".champpool.ChampPoolActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/title_activity_champ_pool" />
+            android:label="@string/title_activity_champ_pool"
+            android:launchMode="singleTop" />
         <activity
             android:name=".championselect.ChampionSelectActivity"
             android:label="Champion Select"

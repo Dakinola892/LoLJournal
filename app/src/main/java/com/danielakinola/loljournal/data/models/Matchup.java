@@ -50,8 +50,8 @@ public final class Matchup {
         this.enemyChampion = enemyChampion;
         this.lane = lane;
         this.starred = starred;
-        this.playerChampionImageResource = ChampionGallery.champions.get(playerChampion);
-        this.enemyChampionImageResource = ChampionGallery.champions.get(enemyChampion);
+        this.playerChampionImageResource = (int) ChampionGallery.CHAMPIONS.get(playerChampion);
+        this.enemyChampionImageResource = (int) ChampionGallery.CHAMPIONS.get(enemyChampion);
     }
 
     @Ignore
@@ -62,8 +62,8 @@ public final class Matchup {
         this.enemyChampion = enemyChampion;
         this.lane = lane;
         this.starred = starred;
-        this.playerChampionImageResource = ChampionGallery.champions.get(playerChampion);
-        this.enemyChampionImageResource = ChampionGallery.champions.get(enemyChampion);
+        this.playerChampionImageResource = (int) ChampionGallery.CHAMPIONS.get(playerChampion);
+        this.enemyChampionImageResource = (int) ChampionGallery.CHAMPIONS.get(enemyChampion);
     }
 
     @Ignore
@@ -74,8 +74,8 @@ public final class Matchup {
         this.enemyChampion = enemyChampion;
         this.lane = lane;
         this.starred = false;
-        this.playerChampionImageResource = ChampionGallery.champions.get(playerChampion);
-        this.enemyChampionImageResource = ChampionGallery.champions.get(enemyChampion);
+        this.playerChampionImageResource = (int) ChampionGallery.CHAMPIONS.get(playerChampion);
+        this.enemyChampionImageResource = (int) ChampionGallery.CHAMPIONS.get(enemyChampion);
     }
 
     @NonNull
