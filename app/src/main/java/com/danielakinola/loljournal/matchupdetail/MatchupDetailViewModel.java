@@ -4,9 +4,11 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.danielakinola.loljournal.R;
+import com.danielakinola.loljournal.commentdetail.CommentDetailActivity;
 import com.danielakinola.loljournal.data.MatchupRepository;
 import com.danielakinola.loljournal.data.models.Comment;
 import com.danielakinola.loljournal.data.models.Matchup;
+import com.danielakinola.loljournal.editcomment.EditCommentActivity;
 import com.danielakinola.loljournal.utils.SingleLiveEvent;
 import com.danielakinola.loljournal.utils.SnackbarMessage;
 
@@ -130,9 +132,12 @@ public class MatchupDetailViewModel extends ViewModel {
     }
 
     public void onCommentEdit(int resultCode, int category) {
-        if (resultCode == -1 || category == -1) {
+        if (resultCode == 0) {
+        } else if (resultCode == CommentDetailActivity.RESULT_SUCCESSFUL_DELETE) {
+            snackbarMessage.setValue(R.string.comment_deleted);
+        } else if (resultCode == -1 || category == -1) {
             snackbarMessage.setValue(R.string.error);
-        } else {
+        } else if (resultCode == EditCommentActivity.RESULT_SUCCESSFUL_ADD) {
             messageArgument = commentCategories[category];
             snackbarMessage.setValue(R.string.comment_added);
         }

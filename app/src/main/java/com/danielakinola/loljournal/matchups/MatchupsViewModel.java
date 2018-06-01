@@ -175,7 +175,9 @@ public class MatchupsViewModel extends ViewModel {
     }
 
     public void onEdit(int resultCode) {
-        if (resultCode == 1) {
+        if (resultCode == 0) {
+            return;
+        } else if (resultCode == 1) {
             showSuccessSnackbar();
         } else {
             showErrorSnackbar();
@@ -189,7 +191,6 @@ public class MatchupsViewModel extends ViewModel {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
                     }
 
                     @Override

@@ -82,7 +82,7 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
     }
 
     private void showDeleteDialog(Comment comment) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Dialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppDialogTheme);
         AlertDialog dialog = builder.setTitle(getString(R.string.delete_dialog_comment_title, comment.getTitle()))
                 .setPositiveButton(R.string.delete, (dialog1, which) -> matchupDetailViewModel.deleteComment(comment))
                 .setNegativeButton(R.string.cancel, (dialog12, which) -> {
@@ -99,7 +99,7 @@ public class MatchupDetailActivity extends DaggerAppCompatActivity {
     private void navigateToCommentDetail(int commentId) {
         Intent intent = new Intent(this, CommentDetailActivity.class);
         intent.putExtra(EditCommentActivity.COMMENT_ID, commentId);
-        startActivity(intent);
+        startActivityForResult(intent, RESULT_OK);
     }
 
     private void addNewComment(Comment comment) {

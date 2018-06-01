@@ -2,6 +2,7 @@ package com.danielakinola.loljournal.championselect;
 
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,23 +27,8 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private final ChampionSelectViewModel championSelectViewModel;
     private final List<String> initallySelectedChampions;
-    private final String[] champNames = {"Aatrox", "Ahri", "Akali", "Alistar", "Amumu", "Anivia", "Annie",
-            "Ashe", "Aurelion Sol", "Azir", "Bard", "Blitzcrank", "Brand", "Braum", "Caitlyn", "Camille",
-            "Cassiopeia", "Cho'Gath", "Corki", "Darius", "Diana", "Dr. Mundo", "Draven", "Ekko", "Elise",
-            "Evelynn", "Ezreal", "Fiddlesticks", "Fiora", "Fizz", "Galio", "Gangplank", "Garen",
-            "Gnar", "Gragas", "Graves", "Hecarim", "Heimerdinger", "Illaoi", "Irelia", "Ivern", "Janna",
-            "Jarvan IV", "Jax", "Jayce", "Jhin", "Jinx", "Kai'Sa", "Kalista", "Karma", "Karthus", "Kassadin",
-            "Katarina", "Kayn", "Kayle", "Kennen", "Kled", "Kindred", "Kha'Zix", "Kog'Maw", "LeBlanc",
-            "Lee Sin", "Leona", "Lissandra", "Lucian", "Lulu", "Lux", "Malphite", "Malzahar", "Maokai",
-            "Master Yi", "Miss Fortune", "Mordekaiser", "Morgana", "Nami", "Nasus", "Nautilus", "Nidalee",
-            "Nocturne", "Nunu", "Olaf", "Orianna", "Ornn", "Pantheon", "Poppy", "Pyke", "Quinn", "Rakan",
-            "Rammus", "Rek'Sai", "Renekton", "Rengar", "Riven", "Rumble", "Ryze", "Sejuani", "Shaco",
-            "Shen", "Shyvana", "Singed", "Sion", "Sivir", "Skarner", "Sona", "Soraka", "Swain", "Syndra",
-            "Tahm Kench", "Taliyah", "Talon", "Taric", "Teemo", "Thresh", "Tristana", "Trundle",
-            "Tryndamere", "Twisted Fate", "Twitch", "Udyr", "Urgot", "Varus", "Vayne", "Veigar",
-            "Vel'Koz", "Vi", "Viktor", "Vladimir", "Volibear", "Warwick", "Wukong", "Xayah", "Xerath",
-            "Xin Zhao", "Yasuo", "Yorick", "Zac", "Zed", "Ziggs", "Zilean", "Zoe", "Zyra"};
-    final private int[] championSquares = {
+    private final int colorInactiveTextView;
+    private final int[] championPortraits = {
             R.drawable.aatrox_loading, R.drawable.ahri_loading, R.drawable.akali_loading,
             R.drawable.alistar_loading, R.drawable.amumu_loading, R.drawable.anivia_loading,
             R.drawable.annie_loading, R.drawable.ashe_loading, R.drawable.aureliansol_loading,
@@ -90,13 +76,30 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             R.drawable.xinzhao_loading, R.drawable.yasuo_loading, R.drawable.yorick_loading,
             R.drawable.zac_loading, R.drawable.zed_loading, R.drawable.ziggs_loading,
             R.drawable.zilean_loading, R.drawable.zoe_loading, R.drawable.zyra_loading};
+
+    private final String[] champNames = {"Aatrox", "Ahri", "Akali", "Alistar", "Amumu", "Anivia", "Annie",
+            "Ashe", "Aurelion Sol", "Azir", "Bard", "Blitzcrank", "Brand", "Braum", "Caitlyn", "Camille",
+            "Cassiopeia", "Cho'Gath", "Corki", "Darius", "Diana", "Dr. Mundo", "Draven", "Ekko", "Elise",
+            "Evelynn", "Ezreal", "Fiddlesticks", "Fiora", "Fizz", "Galio", "Gangplank", "Garen",
+            "Gnar", "Gragas", "Graves", "Hecarim", "Heimerdinger", "Illaoi", "Irelia", "Ivern", "Janna",
+            "Jarvan IV", "Jax", "Jayce", "Jhin", "Jinx", "Kai'Sa", "Kalista", "Karma", "Karthus", "Kassadin",
+            "Katarina", "Kayn", "Kayle", "Kennen", "Kled", "Kindred", "Kha'Zix", "Kog'Maw", "LeBlanc",
+            "Lee Sin", "Leona", "Lissandra", "Lucian", "Lulu", "Lux", "Malphite", "Malzahar", "Maokai",
+            "Master Yi", "Miss Fortune", "Mordekaiser", "Morgana", "Nami", "Nasus", "Nautilus", "Nidalee",
+            "Nocturne", "Nunu", "Olaf", "Orianna", "Ornn", "Pantheon", "Poppy", "Pyke", "Quinn", "Rakan",
+            "Rammus", "Rek'Sai", "Renekton", "Rengar", "Riven", "Rumble", "Ryze", "Sejuani", "Shaco",
+            "Shen", "Shyvana", "Singed", "Sion", "Sivir", "Skarner", "Sona", "Soraka", "Swain", "Syndra",
+            "Tahm Kench", "Taliyah", "Talon", "Taric", "Teemo", "Thresh", "Tristana", "Trundle",
+            "Tryndamere", "Twisted Fate", "Twitch", "Udyr", "Urgot", "Varus", "Vayne", "Veigar",
+            "Vel'Koz", "Vi", "Viktor", "Vladimir", "Volibear", "Warwick", "Wukong", "Xayah", "Xerath",
+            "Xin Zhao", "Yasuo", "Yorick", "Zac", "Zed", "Ziggs", "Zilean", "Zoe", "Zyra"};
     private List<String> currentlySelectedChampions = new ArrayList<>();
 
 
-
-    ChampionListAdapter(ChampionSelectViewModel championSelectViewModel) {
+    ChampionListAdapter(ChampionSelectViewModel championSelectViewModel, List<String> initallySelectedChampions, int colorInactiveTextView) {
         this.championSelectViewModel = championSelectViewModel;
-        this.initallySelectedChampions = championSelectViewModel.getIntiallySelectedChampions();
+        this.initallySelectedChampions = initallySelectedChampions;
+        this.colorInactiveTextView = colorInactiveTextView;
     }
 
     @Override
@@ -131,13 +134,12 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         final String champName = champNames[position];
-        final int championSquare = championSquares[position];
+        final int championSquare = championPortraits[position];
         if (viewHolder.getItemViewType() == INACTIVE) {
             InactiveChampionViewHolder holder = (InactiveChampionViewHolder) viewHolder;
             holder.textView.setText(champName);
-            if (champName.length() >= 9) {
-                holder.textView.setTextSize(18f);
-            }
+            holder.textView.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.textView.setBackgroundColor(colorInactiveTextView);
             holder.imageView.setImageResource(championSquare);
             holder.imageView.setImageAlpha(128);
 
@@ -145,9 +147,6 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else {
             ActiveChampionViewHolder holder = (ActiveChampionViewHolder) viewHolder;
             holder.textView.setText(champName);
-            if (champName.length() >= 9) {
-                holder.textView.setTextSize(18f);
-            }
             holder.imageView.setImageResource(championSquare);
             if (currentlySelectedChampions.contains(champName)) {
                 holder.selectorImageView.setVisibility(View.VISIBLE);
@@ -194,7 +193,6 @@ public class ChampionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
     }
-
 
 }
 

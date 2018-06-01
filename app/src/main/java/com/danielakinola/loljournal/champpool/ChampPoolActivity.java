@@ -104,7 +104,7 @@ public class ChampPoolActivity extends DaggerAppCompatActivity {
 
     private void showDeleteDialog(Champion champion) {
         String championTitle = champPoolViewModel.getLaneTitle().getValue() + " " + champion.getName();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Dialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppDialogTheme);
         AlertDialog dialog = builder.setTitle(getString(R.string.delete_dialog_title, championTitle))
                 .setMessage(getString(R.string.delete_dialog_champool_message, championTitle))
                 .setPositiveButton(R.string.delete, (dialog1, which) -> champPoolViewModel.deleteChampion(champion))

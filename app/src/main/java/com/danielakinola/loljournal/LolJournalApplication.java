@@ -9,7 +9,6 @@ import dagger.android.DaggerApplication;
  * Created by dakin on 13/01/2018.
  */
 
-//todo: main activity
 
 public class LolJournalApplication extends DaggerApplication {
 

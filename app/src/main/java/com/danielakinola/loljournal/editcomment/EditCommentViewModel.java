@@ -101,7 +101,7 @@ public class EditCommentViewModel extends ViewModel {
 
                     @Override
                     public void onComplete() {
-                        confirmationEvent.setValue(1);
+                        confirmationEvent.setValue(EditCommentActivity.RESULT_SUCCESSFUL_ADD);
                     }
 
                     @Override

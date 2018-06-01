@@ -3,9 +3,8 @@ package com.danielakinola.loljournal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.Button;
 
+import com.danielakinola.loljournal.championselect.ChampionSelectActivity;
 import com.danielakinola.loljournal.champpool.ChampPoolActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,30 +15,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button buttonJungle = findViewById(R.id.btn_jungle);
-        Button buttonTop = findViewById(R.id.btn_top);
-        Button buttonMid = findViewById(R.id.btn_mid);
-        Button buttonBot = findViewById(R.id.btn_bottom);
-        Button buttonSupport = findViewById(R.id.btn_support);
-        Button buttonChampList = findViewById(R.id.btn_champ_list);
-
-
-        buttonTop.setOnClickListener(v -> navigateToChampPool(0));
-        buttonJungle.setOnClickListener(v -> navigateToChampPool(1));
-        buttonMid.setOnClickListener(v -> navigateToChampPool(2));
-        buttonBot.setOnClickListener(v -> navigateToChampPool(3));
-        buttonSupport.setOnClickListener(v -> navigateToChampPool(4));
-        buttonChampList.setOnClickListener(v -> navigateToChampPool(0));
-
+        findViewById(R.id.btn_top).setOnClickListener(v -> navigateToChampPool(0));
+        findViewById(R.id.btn_jungle).setOnClickListener(v -> navigateToChampPool(1));
+        findViewById(R.id.btn_mid).setOnClickListener(v -> navigateToChampPool(2));
+        findViewById(R.id.btn_bottom).setOnClickListener(v -> navigateToChampPool(3));
+        findViewById(R.id.btn_support).setOnClickListener(v -> navigateToChampPool(4));
     }
 
     void navigateToChampPool(int lane) {
         Intent i = new Intent(MainActivity.this, ChampPoolActivity.class);
-        i.putExtra("LANE", lane);
-        Log.d("lane", "" + lane);
+        i.putExtra(ChampionSelectActivity.LANE, lane);
+        //Log.d("lane", "" + lane);
         startActivity(i);
     }
-
-
-
 }

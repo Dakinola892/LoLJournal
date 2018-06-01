@@ -4,71 +4,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context="com.danielakinola.loljournal.MainActivity">
 
     <TextView
-        android:id="@+id/activitytitle"
+        android:id="@+id/app_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="77dp"
         android:layout_marginEnd="114dp"
         android:layout_marginStart="115dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="52dp"
+        android:fontFamily="serif"
         android:text="@string/app_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textSize="36sp"
+        android:textColor="@color/colorIconGold"
+        android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorIconGold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_title" />
+
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activitytitle">
+        app:layout_constraintTop_toBottomOf="@+id/app_title">
 
         <Button
             android:id="@+id/btn_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/MainActivityButton"
+            android:drawableStart="@drawable/ic_top_ab"
             android:text="@string/top" />
 
         <Button
             android:id="@+id/btn_jungle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/MainActivityButton"
+            android:drawableStart="@drawable/ic_jungle_2"
             android:text="@string/jungle" />
 
         <Button
             android:id="@+id/btn_mid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/MainActivityButton"
+            android:drawableStart="@drawable/ic_mid_lane_ab"
             android:text="@string/mid" />
 
         <Button
             android:id="@+id/btn_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/MainActivityButton"
+            android:drawableStart="@drawable/ic_bot_lane_ab"
             android:text="@string/bottom" />
 
         <Button
             android:id="@+id/btn_support"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/MainActivityButton"
+            android:drawableStart="@drawable/ic_support_ab"
             android:text="@string/support" />
 
-        <Button
-            android:id="@+id/btn_champ_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ChampListActivity" />
 
     </LinearLayout>
 

@@ -138,7 +138,7 @@ public class ChampionGallery {
                     .put("Varus", R.drawable.varus_loading)
                     .put("Vayne", R.drawable.vayne_loading)
                     .put("Veigar", R.drawable.veigar_loading)
-                    .put("Velkoz", R.drawable.velkoz_loading)
+                    .put("Vel'Koz", R.drawable.velkoz_loading)
                     .put("Vi", R.drawable.vi_loading)
                     .put("Viktor", R.drawable.viktor_loading)
                     .put("Vladimir", R.drawable.vladimir_loading)

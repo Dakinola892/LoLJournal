@@ -1,5 +1,6 @@
 package com.danielakinola.loljournal.data.models;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
@@ -10,12 +11,13 @@ import com.danielakinola.loljournal.utils.ChampionGallery;
 
 import java.util.Locale;
 
-@Entity(tableName = "ChampPool", indices = {@Index(value = {"id"}, unique = true), @Index(value = {"name", "lane"}, unique = true)})
+@Entity(tableName = "ChampPool", indices = {@Index(value = {"id"}, unique = true), @Index(value = {"champ_name", "lane"}, unique = true)})
 public class Champion {
 
     @PrimaryKey
     @NonNull
     private final String id;
+    @ColumnInfo(name = "champ_name")
     private final String name;
     private final int lane;
     @Ignore

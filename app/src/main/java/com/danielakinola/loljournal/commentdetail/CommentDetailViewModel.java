@@ -1,6 +1,7 @@
 package com.danielakinola.loljournal.commentdetail;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.res.TypedArray;
@@ -24,7 +25,8 @@ import io.reactivex.schedulers.Schedulers;
 public class CommentDetailViewModel extends ViewModel {
     private final MatchupRepository matchupRepository;
     private final SingleLiveEvent<Comment> editCommentEvent;
-    private final SingleLiveEvent<Integer> deleteCommentEvent;
+    private final SingleLiveEvent<Comment> deleteCommentEvent;
+    private final SingleLiveEvent<Void> finishEvent;
     private final SnackbarMessage snackbarMessage;
     private LiveData<String> title;
     private LiveData<String> subtitle;
@@ -35,20 +37,21 @@ public class CommentDetailViewModel extends ViewModel {
     private final String[] commentCategories;
     private final TypedArray laneIcons;
     private final String versusString;
-    private String messageArgument;
+
 
 
     @Inject
     public CommentDetailViewModel(MatchupRepository matchupRepository,
                                   SingleLiveEvent<Comment> editCommentEvent,
-                                  SingleLiveEvent<Integer> deleteCommentEvent,
-                                  SnackbarMessage snackbarMessage,
+                                  SingleLiveEvent<Comment> deleteCommentEvent,
+                                  SingleLiveEvent<Void> finishEvent, SnackbarMessage snackbarMessage,
                                   @Named("commentCategories") String[] commentCategories,
                                   @Named("actionBarIcons") TypedArray laneIcons,
                                   @Named("versus") String versusString) {
         this.matchupRepository = matchupRepository;
         this.editCommentEvent = editCommentEvent;
         this.deleteCommentEvent = deleteCommentEvent;
+        this.finishEvent = finishEvent;
         this.snackbarMessage = snackbarMessage;
         this.commentCategories = commentCategories;
         this.laneIcons = laneIcons;
@@ -58,10 +61,35 @@ public class CommentDetailViewModel extends ViewModel {
     public void initialize(int commentId) {
         this.commentId = commentId;
         this.comment = matchupRepository.getComment(commentId);
-        this.matchup = Transformations.switchMap(this.comment, comment -> matchupRepository.getMatchup(comment.getMatchupId()));
-        this.title = Transformations.map(matchup, matchup -> String.format(versusString, matchup.getPlayerChampion(), matchup.getEnemyChampion()));
-        this.subtitle = Transformations.map(comment, comment -> commentCategories[comment.getCategory()]);
-        this.logo = Transformations.map(matchup, matchup -> laneIcons.getResourceId(matchup.getLane(), -1));
+        this.subtitle = Transformations.map(comment, comment -> {
+            if (comment != null) {
+                return commentCategories[comment.getCategory()];
+            } else {
+                return " ";
+            }
+        });
+        this.matchup = Transformations.switchMap(this.comment, comment -> {
+            if (comment != null) {
+                return matchupRepository.getMatchup(comment.getMatchupId());
+            } else {
+                return new MutableLiveData<>();
+            }
+        });
+        this.title = Transformations.map(matchup, matchup -> {
+            if (matchup != null) {
+                return String.format(versusString, matchup.getPlayerChampion(), matchup.getEnemyChampion());
+            } else {
+                return " ";
+            }
+        });
+        this.logo = Transformations.map(matchup, matchup -> {
+            if (matchup != null) {
+                return laneIcons.getResourceId(matchup.getLane(), 0);
+            } else {
+                return R.drawable.empty;
+            }
+
+        });
     }
 
     public void editComment() {
@@ -75,12 +103,12 @@ public class CommentDetailViewModel extends ViewModel {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
                     }
 
                     @Override
                     public void onComplete() {
-                        snackbarMessage.setValue(R.string.comment_favourited);
+                        if (!comment.getValue().isStarred())
+                            snackbarMessage.setValue(R.string.comment_favourited);
                     }
 
                     @Override
@@ -97,12 +125,11 @@ public class CommentDetailViewModel extends ViewModel {
                 .subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
                     }
 
                     @Override
                     public void onComplete() {
-                        snackbarMessage.setValue(R.string.comment_deleted);
+                        finishEvent.call();
                     }
 
                     @Override
@@ -116,8 +143,12 @@ public class CommentDetailViewModel extends ViewModel {
         return editCommentEvent;
     }
 
-    public SingleLiveEvent<Integer> getDeleteCommentEvent() {
+    public SingleLiveEvent<Comment> getDeleteCommentEvent() {
         return deleteCommentEvent;
+    }
+
+    public SingleLiveEvent<Void> getFinishEvent() {
+        return finishEvent;
     }
 
     public SnackbarMessage getSnackbarMessage() {
@@ -142,6 +173,10 @@ public class CommentDetailViewModel extends ViewModel {
 
     public LiveData<Integer> getLogo() {
         return logo;
+    }
+
+    public void showDeleteDialog() {
+        deleteCommentEvent.setValue(comment.getValue());
     }
 
     public void onEdit(int resultCode) {

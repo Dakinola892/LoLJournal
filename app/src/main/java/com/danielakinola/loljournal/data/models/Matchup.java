@@ -17,7 +17,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 @Entity(tableName = "Matchups",
         indices = @Index(value = {"player_champion", "lane"}),
         foreignKeys = @ForeignKey(entity = Champion.class,
-                parentColumns = {"name", "lane"},
+                parentColumns = {"champ_name", "lane"},
                 childColumns = {"player_champion", "lane"},
                 onDelete = CASCADE))
 

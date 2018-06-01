@@ -21,8 +21,25 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="AppDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="MainActivityButton">
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:paddingStart">64dp</item>
+        <item name="android:paddingEnd">64dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/text_color_primary</item>
+        <item name="android:textSize">26sp</item>
     </style>
 
 

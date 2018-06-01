@@ -160,7 +160,7 @@ public class MatchupsActivity extends AppCompatActivity {
     }
 
     private void showDeleteDialog(Matchup matchup) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Dialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppDialogTheme);
         String matchupTitle = getString(R.string.versus, matchup.getPlayerChampion(), matchup.getEnemyChampion()) + " " + matchupsViewModel.getLaneSubtitle().getValue();
 
         AlertDialog dialog = builder.setTitle(getString(R.string.delete_dialog_title, matchupTitle))

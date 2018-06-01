@@ -3,13 +3,15 @@
     <string name="champ_pool_edited">%s Champ Pool successfully updated</string>
     <string name="champion_favourited">%s favourited!</string>
     <string name="champion_deleted">Champion successfuly deleted from %s Champ Pool</string>
+
     <string name="matchup_updated">%s matchups successfully updated</string>
     <string name="matchup_deleted">Matchup successfully deleted from %s Matchups</string>
     <string name="matchup_favorited">%s Matchup favorited</string>
-    <string name="comment_added">New Matchup %s successfully added</string>
+
+    <string name="comment_added">Comment saved!</string>
     <string name="comment_deleted">Comment successfully deleted</string>
     <string name="comment_edited">Comment successfully edited</string>
-    <string name="comment_favourited">Matchup %s favourited!</string>
+    <string name="comment_favourited">Comment favorited!</string>
     <string name="comment_plus_1">Comment successfully +1\'ed</string>
     <string name="upvote">You believe you improved in this area!</string>
     <string name="downvote">You believe you need to improve in this area</string>

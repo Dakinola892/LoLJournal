@@ -20,6 +20,7 @@ public class EditCommentActivity extends AppCompatActivity {
     public static final String CATEGORY = "CATEGORY";
     public static final String COMMENT_ID = "COMMENT_ID";
     public static final String MATCHUP_ID = "MATCHUP_ID";
+    public static final int RESULT_SUCCESSFUL_ADD = RESULT_OK + 9;
 
     @Inject
     ViewModelFactory viewModelFactory;

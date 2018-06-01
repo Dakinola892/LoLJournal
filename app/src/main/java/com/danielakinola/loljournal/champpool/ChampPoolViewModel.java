@@ -177,7 +177,9 @@ public class ChampPoolViewModel extends ViewModel {
     }
 
     public void onEdit(int resultCode) {
-        if (resultCode == 1) {
+        if (resultCode == 0) {
+            return;
+        } else if (resultCode == 1) {
             messageArgument = laneTitle.getValue();
             snackbarMessage.setValue(R.string.champ_pool_edited);
         } else {

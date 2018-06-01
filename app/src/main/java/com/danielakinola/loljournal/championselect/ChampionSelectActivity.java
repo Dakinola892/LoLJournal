@@ -43,16 +43,21 @@ public class ChampionSelectActivity extends AppCompatActivity {
     }
 
     private void setupRecylerView() {
-        championListAdapter = new ChampionListAdapter(championSelectViewModel);
+        //championListAdapter = new ChampionListAdapter(championSelectViewModel);
         RecyclerView recyclerView = findViewById(R.id.champion_select_recycler_view);
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new GridLayoutManager(ChampionSelectActivity.this, 3));
-        recyclerView.setAdapter(championListAdapter);
-        championSelectViewModel.getCurrentlySelectedChampions().observe(this,
-                currentlySelectedChampions -> {
-                    championListAdapter.setCurrentlySelectedChampions(currentlySelectedChampions);
-                    championListAdapter.notifyDataSetChanged();
-                });
+
+        championSelectViewModel.getInitiallySelectedChampions().observe(this, initChampions -> {
+            championListAdapter = new ChampionListAdapter(championSelectViewModel, initChampions, getResources().getColor(R.color.text_color_secondary));
+            recyclerView.setAdapter(championListAdapter);
+            championSelectViewModel.getCurrentlySelectedChampions().observe(this,
+                    currentlySelectedChampions -> {
+                        championListAdapter.setCurrentlySelectedChampions(currentlySelectedChampions);
+                        championListAdapter.notifyDataSetChanged();
+                    });
+        });
+
     }
 
     private void setupViewModel() {

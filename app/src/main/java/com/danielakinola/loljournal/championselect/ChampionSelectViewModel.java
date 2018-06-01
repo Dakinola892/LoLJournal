@@ -32,7 +32,7 @@ public class ChampionSelectViewModel extends ViewModel {
     private final MutableLiveData<String> title;
     private LiveData<String> subtitle;
     private LiveData<Integer> logo;
-    private List<String> intiallySelectedChampions;
+    private LiveData<List<String>> initiallySelectedChampions;
     private String champName;
     private String championId;
     private String[] laneTitles;
@@ -62,25 +62,27 @@ public class ChampionSelectViewModel extends ViewModel {
 
         if (champName == null) {
             title.setValue("Champion Select");
-            intiallySelectedChampions = matchupRepository.getChampNames(lane).getValue();
+            //List<Champion> test = matchupRepository.getChampPool(lane).getValue();
+            initiallySelectedChampions = matchupRepository.getChampNames(lane);
         } else {
             this.champName = champName;
             title.setValue(champName + " Matchup Select");
-            intiallySelectedChampions = matchupRepository.getMatchupNames(championId).getValue();
+            initiallySelectedChampions = matchupRepository.getMatchupNames(championId);
         }
 
-        //transformations may be unnecessary with no forward references
         this.subtitle = Transformations.map(this.lane, newLane -> laneTitles[newLane]);
         this.logo = Transformations.map(this.lane, newLane -> laneIcons.getResourceId(newLane, -1));
     }
 
 
-    //fixme: no CHAMPIONS added if choose already added champion & already added CHAMPIONS dont have ticks & grayscale
+
     public void applyChampionSelection() {
         int lane = this.lane.getValue();
         List<String> championsOrMatchups = currentlySelectedChampions.getValue();
 
         if (championsOrMatchups != null) {
+            championsOrMatchups.removeAll(initiallySelectedChampions.getValue());
+
             if (champName == null) {
                 Champion[] champions = new Champion[championsOrMatchups.size()];
                 for (int i = 0; i < championsOrMatchups.size(); i++) {
@@ -94,7 +96,13 @@ public class ChampionSelectViewModel extends ViewModel {
                 }
                 addMatchups(matchups);
             }
+        } else {
+            finishActivityEvent.setValue(0);
         }
+    }
+
+    public LiveData<List<String>> getInitiallySelectedChampions() {
+        return initiallySelectedChampions;
     }
 
     public LiveData<String> getTitle() {
@@ -111,10 +119,6 @@ public class ChampionSelectViewModel extends ViewModel {
 
     public SingleLiveEvent<Integer> getFinishActivityEvent() {
         return finishActivityEvent;
-    }
-
-    public List<String> getIntiallySelectedChampions() {
-        return intiallySelectedChampions != null ? intiallySelectedChampions : new ArrayList<>();
     }
 
     public LiveData<List<String>> getCurrentlySelectedChampions() {

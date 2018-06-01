@@ -82,7 +82,7 @@
 
                 <com.santalu.diagonalimageview.DiagonalImageView
                     android:id="@+id/diagonalImageView"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="8dp"
                     android:adjustViewBounds="true"
@@ -93,7 +93,7 @@
                     android:paddingTop="40dp"
                     android:scaleX="2.7"
                     android:scaleY="2.7"
-                    android:translationX="10dp"
+                    android:translationX="20dp"
                     android:translationY="10dp"
                     app:di_borderEnabled="true"
                     app:di_direction="right"
